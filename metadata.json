@@ -1,0 +1,6 @@
+{
+  "name": "LearnTrace",
+  "description": "AI-driven knowledge graph and knowledge tracing system for detecting skill gaps, estimating mastery, and recommending high-leverage learning paths.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
