@@ -231,7 +231,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
         {/* Header Profile Bar */}
         <div className="p-6 border-b border-slate-100 bg-slate-50/70 flex items-start justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-xl bg-gradient-to-tr from-indigo-700 via-indigo-600 to-violet-600 flex items-center justify-center text-white text-xl font-bold shadow-md shadow-indigo-600/20 ring-2 ring-white">
+            <div className="w-14 h-14 rounded-xl bg-[#1877F2] flex items-center justify-center text-white text-xl font-bold shadow-md shadow-blue-500/20 ring-2 ring-white">
               {user?.email ? user.email.charAt(0).toUpperCase() : 'U'}
             </div>
             <div>
@@ -267,7 +267,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
             onClick={() => setActiveSubTab('overview')}
             className={`py-3.5 border-b-2 transition-colors cursor-pointer flex items-center gap-1.5 ${
               activeSubTab === 'overview'
-                ? 'border-indigo-600 text-indigo-600 font-bold'
+                ? 'border-[#1877F2] text-[#1877F2] font-bold'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
             }`}
           >
@@ -280,7 +280,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
             onClick={() => setActiveSubTab('settings')}
             className={`py-3.5 border-b-2 transition-colors cursor-pointer flex items-center gap-1.5 ${
               activeSubTab === 'settings'
-                ? 'border-indigo-600 text-indigo-600 font-bold'
+                ? 'border-[#1877F2] text-[#1877F2] font-bold'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
             }`}
           >
@@ -300,7 +300,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
                   <div className="text-[11px] font-medium text-slate-500 flex items-center gap-1">
-                    <Award className="w-3.5 h-3.5 text-indigo-600" />
+                    <Award className="w-3.5 h-3.5 text-[#1877F2]" />
                     <span>Attempts</span>
                   </div>
                   <div className="text-xl font-bold text-slate-900">
@@ -322,7 +322,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
 
                 <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
                   <div className="text-[11px] font-medium text-slate-500 flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-indigo-600" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-[#1877F2]" />
                     <span>Solid Skills</span>
                   </div>
                   <div className="text-xl font-bold text-slate-900">
@@ -344,10 +344,10 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
               </div>
 
               {/* Active Curriculum Goal Section */}
-              <div className="p-4 rounded-xl bg-indigo-50/40 border border-indigo-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="p-4 rounded-xl bg-blue-50/40 border border-blue-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="space-y-1">
-                  <div className="flex items-center gap-1.5 text-xs font-semibold text-indigo-900">
-                    <Target className="w-4 h-4 text-indigo-600" />
+                  <div className="flex items-center gap-1.5 text-xs font-semibold text-blue-900">
+                    <Target className="w-4 h-4 text-[#1877F2]" />
                     <span>Current Active Target Goal</span>
                   </div>
                   <p className="text-xs text-slate-600">
@@ -361,7 +361,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
                     onClose();
                     onNavigateToTab('goals');
                   }}
-                  className="px-3.5 py-2 rounded-lg bg-white border border-indigo-200 hover:border-indigo-300 text-indigo-700 text-xs font-semibold shadow-2xs transition-colors cursor-pointer shrink-0"
+                  className="px-3.5 py-2 rounded-lg bg-white border border-blue-200 hover:border-blue-300 text-[#1877F2] text-xs font-semibold shadow-2xs transition-colors cursor-pointer shrink-0"
                 >
                   Change Curriculum Goal
                 </button>
@@ -396,7 +396,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
               {/* Update Email Form */}
               <form onSubmit={handleUpdateEmail} className="p-4 rounded-xl bg-white border border-slate-200 space-y-3">
                 <div className="flex items-center gap-2 text-xs font-semibold text-slate-900">
-                  <Mail className="w-4 h-4 text-indigo-600" />
+                  <Mail className="w-4 h-4 text-[#1877F2]" />
                   <span>Update Account Email</span>
                 </div>
 
@@ -416,14 +416,14 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
                     value={emailInput}
                     onChange={(e) => setEmailInput(e.target.value)}
                     required
-                    className="flex-1 px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-xs outline-none focus:bg-white focus:border-indigo-600"
+                    className="flex-1 px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-xs outline-none focus:bg-white focus:border-[#1877F2]"
                     placeholder="learner@learntrace.ai"
                   />
                   <button
                     id="btn-save-email"
                     type="submit"
                     disabled={emailSaving || emailInput === user?.email}
-                    className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-semibold text-xs transition-colors cursor-pointer shadow-2xs"
+                    className="px-4 py-2 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] disabled:bg-slate-200 disabled:text-slate-400 text-white font-semibold text-xs transition-colors cursor-pointer shadow-2xs"
                   >
                     {emailSaving ? 'Saving...' : 'Save Email'}
                   </button>
@@ -433,7 +433,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
               {/* Change Password Form */}
               <form onSubmit={handleUpdatePassword} className="p-4 rounded-xl bg-white border border-slate-200 space-y-3">
                 <div className="flex items-center gap-2 text-xs font-semibold text-slate-900">
-                  <Lock className="w-4 h-4 text-indigo-600" />
+                  <Lock className="w-4 h-4 text-[#1877F2]" />
                   <span>Change Password</span>
                 </div>
 
@@ -454,7 +454,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
                       type="password"
                       value={currentPassword}
                       onChange={(e) => setCurrentPassword(e.target.value)}
-                      className="w-full px-3 py-2 mt-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-xs outline-none focus:bg-white focus:border-indigo-600"
+                      className="w-full px-3 py-2 mt-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-xs outline-none focus:bg-white focus:border-[#1877F2]"
                       placeholder="••••••••"
                     />
                   </div>
@@ -468,7 +468,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         required
-                        className="w-full px-3 py-2 mt-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-xs outline-none focus:bg-white focus:border-indigo-600"
+                        className="w-full px-3 py-2 mt-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-xs outline-none focus:bg-white focus:border-[#1877F2]"
                         placeholder="At least 6 characters"
                       />
                     </div>
@@ -480,7 +480,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
-                        className="w-full px-3 py-2 mt-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-xs outline-none focus:bg-white focus:border-indigo-600"
+                        className="w-full px-3 py-2 mt-1 rounded-lg bg-slate-50 border border-slate-200 text-slate-900 text-xs outline-none focus:bg-white focus:border-[#1877F2]"
                         placeholder="••••••••"
                       />
                     </div>
@@ -490,7 +490,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
                     id="btn-save-password"
                     type="submit"
                     disabled={passwordSaving || !newPassword}
-                    className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-semibold text-xs transition-colors cursor-pointer shadow-2xs"
+                    className="px-4 py-2 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] disabled:bg-slate-200 disabled:text-slate-400 text-white font-semibold text-xs transition-colors cursor-pointer shadow-2xs"
                   >
                     {passwordSaving ? 'Updating...' : 'Update Password'}
                   </button>

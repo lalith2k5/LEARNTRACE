@@ -123,10 +123,28 @@ export function calculateSkillMasteryForUser(userId: string, skillId: string): S
 
   // 4. Mastery Formula: sum(weight * adjustedScore) / sum(weight)
   const rawMastery = totalWeight > 0 ? weightedScoreSum / totalWeight : 0.0;
+  const clampedRawMastery = Math.min(Math.max(rawMastery, 0.0), 1.0);
+  const normalizedRawMastery = Math.round(clampedRawMastery * 100) / 100;
 
-  // 5. Clamp to [0, 1] range and round to 2-3 decimal places
-  const clampedMastery = Math.min(Math.max(rawMastery, 0.0), 1.0);
-  const normalizedMastery = Math.round(clampedMastery * 100) / 100;
+  // 5. Ebbinghaus Forgetting Curve & Temporal Decay Calculation
+  // Memory Stability S (half-life in days) scaled by evidence count and average confidence
+  const lastAttempt = sortedAttempts[sortedAttempts.length - 1];
+  const lastAttemptTime = new Date(lastAttempt.createdAt).getTime();
+  const nowTime = Date.now();
+  const elapsedMs = Math.max(0, nowTime - lastAttemptTime);
+  const elapsedDays = Math.round((elapsedMs / (1000 * 60 * 60 * 24)) * 10) / 10;
+
+  const avgConfidence = sortedAttempts.reduce((acc, a) => acc + (a.confidence || 3), 0) / sortedAttempts.length;
+  // Base stability of 7 days, augmented up to 3x with repeated spaced practice and high confidence
+  const stabilityDays = 7 * (1 + 0.25 * Math.min(sortedAttempts.length, 8)) * (0.7 + 0.3 * (avgConfidence / 5));
+  
+  // Ebbinghaus exponential decay: R(t) = exp(- ln(2) * t / S)
+  const retentionFactor = Math.exp((-Math.LN2 * elapsedDays) / stabilityDays);
+  const clampedRetention = Math.max(0.20, Math.min(1.0, Math.round(retentionFactor * 100) / 100));
+
+  // Effective retained mastery = raw mastery * retention
+  const effectiveMastery = Math.round(normalizedRawMastery * clampedRetention * 100) / 100;
+  const needsSpacedReview = (normalizedRawMastery >= 0.60 && clampedRetention < 0.85) || (elapsedDays >= 7 && normalizedRawMastery >= 0.50);
 
   // Compute BKT parallel estimate for research comparisons
   const bktEstimate = computeBktEstimate(sortedAttempts);
@@ -136,8 +154,12 @@ export function calculateSkillMasteryForUser(userId: string, skillId: string): S
     skillId,
     skillName,
     domain,
-    masteryScore: normalizedMastery,
-    interpretation: getInterpretationFromScore(normalizedMastery),
+    masteryScore: effectiveMastery,
+    rawMasteryScore: normalizedRawMastery,
+    retentionRate: clampedRetention,
+    daysSinceLastAttempt: elapsedDays,
+    needsSpacedReview,
+    interpretation: getInterpretationFromScore(effectiveMastery),
     evidenceCount: sortedAttempts.length,
     bktEstimate,
     lastUpdated: new Date().toISOString(),

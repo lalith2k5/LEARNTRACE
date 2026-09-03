@@ -120,7 +120,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onRefre
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                   className="flex items-center gap-2.5 py-1.5 px-2.5 sm:px-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50/90 hover:border-slate-300 transition-all cursor-pointer text-left shadow-2xs group"
                 >
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-700 to-indigo-600 text-white text-xs font-bold flex items-center justify-center shadow-xs ring-1 ring-indigo-500/30">
+                  <div className="w-8 h-8 rounded-lg bg-[#1877F2] text-white text-xs font-bold flex items-center justify-center shadow-xs ring-1 ring-[#1877F2]/30">
                     {user?.email ? user.email.charAt(0).toUpperCase() : 'U'}
                   </div>
                   
@@ -155,7 +155,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onRefre
                         {/* User Identity Banner */}
                         <div className="p-3 bg-slate-50 rounded-lg border border-slate-200/80 mb-1.5">
                           <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 rounded-md bg-indigo-600 text-white text-[11px] font-bold flex items-center justify-center">
+                            <div className="w-6 h-6 rounded-md bg-[#1877F2] text-white text-[11px] font-bold flex items-center justify-center">
                               {user?.email ? user.email.charAt(0).toUpperCase() : 'U'}
                             </div>
                             <div className="overflow-hidden">
@@ -178,7 +178,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onRefre
                             }}
                             className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-2.5 cursor-pointer font-semibold transition-colors"
                           >
-                            <UserIcon className="w-4 h-4 text-indigo-600" />
+                            <UserIcon className="w-4 h-4 text-[#1877F2]" />
                             <span>Learner Profile & Analytics</span>
                           </button>
 
@@ -190,7 +190,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onRefre
                             }}
                             className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 text-slate-700 hover:text-slate-900 flex items-center gap-2.5 cursor-pointer font-medium transition-colors"
                           >
-                            <Target className="w-4 h-4 text-indigo-600" />
+                            <Target className="w-4 h-4 text-[#1877F2]" />
                             <span>Curriculum Goals</span>
                           </button>
 
@@ -259,26 +259,26 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onRefre
                     onClick={() => setActiveTab(item.id)}
                     className={`relative flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold transition-all duration-150 cursor-pointer select-none ${
                       isActive
-                        ? 'text-indigo-700 bg-white shadow-2xs border border-slate-200/90 font-bold'
-                        : 'text-slate-600 hover:text-slate-900 hover:bg-white/60 border border-transparent'
+                        ? 'text-white bg-[#1877F2] shadow-xs font-bold'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 border border-transparent'
                     }`}
                   >
                     {/* Smooth Active Background Indicator Slider */}
                     {isActive && (
                       <motion.div
                         layoutId="activeTabPill"
-                        className="absolute inset-0 bg-white rounded-lg border border-slate-200/90 shadow-2xs -z-10"
+                        className="absolute inset-0 bg-[#1877F2] rounded-lg shadow-xs -z-10"
                         transition={{ type: 'spring', bounce: 0.18, duration: 0.35 }}
                       />
                     )}
 
-                    <Icon className={`w-4 h-4 transition-colors ${isActive ? 'text-indigo-600' : 'text-slate-400'}`} />
+                    <Icon className={`w-4 h-4 transition-colors ${isActive ? 'text-white' : 'text-slate-400'}`} />
                     <span>{item.label}</span>
 
                     {item.badge && (
                       <span className={`text-[10px] px-1.5 py-0.2 rounded font-bold uppercase tracking-wider ${
                         isActive 
-                          ? 'bg-indigo-100 text-indigo-800' 
+                          ? 'bg-white/20 text-white' 
                           : 'bg-slate-200 text-slate-600'
                       }`}>
                         {item.badge}
@@ -316,12 +316,12 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onRefre
                       }}
                       className={`w-full flex items-center justify-between p-3 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                         isActive
-                          ? 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+                          ? 'bg-blue-50 text-[#1877F2] border border-blue-200'
                           : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200/70'
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`p-1.5 rounded-lg ${isActive ? 'bg-indigo-600 text-white' : 'bg-white text-slate-500 border border-slate-200'}`}>
+                        <div className={`p-1.5 rounded-lg ${isActive ? 'bg-[#1877F2] text-white' : 'bg-white text-slate-500 border border-slate-200'}`}>
                           <Icon className="w-4 h-4" />
                         </div>
                         <div className="text-left">
@@ -331,7 +331,7 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onRefre
                       </div>
 
                       {isActive && (
-                        <CheckCircle2 className="w-4 h-4 text-indigo-600 shrink-0" />
+                        <CheckCircle2 className="w-4 h-4 text-[#1877F2] shrink-0" />
                       )}
                     </button>
                   );

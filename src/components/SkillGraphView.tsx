@@ -24,7 +24,7 @@ const SkillNodeComponent = ({ data }: { data: any }) => {
     <div
       className={`min-w-[200px] max-w-[240px] p-3.5 rounded-xl border shadow-md transition-all cursor-pointer ${
         data.isRecommended
-          ? 'bg-gradient-to-b from-indigo-50/90 to-white border-indigo-500 ring-2 ring-indigo-400/40 shadow-indigo-100'
+          ? 'bg-gradient-to-b from-blue-50/90 to-white border-[#1877F2] ring-2 ring-[#1877F2]/40 shadow-blue-100'
           : data.isTarget
           ? 'bg-purple-50/50 border-purple-400'
           : isMastered
@@ -32,7 +32,7 @@ const SkillNodeComponent = ({ data }: { data: any }) => {
           : 'bg-white border-slate-200'
       }`}
     >
-      <Handle type="target" position={Position.Left} className="!bg-indigo-600 !w-2.5 !h-2.5 !border-2 !border-white" />
+      <Handle type="target" position={Position.Left} className="!bg-[#1877F2] !w-2.5 !h-2.5 !border-2 !border-white" />
 
       {/* Header tags */}
       <div className="flex items-center justify-between gap-1 mb-1.5">
@@ -41,8 +41,8 @@ const SkillNodeComponent = ({ data }: { data: any }) => {
         </span>
 
         {data.isRecommended ? (
-          <span className="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-800 border border-indigo-200 animate-pulse">
-            <Sparkles className="w-2.5 h-2.5 text-indigo-600" />
+          <span className="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-[#1877F2] border border-blue-200 animate-pulse">
+            <Sparkles className="w-2.5 h-2.5 text-[#1877F2]" />
             Recommended
           </span>
         ) : data.isTarget ? (
@@ -81,7 +81,7 @@ const SkillNodeComponent = ({ data }: { data: any }) => {
         </div>
       </div>
 
-      <Handle type="source" position={Position.Right} className="!bg-indigo-600 !w-2.5 !h-2.5 !border-2 !border-white" />
+      <Handle type="source" position={Position.Right} className="!bg-[#1877F2] !w-2.5 !h-2.5 !border-2 !border-white" />
     </div>
   );
 };
@@ -143,7 +143,7 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
       {/* Header Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-slate-200 p-5 rounded-2xl shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="p-3 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-600">
+          <div className="p-3 rounded-xl bg-blue-50 border border-blue-200 text-[#1877F2]">
             <Network className="w-6 h-6" />
           </div>
           <div>
@@ -157,7 +157,7 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
         {/* Legend */}
         <div className="flex items-center gap-4 text-xs">
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-indigo-600 ring-2 ring-indigo-200" />
+            <span className="w-3 h-3 rounded-full bg-[#1877F2] ring-2 ring-blue-200" />
             <span className="text-slate-700 font-medium">Recommended</span>
           </div>
           <div className="flex items-center gap-1.5">
@@ -178,7 +178,7 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
         <div className="lg:col-span-2 h-[520px] bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow-xs relative">
           {loading ? (
             <div className="w-full h-full flex items-center justify-center text-slate-500 text-sm">
-              <Network className="w-8 h-8 animate-pulse text-indigo-600 mb-2" />
+              <Network className="w-8 h-8 animate-pulse text-[#1877F2] mb-2" />
               <span>Building Knowledge Graph...</span>
             </div>
           ) : (
@@ -200,7 +200,7 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
 
           {/* Quick Flow Hint */}
           <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-200 shadow-xs text-[11px] text-slate-600 flex items-center gap-2 pointer-events-none">
-            <Info className="w-3.5 h-3.5 text-indigo-600" />
+            <Info className="w-3.5 h-3.5 text-[#1877F2]" />
             <span>Click any skill node to inspect prerequisites & start practice</span>
           </div>
         </div>
@@ -211,7 +211,7 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
             <div className="space-y-4">
               
               <div>
-                <span className="text-[10px] uppercase font-bold text-indigo-600 tracking-wider">
+                <span className="text-[10px] uppercase font-bold text-[#1877F2] tracking-wider">
                   {selectedSkill.domain}
                 </span>
                 <h3 className="text-2xl font-bold text-slate-900 mt-0.5">{selectedSkill.label}</h3>
@@ -267,11 +267,11 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
               {/* Dependency Relationship Visualizer */}
               <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200 text-xs space-y-2">
                 <div className="font-semibold text-slate-800 flex items-center gap-1.5">
-                  <Layers className="w-3.5 h-3.5 text-indigo-600" />
+                  <Layers className="w-3.5 h-3.5 text-[#1877F2]" />
                   Graph Traversal Logic
                 </div>
                 <p className="text-[11px] text-slate-600 leading-relaxed">
-                  Directed edges represent strict dependencies: <code className="text-indigo-700 font-bold bg-indigo-50 px-1 rounded">A → B</code> means{' '}
+                  Directed edges represent strict dependencies: <code className="text-[#1877F2] font-bold bg-blue-50 px-1 rounded">A → B</code> means{' '}
                   <strong className="text-slate-800">B depends on A</strong>.
                 </p>
               </div>
@@ -288,7 +288,7 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
             <button
               id={`btn-inspect-practice-${selectedSkill.id}`}
               onClick={() => onStartQuizForSkill(selectedSkill.id)}
-              className="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md shadow-indigo-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-3 px-4 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold text-sm shadow-md shadow-[#1877F2]/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <Play className="w-4 h-4 fill-current" />
               <span>Practice {selectedSkill.label} Quiz</span>

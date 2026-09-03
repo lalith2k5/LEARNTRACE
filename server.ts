@@ -7,14 +7,23 @@ import dotenv from 'dotenv';
 import { createServer as createViteServer } from 'vite';
 
 import { store, initializeDatabaseSeed, saveStoreToDisk } from './server/store.js';
+import { 
+  initializeDatabaseConnection, 
+  getDatabaseStatus, 
+  syncUserToDb, 
+  syncAttemptToDb, 
+  syncMasteryToDb, 
+  syncUserGoalToDb,
+  syncQuestionToDb
+} from './server/db.js';
 import { recalculateAllUserMasteries, calculateSkillMasteryForUser, getUserMastery, getInterpretationFromScore, computeBktEstimate } from './server/services/masteryService.js';
 import { getDirectPrerequisites, getFullPrerequisiteChain, getGraphPayload, calculateDownstreamCountInChain } from './server/services/graphService.js';
 import { getPrioritizedRecommendation } from './server/services/recommendationService.js';
 import { generateLearningPath } from './server/services/learningPathService.js';
-import { explainQuestion, generateAdaptiveQuestion } from './server/services/ollamaService.js';
+import { explainQuestion, generateAdaptiveQuestion, generateBankEnrichmentQuestions } from './server/services/ollamaService.js';
 import { gradeOpenEndedResponse } from './server/services/semanticGraderService.js';
-import { generateMultiModelTraceSimulation, computeDktMasterySequence, DEFAULT_BKT_PARAMS } from './server/services/knowledgeTracingService.js';
-import { User, Attempt, UserGoal, CognitiveState } from './src/types.js';
+import { generateMultiModelTraceSimulation, computeDktMasterySequence, DEFAULT_BKT_PARAMS, evaluateEducationalDataset, getSampleBenchmarkDataset } from './server/services/knowledgeTracingService.js';
+import { User, Attempt, UserGoal, CognitiveState, LearningGoal, Question } from './src/types.js';
 
 dotenv.config();
 
@@ -108,7 +117,18 @@ function mountRoute(method: 'get' | 'post' | 'put' | 'patch' | 'delete', pathUrl
 
 // Health check
 mountRoute('get', '/health', (req: Request, res: Response) => {
-  res.json({ status: 'ok', service: 'LearnTrace API', time: new Date().toISOString() });
+  const dbStatus = getDatabaseStatus();
+  res.json({ 
+    status: 'ok', 
+    service: 'LearnTrace API', 
+    time: new Date().toISOString(),
+    database: dbStatus,
+  });
+});
+
+// Database & Deployment Diagnostics
+mountRoute('get', '/database/status', (req: Request, res: Response) => {
+  res.json(getDatabaseStatus());
 });
 
 /* ---------------- AUTHENTICATION ---------------- */
@@ -133,7 +153,7 @@ mountRoute('post', '/auth/register', async (req: Request, res: Response) => {
   }
 
   const cleanEmail = email.trim().toLowerCase();
-  const existingUser = Array.from(store.users.values()).find((u) => u.email.toLowerCase() === cleanEmail);
+  const existingUser = Array.from(store.users.values()).find((u) => u?.email?.toLowerCase() === cleanEmail);
   if (existingUser) {
     res.status(409).json({ 
       error: 'An account with this email address already exists. Please sign in instead.',
@@ -167,6 +187,12 @@ mountRoute('post', '/auth/register', async (req: Request, res: Response) => {
   recalculateAllUserMasteries(newUser.id);
   saveStoreToDisk();
 
+  // Gracefully synchronize with PostgreSQL if active
+  syncUserToDb({ id: newUser.id, email: newUser.email, passwordHash });
+  if (defaultGoal) {
+    syncUserGoalToDb(newUser.id, defaultGoal.id);
+  }
+
   const token = jwt.sign({ id: newUser.id, email: newUser.email }, JWT_SECRET, { expiresIn: '7d' });
 
   res.status(201).json({
@@ -192,7 +218,7 @@ mountRoute('post', '/auth/login', async (req: Request, res: Response) => {
   }
 
   const cleanEmail = email.trim().toLowerCase();
-  const user = Array.from(store.users.values()).find((u) => u.email.toLowerCase() === cleanEmail);
+  const user = Array.from(store.users.values()).find((u) => u?.email?.toLowerCase() === cleanEmail);
   if (!user) {
     res.status(404).json({ 
       error: "Don't have an account? No user is registered with this email. Please register first.",
@@ -248,10 +274,10 @@ mountRoute('put', '/auth/profile', authenticateToken, async (req: AuthenticatedR
   }
 
   // Update email if provided
-  if (email && email.trim() && email.trim().toLowerCase() !== user.email.toLowerCase()) {
+  if (email && email.trim() && email.trim().toLowerCase() !== user.email?.toLowerCase()) {
     const trimmedEmail = email.trim().toLowerCase();
     const existing = Array.from(store.users.values()).find(
-      (u) => u.email.toLowerCase() === trimmedEmail && u.id !== userId
+      (u) => u?.email?.toLowerCase() === trimmedEmail && u.id !== userId
     );
     if (existing) {
       res.status(400).json({ error: 'Email is already taken by another account.' });
@@ -443,6 +469,8 @@ mountRoute('post', '/user-goals', authenticateToken, (req: AuthenticatedRequest,
   };
 
   store.userGoals.set(`${userId}_${goalId}`, userGoal);
+  saveStoreToDisk();
+  syncUserGoalToDb(userId, goalId);
 
   res.json({
     message: `Goal successfully set to "${goal.name}".`,
@@ -478,20 +506,53 @@ mountRoute('get', '/user-goals/current', optionalAuthenticateToken, (req: Authen
 
 /* ---------------- QUESTIONS & ATTEMPTS ---------------- */
 
+mountRoute('get', '/questions/stats', (req: Request, res: Response) => {
+  const allQuestions = Array.from(store.questions.values());
+  const bySkill: Record<string, number> = {};
+  const byDifficulty: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+  const coveredSkills = new Set<string>();
+
+  allQuestions.forEach((q) => {
+    bySkill[q.skillId] = (bySkill[q.skillId] || 0) + 1;
+    const diff = q.difficulty || 1;
+    byDifficulty[diff] = (byDifficulty[diff] || 0) + 1;
+    coveredSkills.add(q.skillId);
+    if (q.skillsTested) {
+      q.skillsTested.forEach((s) => coveredSkills.add(s));
+    }
+  });
+
+  res.json({
+    totalQuestions: allQuestions.length,
+    bySkill,
+    byDifficulty,
+    skillsCovered: coveredSkills.size,
+    totalSkillsInCurriculum: store.skills.size,
+  });
+});
+
 mountRoute('get', '/questions', (req: Request, res: Response) => {
   const skillId = req.query.skill_id as string | undefined;
+  const includeAnswers = req.query.include_answers === 'true';
 
   let questions = Array.from(store.questions.values());
   if (skillId) {
     questions = questions.filter((q) => q.skillId === skillId || (q.skillsTested && q.skillsTested.includes(skillId)));
   }
 
-  const sanitizedQuestions = questions.map(({ correctAnswer, ...rest }) => ({
-    ...rest,
-    skillName: store.skills.get(rest.skillId)?.name || rest.skillId,
-  }));
+  const result = questions.map((q) => {
+    const base = {
+      ...q,
+      skillName: store.skills.get(q.skillId)?.name || q.skillId,
+    };
+    if (!includeAnswers) {
+      const { correctAnswer, ...sanitized } = base;
+      return sanitized;
+    }
+    return base;
+  });
 
-  res.json(sanitizedQuestions);
+  res.json(result);
 });
 
 // POST /attempts (Grades strictly on backend, evaluates cognitive state, propagates multi-skill evidence)
@@ -567,10 +628,16 @@ mountRoute('post', '/attempts', authenticateToken, (req: AuthenticatedRequest, r
   };
 
   store.attempts.push(attempt);
+  saveStoreToDisk();
+  syncAttemptToDb(attempt);
 
   // Update mastery for ALL skills tested in this question
-  skillsTested.forEach((sId) => calculateSkillMasteryForUser(userId, sId));
+  skillsTested.forEach((sId) => {
+    const m = calculateSkillMasteryForUser(userId, sId);
+    syncMasteryToDb(userId, sId, m.masteryScore, m.evidenceCount);
+  });
   const primaryMastery = calculateSkillMasteryForUser(userId, question.skillId);
+  syncMasteryToDb(userId, question.skillId, primaryMastery.masteryScore, primaryMastery.evidenceCount);
 
   res.status(201).json({
     success: true,
@@ -687,6 +754,40 @@ mountRoute('get', '/learning-path', optionalAuthenticateToken, (req: Authenticat
   res.json(pathSteps);
 });
 
+/* ---------------- LEARNING RESOURCES ---------------- */
+
+mountRoute('get', '/resources', optionalAuthenticateToken, (req: AuthenticatedRequest, res: Response) => {
+  const skillId = (req.query.skillId || req.query.skill_id) as string | undefined;
+  const type = req.query.type as string | undefined;
+
+  let allResources = Array.from(store.resources.values());
+
+  if (skillId) {
+    allResources = allResources.filter((r) => r.skillId === skillId);
+  }
+  if (type) {
+    allResources = allResources.filter((r) => r.type === type);
+  }
+
+  res.json(allResources);
+});
+
+mountRoute('get', '/skills/:skillId/resources', optionalAuthenticateToken, (req: AuthenticatedRequest, res: Response) => {
+  const { skillId } = req.params;
+  const resources = Array.from(store.resources.values()).filter((r) => r.skillId === skillId);
+  res.json(resources);
+});
+
+mountRoute('get', '/resources/:resourceId', optionalAuthenticateToken, (req: AuthenticatedRequest, res: Response) => {
+  const { resourceId } = req.params;
+  const resource = store.resources.get(resourceId);
+  if (!resource) {
+    res.status(404).json({ error: 'Resource not found' });
+    return;
+  }
+  res.json(resource);
+});
+
 /* ---------------- AI DIAGNOSTIC EXPLANATIONS & GENERATOR ---------------- */
 
 mountRoute('post', '/ai/explain', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
@@ -743,11 +844,106 @@ mountRoute('post', '/ai/generate-question', authenticateToken, async (req: Authe
   }
 
   store.questions.set(generated.id, generated);
+  saveStoreToDisk();
+  syncQuestionToDb(generated);
 
   const { correctAnswer, ...sanitized } = generated;
   res.status(201).json({
     message: `Generated practice question for ${skill.name}.`,
     question: sanitized,
+  });
+});
+
+mountRoute('post', '/ai/generate-questions-bank', optionalAuthenticateToken, async (req: AuthenticatedRequest, res: Response) => {
+  const { skillId, count, difficulty, cognitiveCategory } = req.body;
+  const requestedCount = Math.min(5, Math.max(1, Number(count) || 2));
+
+  const allSkills = Array.from(store.skills.values());
+  if (allSkills.length === 0) {
+    res.status(500).json({ error: 'No skills found in curriculum to generate questions for.' });
+    return;
+  }
+
+  const generatedQuestions: Question[] = [];
+
+  if (skillId && skillId !== 'all') {
+    const targetSkill = store.skills.get(skillId);
+    if (!targetSkill) {
+      res.status(404).json({ error: `Skill "${skillId}" not found.` });
+      return;
+    }
+    const newItems = await generateBankEnrichmentQuestions({
+      skillId: targetSkill.id,
+      skillName: targetSkill.name,
+      domain: targetSkill.domain,
+      count: requestedCount,
+      difficulty: difficulty ? Number(difficulty) : undefined,
+      cognitiveCategory,
+    });
+    generatedQuestions.push(...newItems);
+  } else {
+    // If 'all', distribute across curriculum skills (prioritizing lowest representation)
+    const skillCounts: Record<string, number> = {};
+    allSkills.forEach((s) => { skillCounts[s.id] = 0; });
+    store.questions.forEach((q) => {
+      if (skillCounts[q.skillId] !== undefined) {
+        skillCounts[q.skillId]++;
+      }
+    });
+
+    const sortedSkills = [...allSkills].sort((a, b) => (skillCounts[a.id] || 0) - (skillCounts[b.id] || 0));
+    
+    for (let i = 0; i < requestedCount; i++) {
+      const targetSkill = sortedSkills[i % sortedSkills.length];
+      const items = await generateBankEnrichmentQuestions({
+        skillId: targetSkill.id,
+        skillName: targetSkill.name,
+        domain: targetSkill.domain,
+        count: 1,
+        difficulty: difficulty ? Number(difficulty) : ((i % 5) + 1),
+        cognitiveCategory,
+      });
+      generatedQuestions.push(...items);
+    }
+  }
+
+  // Store in memory, local disk, and PostgreSQL if connected
+  for (const q of generatedQuestions) {
+    store.questions.set(q.id, q);
+    await syncQuestionToDb(q);
+  }
+  saveStoreToDisk();
+
+  // Compute updated statistics
+  const allQuestions = Array.from(store.questions.values());
+  const bySkill: Record<string, number> = {};
+  const byDifficulty: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+  const coveredSkills = new Set<string>();
+
+  allQuestions.forEach((q) => {
+    bySkill[q.skillId] = (bySkill[q.skillId] || 0) + 1;
+    const diff = q.difficulty || 1;
+    byDifficulty[diff] = (byDifficulty[diff] || 0) + 1;
+    coveredSkills.add(q.skillId);
+    if (q.skillsTested) {
+      q.skillsTested.forEach((s) => coveredSkills.add(s));
+    }
+  });
+
+  const stats = {
+    totalQuestions: allQuestions.length,
+    bySkill,
+    byDifficulty,
+    skillsCovered: coveredSkills.size,
+    totalSkillsInCurriculum: store.skills.size,
+  };
+
+  res.status(201).json({
+    success: true,
+    message: `Generated and added ${generatedQuestions.length} new question(s) to the Question Bank with Gemini.`,
+    generatedQuestions,
+    totalInBank: store.questions.size,
+    stats,
   });
 });
 
@@ -910,10 +1106,115 @@ mountRoute('get', '/research/bkt-compare', optionalAuthenticateToken, (req: Auth
   });
 });
 
+mountRoute('post', '/research/evaluate-dataset', optionalAuthenticateToken, (req: AuthenticatedRequest, res: Response) => {
+  const { datasetName, records, bktParams } = req.body;
+
+  if (!records || !Array.isArray(records) || records.length === 0) {
+    res.status(400).json({ error: 'records array with at least one student-skill interaction is required.' });
+    return;
+  }
+
+  // Sanitize record format
+  const sanitizedRecords = records.map((r: any, idx: number) => ({
+    userId: String(r.userId || r.studentId || `user_${Math.floor(idx / 10)}`),
+    skillId: String(r.skillId || r.skill_id || 'skill_prob'),
+    correct: Boolean(r.correct === 1 || r.correct === true || r.correct === '1' || r.correct === 'true'),
+    confidence: r.confidence ? Number(r.confidence) : 3,
+    timeTakenSeconds: r.timeTakenSeconds ? Number(r.timeTakenSeconds) : 20,
+  }));
+
+  const results = evaluateEducationalDataset(
+    sanitizedRecords,
+    datasetName || 'Custom Educational Benchmark Dataset',
+    bktParams || DEFAULT_BKT_PARAMS
+  );
+
+  res.json(results);
+});
+
+mountRoute('get', '/research/benchmark-samples/:type', (req: Request, res: Response) => {
+  const type = req.params.type as 'assistments' | 'ednet' | 'synthetic';
+  if (!['assistments', 'ednet', 'synthetic'].includes(type)) {
+    res.status(400).json({ error: 'Invalid sample type. Must be assistments, ednet, or synthetic.' });
+    return;
+  }
+
+  const sample = getSampleBenchmarkDataset(type);
+  res.json({
+    type,
+    recordCount: sample.length,
+    records: sample,
+  });
+});
+
+mountRoute('get', '/questions/stats', (req: Request, res: Response) => {
+  const allQuestions = Array.from(store.questions.values());
+  const bySkill: Record<string, number> = {};
+  const byDifficulty: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+
+  allQuestions.forEach((q) => {
+    bySkill[q.skillId] = (bySkill[q.skillId] || 0) + 1;
+    byDifficulty[q.difficulty] = (byDifficulty[q.difficulty] || 0) + 1;
+  });
+
+  res.json({
+    totalQuestions: allQuestions.length,
+    bySkill,
+    byDifficulty,
+    skillsCovered: Object.keys(bySkill).length,
+  });
+});
+
+mountRoute('post', '/goals/custom', optionalAuthenticateToken, (req: AuthenticatedRequest, res: Response) => {
+  const { name, targetSkillId, description } = req.body;
+  const userId = req.user!.id;
+
+  if (!name || !targetSkillId) {
+    res.status(400).json({ error: 'Goal name and targetSkillId are required.' });
+    return;
+  }
+
+  const targetSkill = store.skills.get(targetSkillId);
+  if (!targetSkill) {
+    res.status(404).json({ error: `Target skill ${targetSkillId} does not exist in domain DAG.` });
+    return;
+  }
+
+  const customGoalId = `goal_custom_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`;
+  const newGoal: LearningGoal = {
+    id: customGoalId,
+    name: String(name).trim(),
+    targetSkillId,
+    description: description ? String(description).trim() : `Master prerequisites leading to ${targetSkill.name}.`,
+    targetSkill,
+  };
+
+  store.goals.set(newGoal.id, newGoal);
+
+  // Automatically assign to current user
+  const userGoal: UserGoal = {
+    userId,
+    goalId: customGoalId,
+    selectedAt: new Date().toISOString(),
+    goal: newGoal,
+  };
+
+  store.userGoals.set(`${userId}_${customGoalId}`, userGoal);
+  saveStoreToDisk();
+  syncUserGoalToDb(userId, customGoalId);
+
+  res.status(201).json({
+    success: true,
+    message: 'Custom learning goal created and activated successfully.',
+    goal: newGoal,
+  });
+});
+
 /* ---------------- RESET / SEED DEMO ---------------- */
 
 mountRoute('post', '/reset-demo', async (req: Request, res: Response) => {
   await initializeDatabaseSeed();
+  await initializeDatabaseConnection();
   recalculateAllUserMasteries('user_demo_learner');
   res.json({ message: 'Database and demo state successfully re-seeded to initial diagnostic baseline.' });
 });
@@ -926,6 +1227,7 @@ mountRoute('post', '/reset-demo', async (req: Request, res: Response) => {
 
 async function startServer() {
   await initializeDatabaseSeed();
+  await initializeDatabaseConnection();
   recalculateAllUserMasteries('user_demo_learner');
 
   if (process.env.NODE_ENV !== 'production') {

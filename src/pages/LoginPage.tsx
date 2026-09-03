@@ -77,7 +77,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToRegister, initia
       setErrorCode(null);
       await login(email.trim(), password);
     } catch (err: any) {
-      const code = err.code || (err.message?.toLowerCase().includes('password') ? 'INCORRECT_PASSWORD' : 'USER_NOT_FOUND');
+      const errStr = typeof err?.message === 'string' ? err.message : '';
+      const code = err.code || (errStr.toLowerCase().includes('password') ? 'INCORRECT_PASSWORD' : 'USER_NOT_FOUND');
       setErrorCode(code);
       setErrorMessage(err.message || 'Authentication failed. Please verify your credentials.');
     } finally {
@@ -113,13 +114,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToRegister, initia
     }
   };
 
+  const msgLower = (typeof errorMessage === 'string' ? errorMessage : '').toLowerCase();
   const isUserNotFound = errorCode === 'USER_NOT_FOUND' || 
-    (errorMessage?.toLowerCase().includes("don't have an account") || 
-     errorMessage?.toLowerCase().includes("no user") || 
-     errorMessage?.toLowerCase().includes("no account"));
+    msgLower.includes("don't have an account") || 
+    msgLower.includes("no user") || 
+    msgLower.includes("no account");
 
   const isIncorrectPassword = errorCode === 'INCORRECT_PASSWORD' || 
-    errorMessage?.toLowerCase().includes("incorrect password");
+    msgLower.includes("incorrect password");
 
   return (
     <div className="min-h-[82vh] flex items-center justify-center p-4">
@@ -231,7 +233,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToRegister, initia
               autoComplete="email"
               className={`w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border ${
                 isUserNotFound ? 'border-amber-400 bg-amber-50/30' : 'border-slate-200'
-              } focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 text-slate-900 text-xs outline-none transition-all`}
+              } focus:bg-white focus:border-[#1877F2] focus:ring-2 focus:ring-[#1877F2]/20 text-slate-900 text-xs outline-none transition-all`}
               placeholder="learner@learntrace.ai"
             />
           </div>
@@ -245,7 +247,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToRegister, initia
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="text-[11px] text-indigo-600 hover:text-indigo-700 flex items-center gap-1 cursor-pointer font-medium"
+                className="text-[11px] text-[#1877F2] hover:text-[#166fe5] flex items-center gap-1 cursor-pointer font-medium"
               >
                 {showPassword ? (
                   <>
@@ -275,7 +277,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToRegister, initia
                 autoComplete="current-password"
                 className={`w-full px-3.5 py-2.5 pr-10 rounded-lg bg-slate-50 border ${
                   isIncorrectPassword ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200'
-                } focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 text-slate-900 text-xs outline-none transition-all`}
+                } focus:bg-white focus:border-[#1877F2] focus:ring-2 focus:ring-[#1877F2]/20 text-slate-900 text-xs outline-none transition-all`}
                 placeholder="••••••••"
               />
               <div className="absolute right-3 top-2.5 text-slate-400 pointer-events-none">
@@ -288,7 +290,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToRegister, initia
             id="btn-login-submit"
             type="submit"
             disabled={loading || demoLoading}
-            className="w-full py-2.5 px-4 rounded-lg bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-semibold text-xs shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer mt-2"
+            className="w-full py-2.5 px-4 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] disabled:bg-[#1877F2]/50 text-white font-semibold text-xs shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer mt-2"
           >
             {loading ? (
               <>
@@ -316,16 +318,16 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToRegister, initia
             type="button"
             onClick={handleDemoLogin}
             disabled={loading || demoLoading}
-            className="w-full py-2.5 px-4 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-indigo-700 text-xs font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+            className="w-full py-2.5 px-4 rounded-lg bg-slate-50 hover:bg-slate-100 border border-slate-200 text-[#1877F2] text-xs font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
           >
             {demoLoading ? (
               <>
-                <Cpu className="w-3.5 h-3.5 animate-spin text-indigo-600" />
+                <Cpu className="w-3.5 h-3.5 animate-spin text-[#1877F2]" />
                 <span>Loading Demo Environment...</span>
               </>
             ) : (
               <>
-                <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+                <Sparkles className="w-3.5 h-3.5 text-[#1877F2]" />
                 <span>Launch Demo Learner Session</span>
               </>
             )}
@@ -336,9 +338,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToRegister, initia
             <button
               type="button"
               onClick={handleFillDemoCredentials}
-              className="text-indigo-600 hover:text-indigo-800 font-medium inline-flex items-center gap-1 cursor-pointer bg-indigo-50 hover:bg-indigo-100/80 px-2 py-0.5 rounded transition-colors"
+              className="text-[#1877F2] hover:text-[#166fe5] font-medium inline-flex items-center gap-1 cursor-pointer bg-blue-50 hover:bg-blue-100/80 px-2 py-0.5 rounded transition-colors"
             >
-              <Key className="w-3 h-3 text-indigo-500" />
+              <Key className="w-3 h-3 text-[#1877F2]" />
               <span>Fill Demo Credentials</span>
             </button>
           </div>
@@ -349,11 +351,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onSwitchToRegister, initia
             id="btn-switch-register"
             type="button"
             onClick={() => onSwitchToRegister(email.trim())}
-            className="text-xs text-slate-500 hover:text-indigo-600 transition-colors inline-flex items-center gap-1 cursor-pointer"
+            className="text-xs text-slate-500 hover:text-[#1877F2] transition-colors inline-flex items-center gap-1 cursor-pointer"
           >
             <span>Don't have an account?</span>
-            <strong className="text-indigo-600 underline font-semibold ml-0.5">Register now</strong>
-            <ArrowRight className="w-3 h-3 text-indigo-600" />
+            <strong className="text-[#1877F2] underline font-semibold ml-0.5">Register now</strong>
+            <ArrowRight className="w-3 h-3 text-[#1877F2]" />
           </button>
         </div>
 

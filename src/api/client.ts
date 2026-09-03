@@ -10,6 +10,7 @@ import {
   LearningPathStep,
   AiExplainResponse,
   SkillGap,
+  LearningResource,
 } from '../types';
 
 export class ApiError extends Error {
@@ -183,8 +184,11 @@ class ApiClient {
   }
 
   // Questions & Attempts
-  async getQuestions(skillId?: string): Promise<Question[]> {
-    const query = skillId ? `?skill_id=${encodeURIComponent(skillId)}` : '';
+  async getQuestions(skillId?: string, includeAnswers: boolean = false): Promise<Question[]> {
+    const params = new URLSearchParams();
+    if (skillId) params.append('skill_id', skillId);
+    if (includeAnswers) params.append('include_answers', 'true');
+    const query = params.toString() ? `?${params.toString()}` : '';
     return this.request<Question[]>(`/questions${query}`);
   }
 
@@ -244,6 +248,23 @@ class ApiClient {
     return this.request<LearningPathStep[]>(`/learning-path${query}`);
   }
 
+  // Learning Resources
+  async getResources(skillId?: string, type?: string): Promise<LearningResource[]> {
+    const params = new URLSearchParams();
+    if (skillId) params.append('skillId', skillId);
+    if (type) params.append('type', type);
+    const query = params.toString() ? `?${params.toString()}` : '';
+    return this.request<LearningResource[]>(`/resources${query}`);
+  }
+
+  async getSkillResources(skillId: string): Promise<LearningResource[]> {
+    return this.request<LearningResource[]>(`/skills/${encodeURIComponent(skillId)}/resources`);
+  }
+
+  async getResource(resourceId: string): Promise<LearningResource> {
+    return this.request<LearningResource>(`/resources/${encodeURIComponent(resourceId)}`);
+  }
+
   // AI Diagnostic Explanation & Generation
   async explainQuestion(
     questionId: string,
@@ -261,6 +282,30 @@ class ApiClient {
     return this.request<{ message: string; question: Question }>('/ai/generate-question', {
       method: 'POST',
       body: JSON.stringify({ skillId }),
+    });
+  }
+
+  async enrichQuestionBank(params: {
+    skillId?: string;
+    count?: number;
+    difficulty?: number;
+    cognitiveCategory?: string;
+  }): Promise<{
+    success: boolean;
+    message: string;
+    generatedQuestions: Question[];
+    totalInBank: number;
+    stats: {
+      totalQuestions: number;
+      bySkill: Record<string, number>;
+      byDifficulty: Record<number, number>;
+      skillsCovered: number;
+      totalSkillsInCurriculum: number;
+    };
+  }> {
+    return this.request('/ai/generate-questions-bank', {
+      method: 'POST',
+      body: JSON.stringify(params),
     });
   }
 
@@ -306,6 +351,62 @@ class ApiClient {
     simulationPoints: any[];
   }> {
     return this.request('/research/simulate', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async evaluateDataset(data: {
+    datasetName?: string;
+    records: Array<{
+      userId: string;
+      skillId: string;
+      correct: boolean | number;
+      confidence?: number;
+      timeTakenSeconds?: number;
+    }>;
+    bktParams?: any;
+  }): Promise<{
+    datasetName: string;
+    totalRecords: number;
+    uniqueStudents: number;
+    uniqueSkills: number;
+    metrics: {
+      learnTrace: any;
+      bkt: any;
+      dkt: any;
+    };
+    keyFindings: string[];
+  }> {
+    return this.request('/research/evaluate-dataset', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getBenchmarkSample(type: 'assistments' | 'ednet' | 'synthetic'): Promise<{
+    type: string;
+    recordCount: number;
+    records: any[];
+  }> {
+    return this.request(`/research/benchmark-samples/${type}`);
+  }
+
+  async getQuestionStats(): Promise<{
+    totalQuestions: number;
+    bySkill: Record<string, number>;
+    byDifficulty: Record<number, number>;
+    skillsCovered: number;
+  }> {
+    return this.request('/questions/stats');
+  }
+
+  async createCustomGoal(data: {
+    name: string;
+    targetSkillId: string;
+    description?: string;
+  }): Promise<{ success: boolean; message: string; goal: LearningGoal }> {
+    return this.request('/goals/custom', {
       method: 'POST',
       body: JSON.stringify(data),
     });

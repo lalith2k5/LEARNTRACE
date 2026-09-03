@@ -100,7 +100,8 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onSwitchToLogin, ini
       setErrorCode(null);
       await register(email.trim(), password);
     } catch (err: any) {
-      const code = err.code || (err.message?.toLowerCase().includes('already exists') ? 'USER_EXISTS' : 'REGISTRATION_ERROR');
+      const errStr = typeof err?.message === 'string' ? err.message : '';
+      const code = err.code || (errStr.toLowerCase().includes('already exists') ? 'USER_EXISTS' : 'REGISTRATION_ERROR');
       setErrorCode(code);
       setErrorMessage(err.message || 'Registration failed. Please check details or try another email.');
     } finally {
@@ -108,9 +109,10 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onSwitchToLogin, ini
     }
   };
 
+  const msgLower = (typeof errorMessage === 'string' ? errorMessage : '').toLowerCase();
   const isUserExists = errorCode === 'USER_EXISTS' || 
-    (errorMessage?.toLowerCase().includes('already exists') || 
-     errorMessage?.toLowerCase().includes('already registered'));
+    msgLower.includes('already exists') || 
+    msgLower.includes('already registered');
 
   return (
     <div className="min-h-[82vh] flex items-center justify-center p-4">
@@ -182,7 +184,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onSwitchToLogin, ini
               }}
               required
               autoComplete="email"
-              className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 text-slate-900 text-xs outline-none transition-all"
+              className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:border-[#1877F2] focus:ring-2 focus:ring-[#1877F2]/20 text-slate-900 text-xs outline-none transition-all"
               placeholder="user@example.com"
             />
           </div>
@@ -196,7 +198,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onSwitchToLogin, ini
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="text-[11px] text-indigo-600 hover:text-indigo-700 flex items-center gap-1 cursor-pointer font-medium"
+                className="text-[11px] text-[#1877F2] hover:text-[#166fe5] flex items-center gap-1 cursor-pointer font-medium"
               >
                 {showPassword ? (
                   <>
@@ -221,7 +223,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onSwitchToLogin, ini
               }}
               required
               autoComplete="new-password"
-              className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 text-slate-900 text-xs outline-none transition-all"
+              className="w-full px-3.5 py-2.5 rounded-lg bg-slate-50 border border-slate-200 focus:bg-white focus:border-[#1877F2] focus:ring-2 focus:ring-[#1877F2]/20 text-slate-900 text-xs outline-none transition-all"
               placeholder="Create password (min. 6 characters)"
             />
 
@@ -262,7 +264,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onSwitchToLogin, ini
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="text-[11px] text-indigo-600 hover:text-indigo-700 flex items-center gap-1 cursor-pointer font-medium"
+                className="text-[11px] text-[#1877F2] hover:text-[#166fe5] flex items-center gap-1 cursor-pointer font-medium"
               >
                 {showConfirmPassword ? (
                   <>
@@ -293,7 +295,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onSwitchToLogin, ini
                   : confirmPassword.length > 0 && passwordsMatch
                   ? 'border-emerald-400 bg-emerald-50/20'
                   : 'border-slate-200'
-              } focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 text-slate-900 text-xs outline-none transition-all`}
+              } focus:bg-white focus:border-[#1877F2] focus:ring-2 focus:ring-[#1877F2]/20 text-slate-900 text-xs outline-none transition-all`}
               placeholder="Re-enter password"
             />
             {confirmPassword.length > 0 && (
@@ -315,7 +317,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onSwitchToLogin, ini
             id="btn-register-submit"
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 px-4 rounded-lg bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-semibold text-xs shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer mt-3"
+            className="w-full py-2.5 px-4 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] disabled:bg-[#1877F2]/50 text-white font-semibold text-xs shadow-xs transition-colors flex items-center justify-center gap-2 cursor-pointer mt-3"
           >
             {loading ? (
               <>
@@ -336,11 +338,11 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onSwitchToLogin, ini
             id="btn-switch-login"
             type="button"
             onClick={() => onSwitchToLogin(email.trim())}
-            className="text-xs text-slate-500 hover:text-indigo-600 transition-colors inline-flex items-center gap-1 cursor-pointer"
+            className="text-xs text-slate-500 hover:text-[#1877F2] transition-colors inline-flex items-center gap-1 cursor-pointer"
           >
             <ArrowLeft className="w-3 h-3 text-slate-400" />
             <span>Already have an account?</span>
-            <strong className="text-indigo-600 underline font-semibold ml-0.5">Sign in</strong>
+            <strong className="text-[#1877F2] underline font-semibold ml-0.5">Sign in</strong>
           </button>
         </div>
 

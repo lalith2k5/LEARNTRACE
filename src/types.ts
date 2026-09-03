@@ -36,6 +36,8 @@ export interface QuestionOption {
   text: string;
 }
 
+export type CognitiveCategory = 'Recall' | 'Comprehension' | 'Application' | 'Analysis' | 'Synthesis';
+
 export interface Question {
   id: string;
   skillId: string;
@@ -43,10 +45,12 @@ export interface Question {
   skillsTested?: string[]; // Multi-skill tagging support as per proposal Section 7
   text: string;
   difficulty: number; // 1 to 5
+  cognitiveCategory?: CognitiveCategory;
   options: QuestionOption[];
   questionType: 'MULTIPLE_CHOICE';
   explanation?: string;
   correctAnswer?: string; // Hidden from normal client quiz requests
+  distractorRationales?: Record<string, string>;
 }
 
 export interface QuestionSkill {
@@ -85,7 +89,11 @@ export interface SkillMastery {
   skillId: string;
   skillName?: string;
   domain?: string;
-  masteryScore: number; // 0.0 to 1.0
+  masteryScore: number; // 0.0 to 1.0 (effective retained mastery)
+  rawMasteryScore?: number; // un-decayed historical mastery score
+  retentionRate?: number; // 0.0 to 1.0 (Ebbinghaus memory retention factor)
+  daysSinceLastAttempt?: number; // days elapsed since last practice
+  needsSpacedReview?: boolean; // true if memory retention has decayed below threshold
   interpretation: MasteryInterpretation;
   evidenceCount: number;
   lastUpdated: string;
@@ -129,6 +137,31 @@ export interface SkillGap {
   prerequisiteCount: number;
   downstreamCount: number;
   unmetPrerequisites?: string[];
+}
+
+export type ResourceType = 'guide' | 'documentation' | 'practice';
+
+export interface PracticeExercise {
+  prompt: string;
+  codeSnippet?: string;
+  hint?: string;
+  solution?: string;
+  solutionExplanation?: string;
+}
+
+export interface LearningResource {
+  id: string;
+  skillId: string;
+  skillName?: string;
+  title: string;
+  type: ResourceType; // 'guide' | 'documentation' | 'practice'
+  description: string;
+  url?: string;
+  readTimeMinutes?: number;
+  difficulty?: 'Beginner' | 'Intermediate' | 'Advanced';
+  keyConcepts?: string[];
+  contentSummary?: string;
+  practiceExercise?: PracticeExercise;
 }
 
 export interface GraphNodeData {

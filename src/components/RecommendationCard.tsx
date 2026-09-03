@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, CheckCircle2, RotateCcw, Sparkles } from 'lucide-react';
+import { ArrowRight, CheckCircle2, RotateCcw, Sparkles, BookOpen } from 'lucide-react';
 import { Recommendation } from '../types';
 
 interface RecommendationCardProps {
@@ -7,6 +7,7 @@ interface RecommendationCardProps {
   loading: boolean;
   message?: string;
   onStartQuizForSkill: (skillId: string) => void;
+  onStartLearningGap?: (skillId: string) => void;
   onRecalculateMastery: () => void;
   recalculating?: boolean;
 }
@@ -16,6 +17,7 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
   loading,
   message,
   onStartQuizForSkill,
+  onStartLearningGap,
   onRecalculateMastery,
   recalculating = false,
 }) => {
@@ -46,7 +48,7 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
               <button
                 onClick={onRecalculateMastery}
                 disabled={recalculating}
-                className="text-xs text-indigo-600 hover:text-indigo-700 font-semibold inline-flex items-center gap-1.5 cursor-pointer"
+                className="text-xs text-[#1877F2] hover:text-[#166fe5] font-semibold inline-flex items-center gap-1.5 cursor-pointer"
               >
                 <RotateCcw className={`w-3.5 h-3.5 ${recalculating ? 'animate-spin' : ''}`} />
                 <span>Recalculate Mastery</span>
@@ -68,8 +70,8 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
         <div className="space-y-3.5 max-w-3xl">
           
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-100">
-              <Sparkles className="w-3 h-3 text-indigo-600" />
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-blue-50 text-[#1877F2] border border-blue-100">
+              <Sparkles className="w-3 h-3 text-[#1877F2]" />
               Recommended Focus
             </span>
 
@@ -114,11 +116,22 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
           <button
             id="btn-start-recommended-quiz"
             onClick={() => onStartQuizForSkill(recommendation.skillId)}
-            className="w-full py-2.5 px-4 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
+            className="w-full py-2.5 px-4 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
           >
             <span>Practice {recommendation.skillName}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
+
+          {onStartLearningGap && (
+            <button
+              id="btn-rec-start-learning-gap"
+              onClick={() => onStartLearningGap(recommendation.skillId)}
+              className="w-full py-2 px-3 rounded-lg text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200/80 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <BookOpen className="w-3.5 h-3.5 text-amber-600" />
+              <span>Start Learning Gap</span>
+            </button>
+          )}
 
           <button
             id="btn-recalculate-dashboard"
@@ -126,7 +139,7 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
             disabled={recalculating}
             className="w-full py-2 px-3 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-200 text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
           >
-            <RotateCcw className={`w-3.5 h-3.5 ${recalculating ? 'animate-spin text-indigo-600' : 'text-slate-400'}`} />
+            <RotateCcw className={`w-3.5 h-3.5 ${recalculating ? 'animate-spin text-[#1877F2]' : 'text-slate-400'}`} />
             <span>{recalculating ? 'Recalculating...' : 'Recalculate'}</span>
           </button>
         </div>

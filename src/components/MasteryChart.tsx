@@ -11,7 +11,7 @@ import {
   Cell,
 } from 'recharts';
 import { SkillMastery } from '../types';
-import { BarChart3, Info } from 'lucide-react';
+import { BarChart3, Info, Clock, RefreshCw, AlertTriangle } from 'lucide-react';
 
 interface MasteryChartProps {
   masteries: SkillMastery[];
@@ -19,33 +19,68 @@ interface MasteryChartProps {
 }
 
 export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectSkill }) => {
-  const chartData = masteries.map((m) => {
+  const chartData不易 = masteries.map((m) => {
     const score = Math.round(m.masteryScore * 100);
+    const rawScore = m.rawMasteryScore !== undefined ? Math.round(m.rawMasteryScore * 100) : score;
+    const retention = m.retentionRate !== undefined ? Math.round(m.retentionRate * 100) : 100;
+
     return {
       skillId: m.skillId,
       name: m.skillName || m.skillId,
       mastery: score,
-      rawScore: m.masteryScore,
+      rawMastery: rawScore,
+      retention,
+      daysSince: m.daysSinceLastAttempt || 0,
+      needsReview: Boolean(m.needsSpacedReview),
       evidenceCount: m.evidenceCount,
       domain: m.domain || 'Data Science',
       isMastered: m.masteryScore >= 0.6,
     };
   });
 
+  const spacedReviewCount = chartData不易.filter((d) => d.needsReview).length;
+
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-white border border-slate-200 p-3 rounded-lg shadow-md text-xs space-y-1 z-50 font-sans">
+        <div className="bg-white border border-slate-200 p-3 rounded-lg shadow-md text-xs space-y-1.5 z-50 font-sans max-w-xs">
           <div className="font-bold text-slate-900">{data.name}</div>
           <div className="text-slate-500">Domain: <span className="text-slate-700 font-medium">{data.domain}</span></div>
-          <div className="flex items-center gap-2 pt-1 border-t border-slate-100">
-            <span className="text-slate-500">Mastery:</span>
-            <span className={`font-bold ${data.isMastered ? 'text-emerald-600' : 'text-amber-600'}`}>
-              {data.mastery}% {data.isMastered ? '(Mastered)' : '(Skill Gap)'}
-            </span>
+          
+          <div className="pt-1.5 border-t border-slate-100 space-y-1">
+            <div className="flex items-center justify-between">
+              <span className="text-slate-500">Effective Retained Mastery:</span>
+              <span className={`font-bold ${data.isMastered ? 'text-emerald-600' : 'text-amber-600'}`}>
+                {data.mastery}% {data.isMastered ? '(Mastered)' : '(Skill Gap)'}
+              </span>
+            </div>
+            <div className="flex items-center justify-between text-[11px] text-slate-500">
+              <span>Historical Raw Score:</span>
+              <span className="font-semibold text-slate-700">{data.rawMastery}%</span>
+            </div>
+            <div className="flex items-center justify-between text-[11px] text-slate-500">
+              <span>Ebbinghaus Memory Retention:</span>
+              <span className={`font-semibold ${data.retention >= 85 ? 'text-emerald-600' : 'text-amber-600'}`}>
+                {data.retention}%
+              </span>
+            </div>
+            {data.daysSince > 0 && (
+              <div className="flex items-center justify-between text-[10px] text-slate-400">
+                <span>Last practiced:</span>
+                <span>{data.daysSince} days ago</span>
+              </div>
+            )}
           </div>
-          <div className="text-slate-400 text-[10px]">
+
+          {data.needsReview && (
+            <div className="mt-1.5 p-1.5 rounded bg-amber-50 border border-amber-200 text-amber-800 text-[10px] flex items-center gap-1 font-medium">
+              <RefreshCw className="w-3 h-3 text-amber-600 animate-spin" />
+              Spaced repetition review recommended to consolidate retention
+            </div>
+          )}
+
+          <div className="text-slate-400 text-[10px] pt-1">
             {data.evidenceCount} assessment attempts logged
           </div>
         </div>
@@ -60,8 +95,16 @@ export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectS
       {/* Header */}
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <div>
-          <h3 className="font-bold text-sm text-slate-900">Skill Mastery Distribution</h3>
-          <p className="text-xs text-slate-400">Current knowledge tracing levels across curriculum</p>
+          <div className="flex items-center gap-2">
+            <h3 className="font-bold text-sm text-slate-900">Skill Mastery & Memory Retention</h3>
+            {spacedReviewCount > 0 && (
+              <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200">
+                <RefreshCw className="w-3 h-3 text-amber-600" />
+                {spacedReviewCount} Needs Spaced Review
+              </span>
+            )}
+          </div>
+          <p className="text-xs text-slate-400">Time-decayed Ebbinghaus retention model with recency weighting</p>
         </div>
 
         {/* Legend */}
@@ -72,7 +115,7 @@ export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectS
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block" />
-            <span className="text-slate-600 text-[11px]">Gap (&lt;60%)</span>
+            <span className="text-slate-600 text-[11px]">Gap / Decayed (&lt;60%)</span>
           </div>
         </div>
       </div>
@@ -81,7 +124,7 @@ export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectS
       <div className="h-60 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
-            data={chartData}
+            data={chartData不易}
             margin={{ top: 15, right: 10, left: -15, bottom: 20 }}
             onClick={(state: any) => {
               if (state && state.activePayload && state.activePayload.length) {
@@ -128,10 +171,10 @@ export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectS
             />
 
             <Bar dataKey="mastery" radius={[4, 4, 0, 0]} maxBarSize={40} className="cursor-pointer">
-              {chartData.map((entry, index) => (
+              {chartData不易.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={entry.isMastered ? '#10b981' : '#f59e0b'}
+                  fill={entry.isMastered ? (entry.needsReview ? '#f59e0b' : '#10b981') : '#f59e0b'}
                   className="hover:opacity-85 transition-opacity"
                 />
               ))}
@@ -142,9 +185,10 @@ export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectS
 
       <div className="mt-2 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
         <span>Click any bar to start practice</span>
-        <span>Recency-weighted confidence scoring</span>
+        <span>Ebbinghaus Half-life Stability S(t) = S₀ · (1 + 0.25N)</span>
       </div>
 
     </div>
   );
 };
+

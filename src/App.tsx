@@ -32,7 +32,7 @@ function AppContent() {
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center text-slate-600 space-y-3">
-        <Cpu className="w-10 h-10 animate-spin text-indigo-600" />
+        <Cpu className="w-10 h-10 animate-spin text-[#1877F2]" />
         <p className="text-sm font-semibold tracking-wide">Starting LearnTrace Knowledge Engine...</p>
       </div>
     );

@@ -1,7 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import bcrypt from 'bcryptjs';
-import { User, Skill, SkillPrerequisite, LearningGoal, UserGoal, Question, Attempt, SkillMastery, Recommendation } from '../src/types.js';
+import { User, Skill, SkillPrerequisite, LearningGoal, UserGoal, Question, Attempt, SkillMastery, Recommendation, LearningResource } from '../src/types.js';
+import { COMPREHENSIVE_QUESTION_BANK } from './data/questionBank.js';
+import { SEED_LEARNING_RESOURCES } from './data/learningResources.js';
 
 export interface DatabaseStore {
   users: Map<string, User & { passwordHash: string }>;
@@ -10,6 +12,7 @@ export interface DatabaseStore {
   goals: Map<string, LearningGoal>;
   userGoals: Map<string, UserGoal>; // key: `${userId}_${goalId}`
   questions: Map<string, Question>;
+  resources: Map<string, LearningResource>;
   attempts: Attempt[];
   masteries: Map<string, SkillMastery>; // key: `${userId}_${skillId}`
   recommendations: Recommendation[];
@@ -22,6 +25,7 @@ export const store: DatabaseStore = {
   goals: new Map(),
   userGoals: new Map(),
   questions: new Map(),
+  resources: new Map(),
   attempts: [],
   masteries: new Map(),
   recommendations: [],
@@ -63,6 +67,27 @@ export function loadStoreFromDisk(): boolean {
             store.questions.set(qId, q);
           }
         }
+        // Always ensure comprehensive question bank is fully loaded with latest cognitive fields
+        for (const q of COMPREHENSIVE_QUESTION_BANK) {
+          store.questions.set(q.id, {
+            id: q.id,
+            skillId: q.skillId,
+            skillName: q.skillName,
+            skillsTested: q.skillsTested,
+            difficulty: q.difficulty,
+            cognitiveCategory: q.cognitiveCategory,
+            questionType: 'MULTIPLE_CHOICE',
+            text: q.text,
+            options: q.options,
+            correctAnswer: q.correctAnswer,
+            distractorRationales: q.distractorRationales,
+            explanation: q.explanation,
+          });
+        }
+        // Always ensure learning resources repository is loaded
+        for (const res of SEED_LEARNING_RESOURCES) {
+          store.resources.set(res.id, res);
+        }
         store.attempts = parsed.attempts || [];
         store.masteries = new Map(parsed.masteries || []);
         return true;
@@ -80,6 +105,12 @@ export async function initializeDatabaseSeed(forceReset = false) {
   store.prerequisites = [];
   store.goals.clear();
   store.questions.clear();
+  store.resources.clear();
+
+  // Load curated learning resources
+  for (const res of SEED_LEARNING_RESOURCES) {
+    store.resources.set(res.id, res);
+  }
 
   // 1. Skills (8-node DAG Matching Proposal Section 1, 2, 6 & Domain Map)
   const skillsData: Skill[] = [
@@ -624,6 +655,24 @@ export async function initializeDatabaseSeed(forceReset = false) {
 
   for (const q of questionsData) {
     store.questions.set(q.id, q);
+  }
+
+  // Load and register all items from comprehensive question repository
+  for (const q of COMPREHENSIVE_QUESTION_BANK) {
+    store.questions.set(q.id, {
+      id: q.id,
+      skillId: q.skillId,
+      skillName: q.skillName,
+      skillsTested: q.skillsTested,
+      difficulty: q.difficulty,
+      cognitiveCategory: q.cognitiveCategory,
+      questionType: 'MULTIPLE_CHOICE',
+      text: q.text,
+      options: q.options,
+      correctAnswer: q.correctAnswer,
+      distractorRationales: q.distractorRationales,
+      explanation: q.explanation,
+    });
   }
 
   // 5. Default Demo User

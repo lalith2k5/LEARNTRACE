@@ -24,6 +24,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   const [recentAttempts, setRecentAttempts] = useState<Attempt[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [recalculating, setRecalculating] = useState<boolean>(false);
+  const [activeGapSkillId, setActiveGapSkillId] = useState<string | null>(null);
 
   const loadDashboardData = useCallback(async () => {
     try {
@@ -78,7 +79,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs">
           <div className="flex items-center justify-between text-slate-400 mb-1">
             <span className="text-xs font-medium text-slate-500">Curriculum Goal</span>
-            <Target className="w-4 h-4 text-indigo-500" />
+            <Target className="w-4 h-4 text-[#1877F2]" />
           </div>
           <div className="text-sm font-bold text-slate-900 truncate">
             {currentGoal?.goal?.name || 'Machine Learning'}
@@ -100,7 +101,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs">
           <div className="flex items-center justify-between text-slate-400 mb-1">
             <span className="text-xs font-medium text-slate-500">Average Mastery</span>
-            <BookOpen className="w-4 h-4 text-indigo-500" />
+            <BookOpen className="w-4 h-4 text-[#1877F2]" />
           </div>
           <div className="text-xl font-bold text-slate-900">
             {avgMastery}%
@@ -128,6 +129,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           loading={loading}
           message={recMessage}
           onStartQuizForSkill={onStartQuizForSkill}
+          onStartLearningGap={(skillId) => setActiveGapSkillId(skillId)}
           onRecalculateMastery={handleRecalculate}
           recalculating={recalculating}
         />
@@ -144,6 +146,8 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           pathSteps={learningPath}
           goalName={currentGoal?.goal?.name || 'Machine Learning Engineer'}
           onSelectSkill={onStartQuizForSkill}
+          activeGapSkillId={activeGapSkillId}
+          onCloseGapModal={() => setActiveGapSkillId(null)}
         />
       </section>
 
@@ -158,7 +162,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           <button
             onClick={handleRecalculate}
             disabled={recalculating}
-            className="text-xs text-indigo-600 hover:text-indigo-700 font-medium inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+            className="text-xs text-[#1877F2] hover:text-[#166fe5] font-medium inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
           >
             <RotateCcw className={`w-3.5 h-3.5 ${recalculating ? 'animate-spin' : ''}`} />
             <span>Recalculate</span>
@@ -202,7 +206,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
                     {attempt.timeTakenSeconds}s
                   </span>
                   <span className="flex items-center gap-1 text-slate-500 font-medium">
-                    <ShieldCheck className="w-3 h-3 text-indigo-500" />
+                    <ShieldCheck className="w-3 h-3 text-[#1877F2]" />
                     Conf: {attempt.confidence}/5
                   </span>
                 </div>
