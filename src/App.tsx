@@ -6,8 +6,6 @@ import { DashboardPage } from './pages/DashboardPage';
 import { SkillGraphView } from './components/SkillGraphView';
 import { QuizAssessment } from './components/QuizAssessment';
 import { GoalSelector } from './components/GoalSelector';
-import { ResearchBenchmarkView } from './components/ResearchBenchmarkView';
-import { CodeExplorer } from './components/CodeExplorer';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { Cpu } from 'lucide-react';
@@ -157,30 +155,6 @@ function AppContent() {
               />
             </motion.div>
           )}
-
-          {activeTab === 'research' && (
-            <motion.div
-              key={`research_${refreshTrigger}`}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.18, ease: 'easeOut' }}
-            >
-              <ResearchBenchmarkView />
-            </motion.div>
-          )}
-
-          {activeTab === 'architecture' && (
-            <motion.div
-              key="architecture"
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.18, ease: 'easeOut' }}
-            >
-              <CodeExplorer />
-            </motion.div>
-          )}
         </AnimatePresence>
       </main>
 
@@ -192,9 +166,17 @@ function AppContent() {
             <span className="text-slate-400">•</span>
             <span className="text-slate-600">Cognitive Knowledge Graph & Adaptive Mastery Platform</span>
           </div>
-          <span className="text-[11px] text-slate-400">
-            Node.js & Express • Prisma ORM • React & React Flow • Recharts • Bayesian KT Sandbox
-          </span>
+          <div className="flex items-center gap-3 text-[11px] text-slate-400">
+            <span>Node.js & Express • React • Bayesian KT Engine</span>
+            <span className="text-slate-300">|</span>
+            <button
+              id="btn-footer-toggle-research"
+              onClick={() => setActiveTab(activeTab === 'research' ? 'dashboard' : 'research')}
+              className="text-slate-500 hover:text-[#1877F2] font-medium underline cursor-pointer transition-colors"
+            >
+              {activeTab === 'research' ? '← Back to Learner Dashboard' : 'Model Evaluation & BKT Sandbox'}
+            </button>
+          </div>
         </div>
       </footer>
     </div>

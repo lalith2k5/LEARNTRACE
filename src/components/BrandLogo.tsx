@@ -49,7 +49,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
             <span className="text-[#1877F2] font-black tracking-normal">TRACE</span>
           </div>
           {subtitle && (
-            <p className={`${subtitleSizes} text-slate-500 font-medium tracking-tight mt-1.5 leading-tight`}>
+            <p className={`${subtitleSizes} text-slate-500 font-medium tracking-tight mt-1.5 leading-tight hidden sm:block truncate max-w-[260px] md:max-w-sm lg:max-w-md`}>
               {subtitle}
             </p>
           )}

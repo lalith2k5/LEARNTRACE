@@ -837,9 +837,24 @@ mountRoute('post', '/ai/generate-question', authenticateToken, async (req: Authe
     return;
   }
 
-  const generated = await generateAdaptiveQuestion(skill.id, skill.name, skill.domain);
+  let generated = await generateAdaptiveQuestion(skill.id, skill.name, skill.domain);
   if (!generated) {
-    res.status(503).json({ error: 'Unable to generate dynamic question. Please practice with existing questions.' });
+    const bank = await generateBankEnrichmentQuestions({ skillId: skill.id, skillName: skill.name, domain: skill.domain, count: 1 });
+    generated = bank[0] || null;
+  }
+
+  if (!generated) {
+    // Return existing question if any
+    const existing = Array.from(store.questions.values()).find((q) => q.skillId === skill.id);
+    if (existing) {
+      const { correctAnswer, ...sanitized } = existing;
+      res.status(200).json({
+        message: `Loaded existing diagnostic question for ${skill.name}.`,
+        question: sanitized,
+      });
+      return;
+    }
+    res.status(503).json({ error: 'Unable to synthesize question at this time. Please try another skill.' });
     return;
   }
 

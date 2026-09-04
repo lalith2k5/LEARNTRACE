@@ -149,7 +149,7 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
           <div>
             <h2 className="text-xl font-bold text-slate-900">Prerequisite Knowledge Graph</h2>
             <p className="text-xs text-slate-500">
-              Interactive topological directed acyclic graph (DAG) modeling prerequisite relationships.
+              Interactive visual skill map showing prerequisite relationships and foundational concept blockers.
             </p>
           </div>
         </div>
@@ -268,11 +268,11 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
               <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200 text-xs space-y-2">
                 <div className="font-semibold text-slate-800 flex items-center gap-1.5">
                   <Layers className="w-3.5 h-3.5 text-[#1877F2]" />
-                  Graph Traversal Logic
+                  Prerequisite Learning Flow
                 </div>
                 <p className="text-[11px] text-slate-600 leading-relaxed">
-                  Directed edges represent strict dependencies: <code className="text-[#1877F2] font-bold bg-blue-50 px-1 rounded">A → B</code> means{' '}
-                  <strong className="text-slate-800">B depends on A</strong>.
+                  Arrows indicate sequence: <code className="text-[#1877F2] font-bold bg-blue-50 px-1 rounded">A → B</code> means{' '}
+                  <strong className="text-slate-800">Topic A is foundational</strong>. Mastering A unlocks and prepares you for B.
                 </p>
               </div>
 

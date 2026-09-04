@@ -1,5 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import { CognitiveState, OpenEndedEvaluationResponse } from '../../src/types.js';
+import { callGeminiWithFallback } from './ollamaService.js';
 
 let genAIClient: GoogleGenAI | null = null;
 
@@ -62,43 +63,47 @@ Student Self-Reported Confidence (1-5): ${selfConfidence}
 
 Evaluate the response accurately and output JSON only.`;
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: userPrompt,
-        config: {
-          systemInstruction,
-          responseMimeType: 'application/json',
-          temperature: 0.2,
-        },
+      const response = await callGeminiWithFallback(async (model, aiClient) => {
+        return await aiClient.models.generateContent({
+          model,
+          contents: userPrompt,
+          config: {
+            systemInstruction,
+            responseMimeType: 'application/json',
+            temperature: 0.2,
+          },
+        });
       });
 
-      const responseText = response.text || '';
-      const parsed = JSON.parse(responseText);
+      const responseText = response?.text || '';
+      if (responseText) {
+        const parsed = JSON.parse(responseText);
 
-      const score = Math.max(0.0, Math.min(1.0, Number(parsed.score) || 0.0));
-      const isCorrect = score >= 0.65;
+        const score = Math.max(0.0, Math.min(1.0, Number(parsed.score) || 0.0));
+        const isCorrect = score >= 0.65;
 
-      let cognitiveState: CognitiveState = 'NORMAL_MASTERY';
-      if (!isCorrect) {
-        cognitiveState = selfConfidence >= 4 ? 'CONFIDENT_MISCONCEPTION' : 'UNCERTAIN_MISTAKE';
-      } else {
-        if (selfConfidence <= 2) {
-          cognitiveState = 'FRAGILE_KNOWLEDGE';
-        } else if (selfConfidence >= 4 && score >= 0.85) {
-          cognitiveState = 'SOLID_MASTERY';
+        let cognitiveState: CognitiveState = 'NORMAL_MASTERY';
+        if (!isCorrect) {
+          cognitiveState = selfConfidence >= 4 ? 'CONFIDENT_MISCONCEPTION' : 'UNCERTAIN_MISTAKE';
+        } else {
+          if (selfConfidence <= 2) {
+            cognitiveState = 'FRAGILE_KNOWLEDGE';
+          } else if (selfConfidence >= 4 && score >= 0.85) {
+            cognitiveState = 'SOLID_MASTERY';
+          }
         }
-      }
 
-      return {
-        score: Math.round(score * 100) / 100,
-        grade: parsed.grade || (score >= 0.85 ? 'EXEMPLARY' : score >= 0.65 ? 'PROFICIENT' : score >= 0.4 ? 'DEVELOPING' : 'INCORRECT'),
-        feedback: parsed.feedback || 'Good attempt. Continue refining key terminology.',
-        conceptsIdentified: Array.isArray(parsed.conceptsIdentified) ? parsed.conceptsIdentified : [],
-        conceptsMissed: Array.isArray(parsed.conceptsMissed) ? parsed.conceptsMissed : [],
-        misconceptionsDetected: Array.isArray(parsed.misconceptionsDetected) ? parsed.misconceptionsDetected : [],
-        cognitiveState,
-        suggestedAction: parsed.suggestedAction || `Review the prerequisite concepts for ${skillName}.`,
-      };
+        return {
+          score: Math.round(score * 100) / 100,
+          grade: parsed.grade || (score >= 0.85 ? 'EXEMPLARY' : score >= 0.65 ? 'PROFICIENT' : score >= 0.4 ? 'DEVELOPING' : 'INCORRECT'),
+          feedback: parsed.feedback || 'Good attempt. Continue refining key terminology.',
+          conceptsIdentified: Array.isArray(parsed.conceptsIdentified) ? parsed.conceptsIdentified : [],
+          conceptsMissed: Array.isArray(parsed.conceptsMissed) ? parsed.conceptsMissed : [],
+          misconceptionsDetected: Array.isArray(parsed.misconceptionsDetected) ? parsed.misconceptionsDetected : [],
+          cognitiveState,
+          suggestedAction: parsed.suggestedAction || `Review the prerequisite concepts for ${skillName}.`,
+        };
+      }
     } catch (err) {
       console.warn('Gemini semantic grading error, using robust algorithmic fallback:', err);
     }

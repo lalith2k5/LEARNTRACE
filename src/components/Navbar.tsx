@@ -4,8 +4,6 @@ import {
   Network, 
   GraduationCap, 
   Target, 
-  FlaskConical, 
-  Code2, 
   LogOut, 
   Menu,
   X,
@@ -21,7 +19,7 @@ import { useAuth } from '../context/AuthContext';
 import { ProfileModal } from './ProfileModal';
 import { BrandLogo } from './BrandLogo';
 
-export type NavTab = 'dashboard' | 'graph' | 'quiz' | 'goals' | 'research' | 'architecture';
+export type NavTab = 'dashboard' | 'graph' | 'quiz' | 'goals';
 
 interface NavbarProps {
   activeTab: NavTab;
@@ -46,15 +44,15 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onRefre
     { 
       id: 'dashboard', 
       label: 'Dashboard', 
-      shortLabel: 'Overview',
+      shortLabel: 'Dashboard',
       description: 'Mastery overview & recommendations', 
       icon: LayoutDashboard 
     },
     { 
       id: 'graph', 
       label: 'Knowledge Graph', 
-      shortLabel: 'DAG Graph',
-      description: 'Topological DAG & dependency map', 
+      shortLabel: 'Graph',
+      description: 'Skill map & prerequisite dependency chains', 
       icon: Network 
     },
     { 
@@ -71,21 +69,6 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onRefre
       shortLabel: 'Goals',
       description: 'Target milestones & prerequisite chains', 
       icon: Target 
-    },
-    { 
-      id: 'research', 
-      label: 'BKT & Model Benchmark', 
-      shortLabel: 'Benchmark',
-      description: 'Bayesian vs Deep KT simulation sandbox', 
-      icon: FlaskConical,
-      badge: 'BKT'
-    },
-    { 
-      id: 'architecture', 
-      label: 'System Architecture', 
-      shortLabel: 'Code & Schema',
-      description: 'Prisma schema & algorithms inspector', 
-      icon: Code2 
     },
   ];
 

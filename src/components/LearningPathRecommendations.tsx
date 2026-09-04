@@ -90,10 +90,10 @@ export const LearningPathRecommendations: React.FC<LearningPathRecommendationsPr
   const practiceResource = resources.find((r) => r.type === 'practice');
 
   return (
-    <div className="w-full bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-2xs flex flex-col justify-between">
+    <div className="w-full bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-2xs flex flex-col justify-between min-w-0 overflow-hidden">
       {/* Sequence Header */}
       <div>
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
           <div>
             <div className="flex items-center gap-2">
               <h3 className="font-bold text-sm text-slate-900">Learning Path Recommendations</h3>
@@ -103,7 +103,7 @@ export const LearningPathRecommendations: React.FC<LearningPathRecommendationsPr
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-0.5">
-              Knowledge DAG sequence toward <strong className="text-slate-700 font-medium">{goalName}</strong>
+              Personalized prerequisite sequence toward <strong className="text-slate-700 font-medium">{goalName}</strong>
             </p>
           </div>
 
@@ -132,14 +132,14 @@ export const LearningPathRecommendations: React.FC<LearningPathRecommendationsPr
               return (
                 <div
                   key={step.skillId}
-                  className={`flex flex-col sm:flex-row sm:items-center justify-between p-3.5 rounded-lg border gap-3 transition-all ${
+                  className={`flex flex-col xl:flex-row xl:items-center justify-between p-3.5 rounded-lg border gap-3 transition-all min-w-0 overflow-hidden ${
                     isFirst
                       ? 'bg-blue-50/40 border-blue-200 shadow-2xs'
                       : 'bg-slate-50/50 border-slate-200/80 hover:border-slate-300'
                   }`}
                 >
                   {/* Step Left Info */}
-                  <div className="flex items-start sm:items-center gap-3">
+                  <div className="flex items-start sm:items-center gap-2.5 min-w-0 flex-1">
                     <div
                       className={`w-7 h-7 rounded-md flex items-center justify-center font-mono font-bold text-xs shrink-0 mt-0.5 sm:mt-0 ${
                         isFirst
@@ -150,27 +150,29 @@ export const LearningPathRecommendations: React.FC<LearningPathRecommendationsPr
                       {step.order}
                     </div>
 
-                    <div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="font-bold text-xs text-slate-900">{step.skillName}</span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        <span className="font-bold text-xs text-slate-900 truncate max-w-full" title={step.skillName}>
+                          {step.skillName}
+                        </span>
                         {isFirst && (
-                          <span className="text-[10px] font-semibold text-[#1877F2] bg-blue-100/80 px-1.5 py-0.5 rounded">
+                          <span className="text-[10px] font-semibold text-[#1877F2] bg-blue-100/80 px-1.5 py-0.5 rounded shrink-0">
                             Next Focus
                           </span>
                         )}
                         {isGap && (
-                          <span className="text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-200/60 px-1.5 py-0.5 rounded">
+                          <span className="text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-200/60 px-1.5 py-0.5 rounded shrink-0">
                             Skill Gap
                           </span>
                         )}
                       </div>
 
-                      <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-500">
-                        <span>{step.domain}</span>
+                      <div className="flex items-center gap-1.5 mt-1 text-[11px] text-slate-500 overflow-hidden">
+                        <span className="shrink-0">{step.domain}</span>
                         {step.prerequisites && step.prerequisites.length > 0 && (
                           <>
-                            <span className="text-slate-300">•</span>
-                            <span className="truncate max-w-[200px] text-slate-400">
+                            <span className="text-slate-300 shrink-0">•</span>
+                            <span className="truncate text-slate-400">
                               Requires: {step.prerequisites.join(', ')}
                             </span>
                           </>
@@ -180,9 +182,9 @@ export const LearningPathRecommendations: React.FC<LearningPathRecommendationsPr
                   </div>
 
                   {/* Step Right Actions & Mastery */}
-                  <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0 pt-1 sm:pt-0 border-t sm:border-t-0 border-slate-200/60">
-                    <div className="text-right">
-                      <div className="flex items-center gap-1.5 sm:justify-end">
+                  <div className="flex items-center justify-between xl:justify-end gap-2.5 shrink-0 pt-2 xl:pt-0 border-t xl:border-t-0 border-slate-200/60">
+                    <div className="text-right shrink-0">
+                      <div className="flex items-center gap-1.5 xl:justify-end">
                         <span className={`text-xs font-bold font-mono ${interp.color}`}>
                           {masteryPct}%
                         </span>
@@ -193,31 +195,30 @@ export const LearningPathRecommendations: React.FC<LearningPathRecommendationsPr
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-1.5">
+                    <div className="flex items-center gap-1.5 shrink-0">
                       {/* Start Learning Gap Button */}
                       <button
                         id={`btn-learning-gap-${step.skillId}`}
                         onClick={() => handleOpenGap(step)}
                         title="Read concept guide and practice exercises before taking re-test"
-                        className="px-2.5 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200/80"
+                        className="px-2.5 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200/80 shrink-0"
                       >
-                        <BookOpen className="w-3.5 h-3.5 text-amber-600" />
-                        <span className="hidden sm:inline">Start Learning Gap</span>
-                        <span className="sm:hidden">Gap Guide</span>
+                        <BookOpen className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                        <span className="whitespace-nowrap">Learning Gap</span>
                       </button>
 
                       {/* Immediate Practice / Re-Test Button */}
                       <button
                         id={`btn-path-practice-${step.skillId}`}
                         onClick={() => onSelectSkill(step.skillId)}
-                        className={`px-3 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
+                        className={`px-2.5 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shrink-0 ${
                           isFirst
                             ? 'bg-[#1877F2] hover:bg-[#166fe5] text-white shadow-2xs'
                             : 'bg-white hover:bg-slate-100 border border-slate-200 text-slate-700'
                         }`}
                       >
-                        <Play className="w-3 h-3 fill-current" />
-                        <span>Re-Test</span>
+                        <Play className="w-3 h-3 fill-current shrink-0" />
+                        <span className="whitespace-nowrap">Re-Test</span>
                       </button>
                     </div>
                   </div>
@@ -232,7 +233,7 @@ export const LearningPathRecommendations: React.FC<LearningPathRecommendationsPr
       <div className="mt-4 pt-3.5 border-t border-slate-100 text-[11px] text-slate-400 flex flex-wrap items-center justify-between gap-2">
         <span className="flex items-center gap-1.5">
           <Layers className="w-3.5 h-3.5 text-slate-400" />
-          Ordered topologically by dependency graph
+          Ordered by prerequisite sequence (foundational topics first)
         </span>
         <span className="text-slate-400">Click &quot;Start Learning Gap&quot; to review theory before re-testing</span>
       </div>

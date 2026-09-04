@@ -8,7 +8,7 @@ interface RecommendationCardProps {
   message?: string;
   onStartQuizForSkill: (skillId: string) => void;
   onStartLearningGap?: (skillId: string) => void;
-  onRecalculateMastery: () => void;
+  onRecalculateMastery?: () => void;
   recalculating?: boolean;
 }
 
@@ -18,8 +18,6 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
   message,
   onStartQuizForSkill,
   onStartLearningGap,
-  onRecalculateMastery,
-  recalculating = false,
 }) => {
   if (loading) {
     return (
@@ -44,15 +42,9 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
             <p className="text-xs text-slate-500 leading-relaxed max-w-xl">
               {message || 'You have achieved target mastery for all prerequisite topics in your selected learning goal.'}
             </p>
-            <div className="pt-2">
-              <button
-                onClick={onRecalculateMastery}
-                disabled={recalculating}
-                className="text-xs text-[#1877F2] hover:text-[#166fe5] font-semibold inline-flex items-center gap-1.5 cursor-pointer"
-              >
-                <RotateCcw className={`w-3.5 h-3.5 ${recalculating ? 'animate-spin' : ''}`} />
-                <span>Recalculate Mastery</span>
-              </button>
+            <div className="pt-2 text-[11px] text-slate-500 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span>Mastery automatically recalculates when you complete new diagnostic assessments.</span>
             </div>
           </div>
         </div>
@@ -112,36 +104,32 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
         </div>
 
         {/* Right CTA */}
-        <div className="flex flex-col sm:flex-row lg:flex-col gap-2 shrink-0 lg:w-56">
+        <div className="flex flex-col sm:flex-row lg:flex-col gap-2 shrink-0 lg:w-56 min-w-0">
           <button
             id="btn-start-recommended-quiz"
             onClick={() => onStartQuizForSkill(recommendation.skillId)}
-            className="w-full py-2.5 px-4 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
+            className="w-full py-2.5 px-4 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] text-white font-semibold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-2xs min-w-0"
+            title={`Practice ${recommendation.skillName}`}
           >
-            <span>Practice {recommendation.skillName}</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <span className="truncate">Practice {recommendation.skillName}</span>
+            <ArrowRight className="w-3.5 h-3.5 shrink-0" />
           </button>
 
           {onStartLearningGap && (
             <button
               id="btn-rec-start-learning-gap"
               onClick={() => onStartLearningGap(recommendation.skillId)}
-              className="w-full py-2 px-3 rounded-lg text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200/80 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+              className="w-full py-2 px-3 rounded-lg text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200/80 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer min-w-0"
             >
-              <BookOpen className="w-3.5 h-3.5 text-amber-600" />
-              <span>Start Learning Gap</span>
+              <BookOpen className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+              <span className="whitespace-nowrap">Start Learning Gap</span>
             </button>
           )}
 
-          <button
-            id="btn-recalculate-dashboard"
-            onClick={onRecalculateMastery}
-            disabled={recalculating}
-            className="w-full py-2 px-3 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-200 text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
-          >
-            <RotateCcw className={`w-3.5 h-3.5 ${recalculating ? 'animate-spin text-[#1877F2]' : 'text-slate-400'}`} />
-            <span>{recalculating ? 'Recalculating...' : 'Recalculate'}</span>
-          </button>
+          <div className="w-full py-1.5 px-2 text-center text-[11px] text-slate-500 flex items-center justify-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            <span>Auto-updates upon quiz completion</span>
+          </div>
         </div>
 
       </div>

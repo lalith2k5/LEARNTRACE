@@ -44,6 +44,33 @@
         "passwordHash": "$2b$10$kI4SokA4B.7fZ31kbCZE2.plz.efFhmBcIBb92pmbVCzerv1/n5XO",
         "createdAt": "2026-09-03T16:19:09.085Z"
       }
+    ],
+    [
+      "user_1788539943760_wkmqg",
+      {
+        "id": "user_1788539943760_wkmqg",
+        "email": "userr@gmail.com",
+        "passwordHash": "$2b$10$enJdaiiGu9RkuHM.pbX1nO.xZyJSOzoNch7hrFEaW7CtTR3v7IaTm",
+        "createdAt": "2026-09-04T16:39:03.760Z"
+      }
+    ],
+    [
+      "user_1788541323577_o3a28",
+      {
+        "id": "user_1788541323577_o3a28",
+        "email": "student_1788541323332@university.edu",
+        "passwordHash": "$2b$10$rHGpl.uULyr.yA6czDQ.OeQpW8ATzXn9nvZslmt1xPvZ25FCFrXM.",
+        "createdAt": "2026-09-04T17:02:03.577Z"
+      }
+    ],
+    [
+      "user_1788541348449_y3tih",
+      {
+        "id": "user_1788541348449_y3tih",
+        "email": "student_1788541348229@university.edu",
+        "passwordHash": "$2b$10$yfgvEK0UHIxIy8IZsE0mM.dGu98FJiEqUH/nSk2xShZotG4P.clB.",
+        "createdAt": "2026-09-04T17:02:28.449Z"
+      }
     ]
   ],
   "userGoals": [
@@ -133,6 +160,66 @@
         "userId": "user_1788452349085_kdsvu",
         "goalId": "goal_mle",
         "selectedAt": "2026-09-03T16:19:09.114Z",
+        "goal": {
+          "id": "goal_mle",
+          "name": "Machine Learning Engineer",
+          "targetSkillId": "skill_ml",
+          "description": "Master foundational mathematics, statistics, model evaluation, and machine learning algorithms.",
+          "targetSkill": {
+            "id": "skill_ml",
+            "name": "Machine Learning",
+            "domain": "Artificial Intelligence",
+            "description": "Loss functions, gradient descent optimization, bias-variance tradeoff, classification, and neural algorithms."
+          }
+        }
+      }
+    ],
+    [
+      "user_1788539943760_wkmqg_goal_mle",
+      {
+        "userId": "user_1788539943760_wkmqg",
+        "goalId": "goal_mle",
+        "selectedAt": "2026-09-04T16:39:03.760Z",
+        "goal": {
+          "id": "goal_mle",
+          "name": "Machine Learning Engineer",
+          "targetSkillId": "skill_ml",
+          "description": "Master foundational mathematics, statistics, model evaluation, and machine learning algorithms.",
+          "targetSkill": {
+            "id": "skill_ml",
+            "name": "Machine Learning",
+            "domain": "Artificial Intelligence",
+            "description": "Loss functions, gradient descent optimization, bias-variance tradeoff, classification, and neural algorithms."
+          }
+        }
+      }
+    ],
+    [
+      "user_1788541323577_o3a28_goal_mle",
+      {
+        "userId": "user_1788541323577_o3a28",
+        "goalId": "goal_mle",
+        "selectedAt": "2026-09-04T17:02:03.577Z",
+        "goal": {
+          "id": "goal_mle",
+          "name": "Machine Learning Engineer",
+          "targetSkillId": "skill_ml",
+          "description": "Master foundational mathematics, statistics, model evaluation, and machine learning algorithms.",
+          "targetSkill": {
+            "id": "skill_ml",
+            "name": "Machine Learning",
+            "domain": "Artificial Intelligence",
+            "description": "Loss functions, gradient descent optimization, bias-variance tradeoff, classification, and neural algorithms."
+          }
+        }
+      }
+    ],
+    [
+      "user_1788541348449_y3tih_goal_mle",
+      {
+        "userId": "user_1788541348449_y3tih",
+        "goalId": "goal_mle",
+        "selectedAt": "2026-09-04T17:02:28.482Z",
         "goal": {
           "id": "goal_mle",
           "name": "Machine Learning Engineer",
@@ -14401,6 +14488,88 @@
         },
         "questionType": "MULTIPLE_CHOICE"
       }
+    ],
+    [
+      "q_gemini_fallback_1788539194636_0_ghlr",
+      {
+        "id": "q_gemini_fallback_1788539194636_0_ghlr",
+        "skillId": "skill_prob",
+        "skillName": "Probability",
+        "skillsTested": [
+          "skill_prob"
+        ],
+        "text": "Two independent events A and B have P(A) = 0.4 and P(B) = 0.5. What is the probability that at least one of the events occurs, P(A ∪ B)? (Diagnostic Item #1)",
+        "difficulty": 1,
+        "cognitiveCategory": "Application",
+        "options": [
+          {
+            "id": "A",
+            "text": "0.70"
+          },
+          {
+            "id": "B",
+            "text": "0.90"
+          },
+          {
+            "id": "C",
+            "text": "0.20"
+          },
+          {
+            "id": "D",
+            "text": "0.60"
+          }
+        ],
+        "correctAnswer": "A",
+        "explanation": "By inclusion-exclusion: P(A ∪ B) = P(A) + P(B) - P(A ∩ B). Independence means P(A ∩ B) = 0.4 * 0.5 = 0.20. Hence, 0.40 + 0.50 - 0.20 = 0.70.",
+        "distractorRationales": {
+          "A": "Plausible distractor based on standard linear approximation.",
+          "B": "Confuses notation with inverse transformation.",
+          "C": "Incomplete calculation omission.",
+          "D": "Boundary condition misunderstanding."
+        },
+        "questionType": "MULTIPLE_CHOICE"
+      }
+    ],
+    [
+      "q_gemini_fallback_1788539225269_0_ytx4",
+      {
+        "id": "q_gemini_fallback_1788539225269_0_ytx4",
+        "skillId": "skill_cond_prob",
+        "skillName": "Conditional Probability",
+        "skillsTested": [
+          "skill_cond_prob"
+        ],
+        "text": "A diagnostic medical test has 98% sensitivity and 95% specificity. If disease prevalence is 1%, what is P(Disease | Positive Test)? (Diagnostic Item #1)",
+        "difficulty": 2,
+        "cognitiveCategory": "Analysis",
+        "options": [
+          {
+            "id": "A",
+            "text": "Approximately 16.5%"
+          },
+          {
+            "id": "B",
+            "text": "98.0%"
+          },
+          {
+            "id": "C",
+            "text": "95.0%"
+          },
+          {
+            "id": "D",
+            "text": "50.0%"
+          }
+        ],
+        "correctAnswer": "A",
+        "explanation": "Applying Bayes Theorem: P(D|+) = (0.98 * 0.01) / [(0.98 * 0.01) + (0.05 * 0.99)] = 0.0098 / 0.0593 ≈ 0.165 (16.5%). Low prevalence dominates false positives.",
+        "distractorRationales": {
+          "A": "Plausible distractor based on standard linear approximation.",
+          "B": "Confuses notation with inverse transformation.",
+          "C": "Incomplete calculation omission.",
+          "D": "Boundary condition misunderstanding."
+        },
+        "questionType": "MULTIPLE_CHOICE"
+      }
     ]
   ],
   "attempts": [
@@ -14893,6 +15062,78 @@
       "attemptNumber": 2,
       "cognitiveState": "SOLID_MASTERY",
       "createdAt": "2026-09-03T16:19:09.218Z"
+    },
+    {
+      "id": "att_1788540230507_xe54d",
+      "userId": "user_1788539943760_wkmqg",
+      "questionId": "q_py_1",
+      "questionText": "What is the average time complexity of looking up a key in a standard Python dictionary?",
+      "skillId": "skill_python",
+      "skillName": "Python",
+      "skillsTested": [
+        "skill_python"
+      ],
+      "selectedAnswer": "opt_3",
+      "correct": false,
+      "timeTakenSeconds": 4,
+      "confidence": 3,
+      "attemptNumber": 1,
+      "cognitiveState": "UNCERTAIN_MISTAKE",
+      "createdAt": "2026-09-04T16:43:50.507Z"
+    },
+    {
+      "id": "att_1788540272571_ap66t",
+      "userId": "user_1788539943760_wkmqg",
+      "questionId": "q_py_2",
+      "questionText": "What does the expression `[x**2 for x in range(5) if x % 2 != 0]` evaluate to in Python?",
+      "skillId": "skill_python",
+      "skillName": "Python",
+      "skillsTested": [
+        "skill_python"
+      ],
+      "selectedAnswer": "opt_2",
+      "correct": false,
+      "timeTakenSeconds": 4,
+      "confidence": 5,
+      "attemptNumber": 1,
+      "cognitiveState": "CONFIDENT_MISCONCEPTION",
+      "createdAt": "2026-09-04T16:44:32.571Z"
+    },
+    {
+      "id": "att_1788541348518_n2o4b",
+      "userId": "user_1788541348449_y3tih",
+      "questionId": "q_prob_1",
+      "questionText": "If events A and B are independent, which of the following mathematical statements is strictly true?",
+      "skillId": "skill_prob",
+      "skillName": "Probability",
+      "skillsTested": [
+        "skill_prob"
+      ],
+      "selectedAnswer": "opt_a",
+      "correct": false,
+      "timeTakenSeconds": 15,
+      "confidence": 4,
+      "attemptNumber": 1,
+      "cognitiveState": "CONFIDENT_MISCONCEPTION",
+      "createdAt": "2026-09-04T17:02:28.518Z"
+    },
+    {
+      "id": "att_oe_1788541368361_3zdl3",
+      "userId": "user_demo_learner",
+      "questionId": "open_ended_skill_prob",
+      "questionText": "Explain the difference between mutually exclusive and independent events.",
+      "skillId": "skill_prob",
+      "skillName": "Probability",
+      "skillsTested": [
+        "skill_prob"
+      ],
+      "selectedAnswer": "Mutually exclusive events cannot occur simultaneously, so P(A and B) = 0. Independent events mean the occurrence of A...",
+      "correct": true,
+      "timeTakenSeconds": 45,
+      "confidence": 5,
+      "attemptNumber": 5,
+      "cognitiveState": "SOLID_MASTERY",
+      "createdAt": "2026-09-04T17:02:48.361Z"
     }
   ],
   "masteries": [
@@ -14903,15 +15144,15 @@
         "skillId": "skill_python",
         "skillName": "Python",
         "domain": "Programming & Data Science",
-        "masteryScore": 0.93,
+        "masteryScore": 0.88,
         "rawMasteryScore": 0.99,
-        "retentionRate": 0.94,
-        "daysSinceLastAttempt": 1,
+        "retentionRate": 0.89,
+        "daysSinceLastAttempt": 2,
         "needsSpacedReview": false,
         "interpretation": "Strong",
         "evidenceCount": 3,
         "bktEstimate": 0.953,
-        "lastUpdated": "2026-09-03T16:19:07.328Z"
+        "lastUpdated": "2026-09-04T16:57:38.158Z"
       }
     ],
     [
@@ -14921,15 +15162,15 @@
         "skillId": "skill_prob",
         "skillName": "Probability",
         "domain": "Mathematics & Statistics",
-        "masteryScore": 0.25,
-        "rawMasteryScore": 0.25,
+        "masteryScore": 0.46,
+        "rawMasteryScore": 0.46,
         "retentionRate": 1,
         "daysSinceLastAttempt": 0,
         "needsSpacedReview": false,
         "interpretation": "Weak",
-        "evidenceCount": 5,
-        "bktEstimate": 0.307,
-        "lastUpdated": "2026-09-03T16:19:07.328Z"
+        "evidenceCount": 6,
+        "bktEstimate": 0.684,
+        "lastUpdated": "2026-09-04T17:02:48.361Z"
       }
     ],
     [
@@ -14941,13 +15182,13 @@
         "domain": "Mathematics & Statistics",
         "masteryScore": 0,
         "rawMasteryScore": 0,
-        "retentionRate": 0.95,
-        "daysSinceLastAttempt": 0.6,
+        "retentionRate": 0.87,
+        "daysSinceLastAttempt": 1.6,
         "needsSpacedReview": false,
         "interpretation": "Weak",
         "evidenceCount": 1,
         "bktEstimate": 0.199,
-        "lastUpdated": "2026-09-03T16:19:07.328Z"
+        "lastUpdated": "2026-09-04T16:57:38.158Z"
       }
     ],
     [
@@ -14957,15 +15198,15 @@
         "skillId": "skill_prob_dist",
         "skillName": "Probability Distributions",
         "domain": "Mathematics & Statistics",
-        "masteryScore": 0.84,
+        "masteryScore": 0.77,
         "rawMasteryScore": 0.88,
-        "retentionRate": 0.96,
-        "daysSinceLastAttempt": 0.4,
+        "retentionRate": 0.87,
+        "daysSinceLastAttempt": 1.5,
         "needsSpacedReview": false,
-        "interpretation": "Strong",
+        "interpretation": "Good foundation",
         "evidenceCount": 1,
         "bktEstimate": 0.499,
-        "lastUpdated": "2026-09-03T16:19:07.328Z"
+        "lastUpdated": "2026-09-04T16:57:38.158Z"
       }
     ],
     [
@@ -14975,15 +15216,15 @@
         "skillId": "skill_stats",
         "skillName": "Statistics",
         "domain": "Mathematics & Statistics",
-        "masteryScore": 0.89,
+        "masteryScore": 0.84,
         "rawMasteryScore": 0.9,
-        "retentionRate": 0.99,
-        "daysSinceLastAttempt": 0.2,
+        "retentionRate": 0.93,
+        "daysSinceLastAttempt": 1.2,
         "needsSpacedReview": false,
         "interpretation": "Strong",
         "evidenceCount": 3,
         "bktEstimate": 0.953,
-        "lastUpdated": "2026-09-03T16:19:07.328Z"
+        "lastUpdated": "2026-09-04T16:57:38.158Z"
       }
     ],
     [
@@ -14993,15 +15234,15 @@
         "skillId": "skill_linalg",
         "skillName": "Linear Algebra",
         "domain": "Mathematics & Computing",
-        "masteryScore": 0.16,
+        "masteryScore": 0.15,
         "rawMasteryScore": 0.16,
-        "retentionRate": 0.99,
-        "daysSinceLastAttempt": 0.1,
+        "retentionRate": 0.93,
+        "daysSinceLastAttempt": 1.1,
         "needsSpacedReview": false,
         "interpretation": "Weak",
         "evidenceCount": 3,
         "bktEstimate": 0.22,
-        "lastUpdated": "2026-09-03T16:19:07.328Z"
+        "lastUpdated": "2026-09-04T16:57:38.158Z"
       }
     ],
     [
@@ -15011,15 +15252,15 @@
         "skillId": "skill_model_eval",
         "skillName": "Model Evaluation",
         "domain": "Applied Machine Learning",
-        "masteryScore": 0.86,
+        "masteryScore": 0.79,
         "rawMasteryScore": 0.88,
-        "retentionRate": 0.98,
-        "daysSinceLastAttempt": 0.2,
+        "retentionRate": 0.9,
+        "daysSinceLastAttempt": 1.2,
         "needsSpacedReview": false,
-        "interpretation": "Strong",
+        "interpretation": "Good foundation",
         "evidenceCount": 1,
         "bktEstimate": 0.499,
-        "lastUpdated": "2026-09-03T16:19:07.328Z"
+        "lastUpdated": "2026-09-04T16:57:38.158Z"
       }
     ],
     [
@@ -15029,15 +15270,15 @@
         "skillId": "skill_ml",
         "skillName": "Machine Learning",
         "domain": "Artificial Intelligence",
-        "masteryScore": 0.31,
+        "masteryScore": 0.29,
         "rawMasteryScore": 0.31,
-        "retentionRate": 0.99,
-        "daysSinceLastAttempt": 0.1,
+        "retentionRate": 0.92,
+        "daysSinceLastAttempt": 1.1,
         "needsSpacedReview": false,
         "interpretation": "Weak",
         "evidenceCount": 2,
         "bktEstimate": 0.276,
-        "lastUpdated": "2026-09-03T16:19:07.328Z"
+        "lastUpdated": "2026-09-04T16:57:38.158Z"
       }
     ],
     [
@@ -15495,7 +15736,351 @@
         "bktEstimate": 0.15,
         "lastUpdated": "2026-09-03T16:19:09.085Z"
       }
+    ],
+    [
+      "user_1788539943760_wkmqg_skill_python",
+      {
+        "userId": "user_1788539943760_wkmqg",
+        "skillId": "skill_python",
+        "skillName": "Python",
+        "domain": "Programming & Data Science",
+        "masteryScore": 0,
+        "rawMasteryScore": 0,
+        "retentionRate": 1,
+        "daysSinceLastAttempt": 0,
+        "needsSpacedReview": false,
+        "interpretation": "Weak",
+        "evidenceCount": 1,
+        "bktEstimate": 0.199,
+        "lastUpdated": "2026-09-04T16:43:50.513Z"
+      }
+    ],
+    [
+      "user_1788539943760_wkmqg_skill_prob",
+      {
+        "userId": "user_1788539943760_wkmqg",
+        "skillId": "skill_prob",
+        "skillName": "Probability",
+        "domain": "Mathematics & Statistics",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T16:39:03.760Z"
+      }
+    ],
+    [
+      "user_1788539943760_wkmqg_skill_cond_prob",
+      {
+        "userId": "user_1788539943760_wkmqg",
+        "skillId": "skill_cond_prob",
+        "skillName": "Conditional Probability",
+        "domain": "Mathematics & Statistics",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T16:39:03.760Z"
+      }
+    ],
+    [
+      "user_1788539943760_wkmqg_skill_prob_dist",
+      {
+        "userId": "user_1788539943760_wkmqg",
+        "skillId": "skill_prob_dist",
+        "skillName": "Probability Distributions",
+        "domain": "Mathematics & Statistics",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T16:39:03.760Z"
+      }
+    ],
+    [
+      "user_1788539943760_wkmqg_skill_stats",
+      {
+        "userId": "user_1788539943760_wkmqg",
+        "skillId": "skill_stats",
+        "skillName": "Statistics",
+        "domain": "Mathematics & Statistics",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T16:39:03.760Z"
+      }
+    ],
+    [
+      "user_1788539943760_wkmqg_skill_linalg",
+      {
+        "userId": "user_1788539943760_wkmqg",
+        "skillId": "skill_linalg",
+        "skillName": "Linear Algebra",
+        "domain": "Mathematics & Computing",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T16:39:03.760Z"
+      }
+    ],
+    [
+      "user_1788539943760_wkmqg_skill_model_eval",
+      {
+        "userId": "user_1788539943760_wkmqg",
+        "skillId": "skill_model_eval",
+        "skillName": "Model Evaluation",
+        "domain": "Applied Machine Learning",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T16:39:03.760Z"
+      }
+    ],
+    [
+      "user_1788539943760_wkmqg_skill_ml",
+      {
+        "userId": "user_1788539943760_wkmqg",
+        "skillId": "skill_ml",
+        "skillName": "Machine Learning",
+        "domain": "Artificial Intelligence",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T16:39:03.760Z"
+      }
+    ],
+    [
+      "user_1788541323577_o3a28_skill_python",
+      {
+        "userId": "user_1788541323577_o3a28",
+        "skillId": "skill_python",
+        "skillName": "Python",
+        "domain": "Programming & Data Science",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T17:02:03.578Z"
+      }
+    ],
+    [
+      "user_1788541323577_o3a28_skill_prob",
+      {
+        "userId": "user_1788541323577_o3a28",
+        "skillId": "skill_prob",
+        "skillName": "Probability",
+        "domain": "Mathematics & Statistics",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T17:02:03.578Z"
+      }
+    ],
+    [
+      "user_1788541323577_o3a28_skill_cond_prob",
+      {
+        "userId": "user_1788541323577_o3a28",
+        "skillId": "skill_cond_prob",
+        "skillName": "Conditional Probability",
+        "domain": "Mathematics & Statistics",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T17:02:03.578Z"
+      }
+    ],
+    [
+      "user_1788541323577_o3a28_skill_prob_dist",
+      {
+        "userId": "user_1788541323577_o3a28",
+        "skillId": "skill_prob_dist",
+        "skillName": "Probability Distributions",
+        "domain": "Mathematics & Statistics",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T17:02:03.578Z"
+      }
+    ],
+    [
+      "user_1788541323577_o3a28_skill_stats",
+      {
+        "userId": "user_1788541323577_o3a28",
+        "skillId": "skill_stats",
+        "skillName": "Statistics",
+        "domain": "Mathematics & Statistics",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T17:02:03.578Z"
+      }
+    ],
+    [
+      "user_1788541323577_o3a28_skill_linalg",
+      {
+        "userId": "user_1788541323577_o3a28",
+        "skillId": "skill_linalg",
+        "skillName": "Linear Algebra",
+        "domain": "Mathematics & Computing",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T17:02:03.578Z"
+      }
+    ],
+    [
+      "user_1788541323577_o3a28_skill_model_eval",
+      {
+        "userId": "user_1788541323577_o3a28",
+        "skillId": "skill_model_eval",
+        "skillName": "Model Evaluation",
+        "domain": "Applied Machine Learning",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T17:02:03.578Z"
+      }
+    ],
+    [
+      "user_1788541323577_o3a28_skill_ml",
+      {
+        "userId": "user_1788541323577_o3a28",
+        "skillId": "skill_ml",
+        "skillName": "Machine Learning",
+        "domain": "Artificial Intelligence",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T17:02:03.578Z"
+      }
+    ],
+    [
+      "user_1788541348449_y3tih_skill_python",
+      {
+        "userId": "user_1788541348449_y3tih",
+        "skillId": "skill_python",
+        "skillName": "Python",
+        "domain": "Programming & Data Science",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T17:02:28.450Z"
+      }
+    ],
+    [
+      "user_1788541348449_y3tih_skill_prob",
+      {
+        "userId": "user_1788541348449_y3tih",
+        "skillId": "skill_prob",
+        "skillName": "Probability",
+        "domain": "Mathematics & Statistics",
+        "masteryScore": 0,
+        "rawMasteryScore": 0,
+        "retentionRate": 1,
+        "daysSinceLastAttempt": 0,
+        "needsSpacedReview": false,
+        "interpretation": "Weak",
+        "evidenceCount": 1,
+        "bktEstimate": 0.199,
+        "lastUpdated": "2026-09-04T17:02:28.524Z"
+      }
+    ],
+    [
+      "user_1788541348449_y3tih_skill_cond_prob",
+      {
+        "userId": "user_1788541348449_y3tih",
+        "skillId": "skill_cond_prob",
+        "skillName": "Conditional Probability",
+        "domain": "Mathematics & Statistics",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T17:02:28.450Z"
+      }
+    ],
+    [
+      "user_1788541348449_y3tih_skill_prob_dist",
+      {
+        "userId": "user_1788541348449_y3tih",
+        "skillId": "skill_prob_dist",
+        "skillName": "Probability Distributions",
+        "domain": "Mathematics & Statistics",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T17:02:28.450Z"
+      }
+    ],
+    [
+      "user_1788541348449_y3tih_skill_stats",
+      {
+        "userId": "user_1788541348449_y3tih",
+        "skillId": "skill_stats",
+        "skillName": "Statistics",
+        "domain": "Mathematics & Statistics",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T17:02:28.450Z"
+      }
+    ],
+    [
+      "user_1788541348449_y3tih_skill_linalg",
+      {
+        "userId": "user_1788541348449_y3tih",
+        "skillId": "skill_linalg",
+        "skillName": "Linear Algebra",
+        "domain": "Mathematics & Computing",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T17:02:28.450Z"
+      }
+    ],
+    [
+      "user_1788541348449_y3tih_skill_model_eval",
+      {
+        "userId": "user_1788541348449_y3tih",
+        "skillId": "skill_model_eval",
+        "skillName": "Model Evaluation",
+        "domain": "Applied Machine Learning",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T17:02:28.450Z"
+      }
+    ],
+    [
+      "user_1788541348449_y3tih_skill_ml",
+      {
+        "userId": "user_1788541348449_y3tih",
+        "skillId": "skill_ml",
+        "skillName": "Machine Learning",
+        "domain": "Artificial Intelligence",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-04T17:02:28.450Z"
+      }
     ]
   ],
-  "savedAt": "2026-09-03T16:19:09.218Z"
+  "savedAt": "2026-09-04T17:02:48.361Z"
 }

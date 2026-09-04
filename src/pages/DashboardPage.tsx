@@ -156,17 +156,13 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         <div className="flex items-center justify-between">
           <div>
             <h3 className="font-bold text-sm text-slate-900">Recent Diagnostic Evidence</h3>
-            <p className="text-xs text-slate-400">Assessment attempts evaluated by the mastery tracing engine</p>
+            <p className="text-xs text-slate-400">Assessment attempts evaluated by the cognitive mastery tracing engine</p>
           </div>
 
-          <button
-            onClick={handleRecalculate}
-            disabled={recalculating}
-            className="text-xs text-[#1877F2] hover:text-[#166fe5] font-medium inline-flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
-          >
-            <RotateCcw className={`w-3.5 h-3.5 ${recalculating ? 'animate-spin' : ''}`} />
-            <span>Recalculate</span>
-          </button>
+          <div className="text-[11px] font-medium text-slate-500 bg-slate-50 border border-slate-200/80 px-2.5 py-1 rounded-md flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            <span>Auto-synced</span>
+          </div>
         </div>
 
         {recentAttempts.length === 0 ? (

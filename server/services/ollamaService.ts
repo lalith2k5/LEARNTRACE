@@ -20,6 +20,48 @@ function getGeminiClient(): GoogleGenAI | null {
   return geminiClient;
 }
 
+/**
+ * Resilient Gemini invocation with automatic retry on 503/429 and model fallback
+ * to handle temporary high demand spikes gracefully without throwing unhandled exceptions.
+ */
+export async function callGeminiWithFallback<T>(
+  fn: (model: string, ai: GoogleGenAI) => Promise<T>
+): Promise<T | null> {
+  const ai = getGeminiClient();
+  if (!ai) return null;
+
+  // Supported model hierarchy: default fast model -> lightweight flash model -> latest alias
+  const candidateModels = ['gemini-3.8-flash', 'gemini-3.1-flash-lite', 'gemini-flash-latest'];
+
+  for (const model of candidateModels) {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        return await fn(model, ai);
+      } catch (err: any) {
+        const errorMsg = String(err?.message || err || '');
+        const statusCode = err?.status || err?.code || (errorMsg.includes('503') || errorMsg.includes('UNAVAILABLE') ? 503 : 0);
+        const isTransient = statusCode === 503 || statusCode === 429 || errorMsg.includes('high demand') || errorMsg.includes('UNAVAILABLE');
+
+        if (isTransient && attempt === 0) {
+          // Brief backoff before retry on same model
+          await new Promise((resolve) => setTimeout(resolve, 500));
+          continue;
+        }
+
+        if (isTransient) {
+          console.warn(`[LearnTrace AI] Model ${model} is experiencing temporary high demand (${statusCode || '503'}). Switching to fallback model...`);
+          break; // Try next candidate model
+        }
+
+        console.warn(`[LearnTrace AI] Non-transient generation error with ${model}:`, errorMsg);
+        break;
+      }
+    }
+  }
+
+  return null;
+}
+
 export async function explainQuestion(params: {
   questionText: string;
   skillName: string;
@@ -54,28 +96,27 @@ Provide a concise, highly educational 2-3 sentence diagnostic explanation:
 2. Clarify the subtle conceptual misconception behind the incorrect options.
 Keep the tone supportive, direct, and rigorous.`;
 
-  // 1. Try Gemini API
+  // 1. Try Gemini API with automatic model fallback & retry
   try {
-    const ai = getGeminiClient();
-    if (ai) {
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.8-flash',
+    const response = await callGeminiWithFallback(async (model, ai) => {
+      return await ai.models.generateContent({
+        model,
         contents: prompt,
       });
+    });
 
-      if (response.text && response.text.trim().length > 0) {
-        return {
-          source: 'gemini',
-          available: true,
-          explanation: response.text.trim(),
-          correctAnswer: correctOptionText,
-          keyConcept: skillName,
-          cognitiveDiagnosis: isConfidentMisconception ? 'Addressed Confident Misconception' : undefined,
-        };
-      }
+    if (response && response.text && response.text.trim().length > 0) {
+      return {
+        source: 'gemini',
+        available: true,
+        explanation: response.text.trim(),
+        correctAnswer: correctOptionText,
+        keyConcept: skillName,
+        cognitiveDiagnosis: isConfidentMisconception ? 'Addressed Confident Misconception' : undefined,
+      };
     }
   } catch (err) {
-    console.error('Gemini API call failed:', err);
+    console.warn('Gemini explanation fallback activated:', err);
   }
 
   // 2. Try local Ollama if configured
@@ -139,10 +180,9 @@ Format the response strictly as JSON with:
 - "cognitiveCategory": One of "Recall", "Comprehension", "Application", "Analysis", "Synthesis"`;
 
   try {
-    const ai = getGeminiClient();
-    if (ai) {
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.8-flash',
+    const response = await callGeminiWithFallback(async (model, ai) => {
+      return await ai.models.generateContent({
+        model,
         contents: prompt,
         config: {
           responseMimeType: 'application/json',
@@ -170,27 +210,33 @@ Format the response strictly as JSON with:
           },
         },
       });
+    });
 
-      if (response.text) {
-        const parsed = JSON.parse(response.text);
-        const newQuestion: Question = {
-          id: `q_ai_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
-          skillId,
-          skillName,
-          skillsTested: [skillId],
-          text: parsed.text,
-          difficulty: Math.min(5, Math.max(1, parsed.difficulty || 3)),
-          cognitiveCategory: (parsed.cognitiveCategory as CognitiveCategory) || 'Application',
-          options: parsed.options,
-          correctAnswer: parsed.correctAnswer,
-          explanation: parsed.explanation,
-          questionType: 'MULTIPLE_CHOICE',
-        };
-        return newQuestion;
-      }
+    if (response?.text) {
+      const parsed = JSON.parse(response.text);
+      const newQuestion: Question = {
+        id: `q_ai_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+        skillId,
+        skillName,
+        skillsTested: [skillId],
+        text: parsed.text,
+        difficulty: Math.min(5, Math.max(1, parsed.difficulty || 3)),
+        cognitiveCategory: (parsed.cognitiveCategory as CognitiveCategory) || 'Application',
+        options: parsed.options,
+        correctAnswer: parsed.correctAnswer,
+        explanation: parsed.explanation,
+        questionType: 'MULTIPLE_CHOICE',
+      };
+      return newQuestion;
     }
   } catch (err) {
-    console.error('AI question generation error:', err);
+    console.warn('AI question generation used fallback due to:', err);
+  }
+
+  // Gracefully fallback to high-quality psychometric template item instead of failing
+  const fallbacks = await generateBankEnrichmentQuestions({ skillId, skillName, domain, count: 1 });
+  if (fallbacks.length > 0) {
+    return fallbacks[0];
   }
 
   return null;
@@ -228,10 +274,9 @@ Each question MUST include:
 8. "skillsTested": Array containing "${skillId}".`;
 
   try {
-    const ai = getGeminiClient();
-    if (ai) {
-      const response = await ai.models.generateContent({
-        model: 'gemini-3.8-flash',
+    const response = await callGeminiWithFallback(async (model, ai) => {
+      return await ai.models.generateContent({
+        model,
         contents: prompt,
         config: {
           responseMimeType: 'application/json',
@@ -275,30 +320,30 @@ Each question MUST include:
           },
         },
       });
+    });
 
-      if (response.text) {
-        const parsed = JSON.parse(response.text);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          const generatedQuestions: Question[] = parsed.map((item, idx) => ({
-            id: `q_gemini_${Date.now()}_${idx}_${Math.random().toString(36).substring(2, 6)}`,
-            skillId,
-            skillName,
-            skillsTested: Array.isArray(item.skillsTested) && item.skillsTested.length > 0 ? item.skillsTested : [skillId],
-            text: item.text,
-            difficulty: Math.min(5, Math.max(1, item.difficulty || difficulty || 3)),
-            cognitiveCategory: (item.cognitiveCategory as CognitiveCategory) || cognitiveCategory || 'Application',
-            options: item.options,
-            correctAnswer: item.correctAnswer,
-            explanation: item.explanation,
-            distractorRationales: item.distractorRationales || {},
-            questionType: 'MULTIPLE_CHOICE',
-          }));
-          return generatedQuestions;
-        }
+    if (response?.text) {
+      const parsed = JSON.parse(response.text);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        const generatedQuestions: Question[] = parsed.map((item, idx) => ({
+          id: `q_gemini_${Date.now()}_${idx}_${Math.random().toString(36).substring(2, 6)}`,
+          skillId,
+          skillName,
+          skillsTested: Array.isArray(item.skillsTested) && item.skillsTested.length > 0 ? item.skillsTested : [skillId],
+          text: item.text,
+          difficulty: Math.min(5, Math.max(1, item.difficulty || difficulty || 3)),
+          cognitiveCategory: (item.cognitiveCategory as CognitiveCategory) || cognitiveCategory || 'Application',
+          options: item.options,
+          correctAnswer: item.correctAnswer,
+          explanation: item.explanation,
+          distractorRationales: item.distractorRationales || {},
+          questionType: 'MULTIPLE_CHOICE',
+        }));
+        return generatedQuestions;
       }
     }
   } catch (err) {
-    console.error('Gemini enrichment generation failed, utilizing robust domain fallback:', err);
+    console.warn('Gemini enrichment generation failed, utilizing robust domain fallback:', err);
   }
 
   // Domain fallback generator

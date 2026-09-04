@@ -18,15 +18,31 @@ interface MasteryChartProps {
   onSelectSkill?: (skillId: string) => void;
 }
 
+const getShortSkillName = (name: string, id: string): string => {
+  const lower = (name || id).toLowerCase();
+  if (lower.includes('python')) return 'Python';
+  if (lower.includes('distributions')) return 'Distributions';
+  if (lower.includes('conditional')) return 'Cond. Prob';
+  if (lower.includes('probability') || lower.includes('prob foundations')) return 'Probability';
+  if (lower.includes('inference') || lower.includes('statistical')) return 'Statistics';
+  if (lower.includes('linear')) return 'Linear Alg';
+  if (lower.includes('evaluation') || lower.includes('model eval')) return 'Model Eval';
+  if (lower.includes('machine') || lower.includes('learning')) return 'Machine Learn';
+  return name.length > 12 ? name.substring(0, 11) + '…' : name;
+};
+
 export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectSkill }) => {
-  const chartData不易 = masteries.map((m) => {
+  const chartData = masteries.map((m) => {
     const score = Math.round(m.masteryScore * 100);
     const rawScore = m.rawMasteryScore !== undefined ? Math.round(m.rawMasteryScore * 100) : score;
     const retention = m.retentionRate !== undefined ? Math.round(m.retentionRate * 100) : 100;
+    const fullName = m.skillName || m.skillId;
+    const shortName = getShortSkillName(fullName, m.skillId);
 
     return {
       skillId: m.skillId,
-      name: m.skillName || m.skillId,
+      name: fullName,
+      shortName,
       mastery: score,
       rawMastery: rawScore,
       retention,
@@ -38,7 +54,7 @@ export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectS
     };
   });
 
-  const spacedReviewCount = chartData不易.filter((d) => d.needsReview).length;
+  const spacedReviewCount = chartData.filter((d) => d.needsReview).length;
 
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
@@ -121,11 +137,11 @@ export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectS
       </div>
 
       {/* Chart Canvas */}
-      <div className="h-60 w-full">
+      <div className="h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
-            data={chartData不易}
-            margin={{ top: 15, right: 10, left: -15, bottom: 20 }}
+            data={chartData}
+            margin={{ top: 15, right: 10, left: -15, bottom: 35 }}
             onClick={(state: any) => {
               if (state && state.activePayload && state.activePayload.length) {
                 const clickedSkillId = state.activePayload[0].payload.skillId;
@@ -135,14 +151,15 @@ export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectS
           >
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
             <XAxis
-              dataKey="name"
+              dataKey="shortName"
               stroke="#94a3b8"
-              fontSize={11}
+              fontSize={10}
               tickLine={false}
               axisLine={{ stroke: '#e2e8f0' }}
               interval={0}
-              angle={-12}
+              angle={-22}
               textAnchor="end"
+              height={42}
             />
             <YAxis
               stroke="#94a3b8"
@@ -170,8 +187,8 @@ export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectS
               }}
             />
 
-            <Bar dataKey="mastery" radius={[4, 4, 0, 0]} maxBarSize={40} className="cursor-pointer">
-              {chartData不易.map((entry, index) => (
+            <Bar dataKey="mastery" radius={[4, 4, 0, 0]} maxBarSize={36} className="cursor-pointer">
+              {chartData.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={entry.isMastered ? (entry.needsReview ? '#f59e0b' : '#10b981') : '#f59e0b'}
@@ -183,9 +200,9 @@ export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectS
         </ResponsiveContainer>
       </div>
 
-      <div className="mt-2 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+      <div className="mt-2 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400">
         <span>Click any bar to start practice</span>
-        <span>Ebbinghaus Half-life Stability S(t) = S₀ · (1 + 0.25N)</span>
+        <span className="truncate max-w-full">Ebbinghaus Retention S(t) = S₀ · (1 + 0.25N)</span>
       </div>
 
     </div>

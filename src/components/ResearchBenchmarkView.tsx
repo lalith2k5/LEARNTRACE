@@ -43,7 +43,11 @@ import {
 import { api } from '../api/client';
 import { TraceSimulationPoint, ModelComparisonMetrics, Question } from '../types';
 
-export const ResearchBenchmarkView: React.FC = () => {
+interface ResearchBenchmarkViewProps {
+  onBackToDashboard?: () => void;
+}
+
+export const ResearchBenchmarkView: React.FC<ResearchBenchmarkViewProps> = ({ onBackToDashboard }) => {
   const [activeTab, setActiveTab] = useState<'simulation' | 'benchmark' | 'questions'>('simulation');
 
   const [bktData, setBktData] = useState<any | null>(null);
@@ -350,6 +354,21 @@ export const ResearchBenchmarkView: React.FC = () => {
 
   return (
     <div className="w-full space-y-6">
+      {/* Return to Dashboard when in research mode */}
+      {onBackToDashboard && (
+        <div className="bg-white border border-slate-200 rounded-xl px-4 py-3 shadow-2xs flex items-center justify-between">
+          <button
+            onClick={onBackToDashboard}
+            className="inline-flex items-center gap-2 text-xs font-bold text-[#1877F2] hover:text-[#166fe5] cursor-pointer transition-colors"
+          >
+            <span>← Back to Learner Dashboard</span>
+          </button>
+          <span className="text-[11px] font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md">
+            Researcher / Benchmark Sandbox
+          </span>
+        </div>
+      )}
+
       {/* Header */}
       <div className="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -694,7 +713,7 @@ export const ResearchBenchmarkView: React.FC = () => {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
+              <table className="w-full text-left text-xs border-collapse min-w-[600px]">
                 <thead>
                   <tr className="border-b border-slate-200 text-slate-500 font-medium">
                     <th className="py-2.5 px-3">Skill Name</th>
@@ -995,188 +1014,50 @@ export const ResearchBenchmarkView: React.FC = () => {
       {/* ----------------- TAB 3: QUESTION BANK REPOSITORY ----------------- */}
       {activeTab === 'questions' && (
         <div className="space-y-6">
-          {/* Question Bank Header & AI Generation Bar */}
-          <div className="p-5 rounded-xl bg-gradient-to-r from-slate-900 via-indigo-950 to-indigo-900 text-white shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+          {/* Question Bank Header */}
+          <div className="p-5 rounded-xl bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-indigo-400 shrink-0" />
+                <Sparkles className="w-5 h-5 text-amber-300 shrink-0" />
                 <h3 className="text-sm sm:text-base font-bold text-white tracking-tight">
                   Adaptive Question Bank & Diagnostic Item Repository
                 </h3>
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-200 border border-indigo-400/30">
-                  Gemini 3.8 Flash Powered
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-200 border border-blue-400/30">
+                  Automated Background Synthesis
                 </span>
               </div>
-              <p className="text-xs text-indigo-200/85 max-w-2xl">
-                Psychometrically calibrated diagnostic items spanning all 8 DAG competencies with automated distractor rationale mapping and difficulty tuning.
+              <p className="text-xs text-slate-300 max-w-2xl">
+                Psychometrically calibrated diagnostic items spanning all 8 curriculum competencies with automated distractor rationale mapping and difficulty tuning. Questions are generated automatically in the background as learners practice.
               </p>
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
-              <button
-                id="generate-questions-gemini-btn"
-                onClick={() => setShowGenPanel(!showGenPanel)}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
-              >
-                <Sparkles className="w-4 h-4 text-amber-300" />
-                <span>Generate Questions with Gemini</span>
-              </button>
+              <span className="text-xs text-slate-300 bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <span>Auto-Enrichment Active</span>
+              </span>
             </div>
           </div>
 
-          {/* AI Question Generation Admin Panel */}
-          {showGenPanel && (
-            <div className="p-5 rounded-xl bg-blue-50/60 border border-blue-200 shadow-2xs space-y-4">
-              <div className="flex items-center justify-between border-b border-blue-100 pb-3">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="w-4 h-4 text-[#1877F2]" />
-                  <h4 className="text-xs font-bold text-blue-950 uppercase tracking-wider">
-                    On-Demand Question Bank Enrichment
-                  </h4>
-                </div>
-                <button
-                  onClick={() => setShowGenPanel(false)}
-                  className="text-xs text-slate-500 hover:text-slate-800 underline cursor-pointer"
-                >
-                  Close
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-                {/* Target Competency */}
-                <div className="space-y-1">
-                  <label className="text-[11px] font-semibold text-slate-700">Target Competency</label>
-                  <select
-                    value={genSkillId}
-                    onChange={(e) => setGenSkillId(e.target.value)}
-                    className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#1877F2]/20"
-                  >
-                    <option value="all">Distributed Across Curriculum</option>
-                    <option value="skill_python">Python Programming (skill_python)</option>
-                    <option value="skill_prob">Probability Foundations (skill_prob)</option>
-                    <option value="skill_cond_prob">Conditional Probability (skill_cond_prob)</option>
-                    <option value="skill_prob_dist">Probability Distributions (skill_prob_dist)</option>
-                    <option value="skill_stats">Statistical Inference (skill_stats)</option>
-                    <option value="skill_linalg">Linear Algebra (skill_linalg)</option>
-                    <option value="skill_model_eval">Model Evaluation (skill_model_eval)</option>
-                    <option value="skill_ml">Machine Learning (skill_ml)</option>
-                  </select>
-                </div>
-
-                {/* Count */}
-                <div className="space-y-1">
-                  <label className="text-[11px] font-semibold text-slate-700">Item Count</label>
-                  <select
-                    value={genCount}
-                    onChange={(e) => setGenCount(Number(e.target.value))}
-                    className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#1877F2]/20"
-                  >
-                    <option value={1}>1 Question</option>
-                    <option value={2}>2 Questions</option>
-                    <option value={3}>3 Questions</option>
-                    <option value={5}>5 Questions</option>
-                  </select>
-                </div>
-
-                {/* Difficulty */}
-                <div className="space-y-1">
-                  <label className="text-[11px] font-semibold text-slate-700">Difficulty Calibration</label>
-                  <select
-                    value={genDifficulty}
-                    onChange={(e) => setGenDifficulty(e.target.value)}
-                    className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#1877F2]/20"
-                  >
-                    <option value="all">Varied / Dynamic</option>
-                    <option value="1">Difficulty 1 (Beginner / Recall)</option>
-                    <option value="2">Difficulty 2 (Elementary)</option>
-                    <option value="3">Difficulty 3 (Intermediate)</option>
-                    <option value="4">Difficulty 4 (Advanced Analysis)</option>
-                    <option value="5">Difficulty 5 (Expert / Edge Cases)</option>
-                  </select>
-                </div>
-
-                {/* Cognitive Category */}
-                <div className="space-y-1">
-                  <label className="text-[11px] font-semibold text-slate-700">Cognitive Category</label>
-                  <select
-                    value={genCategory}
-                    onChange={(e) => setGenCategory(e.target.value)}
-                    className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[#1877F2]/20"
-                  >
-                    <option value="all">Adaptive (Bloom's Taxonomy)</option>
-                    <option value="Recall">Recall</option>
-                    <option value="Comprehension">Comprehension</option>
-                    <option value="Application">Application</option>
-                    <option value="Analysis">Analysis</option>
-                    <option value="Synthesis">Synthesis</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between pt-2 border-t border-blue-100 flex-wrap gap-3">
-                <div className="text-[11px] text-slate-500 flex items-center gap-1.5">
-                  <Database className="w-3.5 h-3.5 text-[#1877F2]" />
-                  <span>Enriched items are saved to database and immediately live in diagnostic sessions.</span>
-                </div>
-
-                <button
-                  id="confirm-generate-questions-btn"
-                  onClick={handleGenerateQuestions}
-                  disabled={generatingQuestions}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] disabled:opacity-50 text-white text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
-                >
-                  {generatingQuestions ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      <span>Drafting with Gemini 3.8 Flash...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="w-4 h-4" />
-                      <span>Generate & Add to Question Bank</span>
-                    </>
-                  )}
-                </button>
-              </div>
-
-              {genStatusMessage && (
-                <div
-                  className={`p-3 rounded-lg text-xs flex items-center gap-2 ${
-                    genStatusMessage.type === 'success'
-                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                      : 'bg-rose-50 text-rose-800 border border-rose-200'
-                  }`}
-                >
-                  {genStatusMessage.type === 'success' ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  ) : (
-                    <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
-                  )}
-                  <span>{genStatusMessage.text}</span>
-                </div>
-              )}
-            </div>
-          )}
-
           {/* Question Bank Metrics Overview */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
-              <div className="text-[11px] text-slate-500 font-medium">Total Assessment Items</div>
-              <div className="text-xl font-bold text-slate-900">{questionStats?.totalQuestions || questionsList.length}</div>
+            <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs min-w-0">
+              <div className="text-[11px] text-slate-500 font-medium truncate">Total Assessment Items</div>
+              <div className="text-xl font-bold text-slate-900 mt-0.5">{questionStats?.totalQuestions || questionsList.length}</div>
             </div>
-            <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
-              <div className="text-[11px] text-slate-500 font-medium">Skills Covered</div>
-              <div className="text-xl font-bold text-[#1877F2]">
-                {questionStats?.skillsCovered ? `${questionStats.skillsCovered} of 8 DAG Nodes` : '8 of 8 DAG Nodes (100%)'}
+            <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs min-w-0">
+              <div className="text-[11px] text-slate-500 font-medium truncate">Skills Covered</div>
+              <div className="text-xl font-bold text-[#1877F2] mt-0.5 truncate">
+                {questionStats?.skillsCovered || 8} / 8 <span className="text-xs font-normal text-slate-400">Skills</span>
               </div>
             </div>
-            <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
-              <div className="text-[11px] text-slate-500 font-medium">Difficulty Tiers</div>
-              <div className="text-xl font-bold text-slate-800">5 Levels (1 to 5)</div>
+            <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs min-w-0">
+              <div className="text-[11px] text-slate-500 font-medium truncate">Difficulty Tiers</div>
+              <div className="text-xl font-bold text-slate-800 mt-0.5 truncate">5 Levels (1-5)</div>
             </div>
-            <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs">
-              <div className="text-[11px] text-slate-500 font-medium">Item Types</div>
-              <div className="text-xl font-bold text-slate-800">MCQ + Open-Ended</div>
+            <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs min-w-0">
+              <div className="text-[11px] text-slate-500 font-medium truncate">Item Types</div>
+              <div className="text-xl font-bold text-slate-800 mt-0.5 truncate">MCQ + Open</div>
             </div>
           </div>
 
@@ -1198,7 +1079,7 @@ export const ResearchBenchmarkView: React.FC = () => {
               onChange={(e) => setSelectedSkillFilter(e.target.value)}
               className="px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none"
             >
-              <option value="all">All Skills (8/8 DAG Nodes)</option>
+              <option value="all">All Skills (8 Core Skills)</option>
               <option value="skill_python">Python Programming (skill_python)</option>
               <option value="skill_prob">Probability Foundations (skill_prob)</option>
               <option value="skill_cond_prob">Conditional Probability (skill_cond_prob)</option>
