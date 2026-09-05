@@ -6,6 +6,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { SkillGraphView } from './components/SkillGraphView';
 import { QuizAssessment } from './components/QuizAssessment';
 import { GoalSelector } from './components/GoalSelector';
+import { ResearchBenchmarkView } from './components/ResearchBenchmarkView';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { Cpu } from 'lucide-react';
@@ -152,6 +153,20 @@ function AppContent() {
                   handleRefreshAll();
                   setActiveTab('dashboard');
                 }}
+              />
+            </motion.div>
+          )}
+
+          {activeTab === 'research' && (
+            <motion.div
+              key="research"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.18, ease: 'easeOut' }}
+            >
+              <ResearchBenchmarkView
+                onBackToDashboard={() => setActiveTab('dashboard')}
               />
             </motion.div>
           )}

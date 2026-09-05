@@ -12,14 +12,15 @@ import {
   User as UserIcon,
   Settings,
   ShieldCheck,
-  TrendingUp
+  TrendingUp,
+  FlaskConical
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAuth } from '../context/AuthContext';
 import { ProfileModal } from './ProfileModal';
 import { BrandLogo } from './BrandLogo';
 
-export type NavTab = 'dashboard' | 'graph' | 'quiz' | 'goals';
+export type NavTab = 'dashboard' | 'graph' | 'quiz' | 'goals' | 'research';
 
 interface NavbarProps {
   activeTab: NavTab;
@@ -69,6 +70,14 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onRefre
       shortLabel: 'Goals',
       description: 'Target milestones & prerequisite chains', 
       icon: Target 
+    },
+    { 
+      id: 'research', 
+      label: 'Research & BKT', 
+      shortLabel: 'Research',
+      description: 'Empirical benchmarks, BKT vs DKT simulations & psychometrics', 
+      icon: FlaskConical,
+      badge: 'Lab'
     },
   ];
 
@@ -175,6 +184,18 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onRefre
                           >
                             <Target className="w-4 h-4 text-[#1877F2]" />
                             <span>Curriculum Goals</span>
+                          </button>
+
+                          <button
+                            id="btn-profile-dropdown-research"
+                            onClick={() => {
+                              setActiveTab('research');
+                              setUserDropdownOpen(false);
+                            }}
+                            className="w-full text-left px-3 py-2 rounded-lg hover:bg-indigo-50 text-indigo-700 hover:text-indigo-900 flex items-center gap-2.5 cursor-pointer font-medium transition-colors"
+                          >
+                            <FlaskConical className="w-4 h-4 text-indigo-600" />
+                            <span>Research & BKT Sandbox</span>
                           </button>
 
                           <button

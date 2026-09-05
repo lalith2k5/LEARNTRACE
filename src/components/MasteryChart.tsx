@@ -112,7 +112,7 @@ export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectS
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <div>
           <div className="flex items-center gap-2">
-            <h3 className="font-bold text-sm text-slate-900">Skill Mastery & Memory Retention</h3>
+            <h3 className="font-bold text-sm text-slate-900">Evidence-Based Mastery & Memory Retention</h3>
             {spacedReviewCount > 0 && (
               <span className="inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200">
                 <RefreshCw className="w-3 h-3 text-amber-600" />
@@ -120,7 +120,7 @@ export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectS
               </span>
             )}
           </div>
-          <p className="text-xs text-slate-400">Time-decayed Ebbinghaus retention model with recency weighting</p>
+          <p className="text-xs text-slate-400">Production evidence-based estimation with time-decayed Ebbinghaus retention and recency weighting</p>
         </div>
 
         {/* Legend */}

@@ -35,25 +35,33 @@ function maskDatabaseUrl(url?: string): string {
 /**
  * Initializes database connection.
  * Attempts to connect to PostgreSQL via Prisma if DATABASE_URL is supplied.
- * If unreachable (e.g., sandboxed development), gracefully falls back to local storage without crashing.
+ * In development, if unreachable, gracefully falls back to local storage without crashing.
+ * In production, requires DATABASE_URL and a live PostgreSQL connection; fails clearly otherwise.
  */
 export async function initializeDatabaseConnection(): Promise<{
   connected: boolean;
-  status: 'connected' | 'sandboxed_fallback' | 'not_configured';
+  status: 'connected' | 'sandboxed_fallback' | 'not_configured' | 'failed_production';
   message: string;
 }> {
   lastCheckedAt = new Date().toISOString();
   const dbUrl = process.env.DATABASE_URL;
+  const isProduction = process.env.NODE_ENV === 'production';
 
   if (!dbUrl || dbUrl.trim() === '') {
     connectionStatus = 'not_configured';
     isPostgresConnected = false;
     connectionError = 'DATABASE_URL environment variable is not set.';
-    console.log('[LearnTrace Storage] DATABASE_URL not set. Running in local JSON file storage mode.');
+
+    if (isProduction) {
+      console.error('[LearnTrace Security] ❌ FATAL IN PRODUCTION: DATABASE_URL environment variable is required. Silently falling back to JSON storage is prohibited in production.');
+      throw new Error('Production database failure: DATABASE_URL is required in production environment.');
+    }
+
+    console.log('[LearnTrace Storage] DATABASE_URL not set. Running in development local JSON file storage mode.');
     return {
       connected: false,
       status: 'not_configured',
-      message: 'DATABASE_URL not set; running with local storage.',
+      message: 'DATABASE_URL not set; running with local storage (development only).',
     };
   }
 
@@ -67,14 +75,14 @@ export async function initializeDatabaseConnection(): Promise<{
       });
     }
 
-    // Connect with a 3.5s timeout race to prevent server hanging in sandboxed environments
+    // Connect with a 3.5s timeout race to prevent server hanging indefinitely
     const connectPromise = prisma.$connect().then(async () => {
       // Execute a lightweight query to ensure target database responds
       await prisma!.$queryRaw`SELECT 1 AS healthcheck`;
     });
 
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Connection timed out after 3500ms (PostgreSQL host unreachable in sandbox)')), 3500)
+      setTimeout(() => reject(new Error('Connection timed out after 3500ms (PostgreSQL host unreachable)')), 3500)
     );
 
     await Promise.race([connectPromise, timeoutPromise]);
@@ -94,11 +102,8 @@ export async function initializeDatabaseConnection(): Promise<{
     };
   } catch (err: any) {
     isPostgresConnected = false;
-    connectionStatus = 'sandboxed_fallback';
+    connectionStatus = isProduction ? 'failed_production' as any : 'sandboxed_fallback';
     connectionError = err.message || String(err);
-
-    console.warn(`[LearnTrace Storage] ⚠️ PostgreSQL connection failed: ${connectionError}`);
-    console.log('[LearnTrace Storage] 🛡️ Sandboxed development mode active: Gracefully falling back to local JSON store.');
 
     // Gracefully disconnect prisma client so connection pool does not leak
     if (prisma) {
@@ -108,6 +113,13 @@ export async function initializeDatabaseConnection(): Promise<{
         // ignore
       }
     }
+
+    if (isProduction) {
+      console.error(`[LearnTrace Security] ❌ FATAL IN PRODUCTION: PostgreSQL connection failed: ${connectionError}. Refusing to fall back to JSON storage.`);
+      throw new Error(`Production database connection failed: ${connectionError}`);
+    }
+
+    console.info(`[LearnTrace Storage] ℹ️ PostgreSQL instance not reachable in local sandbox (${connectionError}). Resilient local JSON storage mode active.`);
 
     return {
       connected: false,

@@ -28,7 +28,36 @@ import { User, Attempt, UserGoal, CognitiveState, LearningGoal, Question } from 
 dotenv.config();
 
 const PORT = 3000;
-const JWT_SECRET = process.env.JWT_SECRET || 'learntrace_jwt_secret_dev_key_2026';
+const isProduction = process.env.NODE_ENV === 'production';
+
+// In production, JWT_SECRET is strictly required and cannot fall back to a hardcoded default.
+// In development, if JWT_SECRET is not provided, we allow a development-only secret.
+function getJwtSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (secret && secret.trim().length > 0) {
+    return secret.trim();
+  }
+  if (isProduction) {
+    console.error('[LearnTrace Security] ❌ FATAL IN PRODUCTION: JWT_SECRET environment variable is missing or empty. Server cannot start.');
+    throw new Error('Production configuration error: JWT_SECRET environment variable is required.');
+  }
+  return 'learntrace_jwt_dev_secret_only_for_local_sandbox';
+}
+
+const JWT_SECRET = getJwtSecret();
+
+/**
+ * Demo authentication check:
+ * In development, demo authentication is allowed by default unless explicitly disabled (ALLOW_DEMO_AUTH=false).
+ * In production, demo authentication is strictly blocked unless explicitly enabled (ALLOW_DEMO_AUTH=true).
+ */
+function isDemoAuthAllowed(): boolean {
+  const flag = process.env.ALLOW_DEMO_AUTH;
+  if (isProduction) {
+    return flag === 'true';
+  }
+  return flag !== 'false';
+}
 
 const app = express();
 
@@ -45,27 +74,51 @@ interface AuthenticatedRequest extends Request {
 
 /**
  * Reusable JWT Authentication Middleware
+ * Enforces strict cryptographic signature verification.
+ * Does NOT allow unverified token decoding or silent fallback to demo user.
+ * Demo token / fallback is guarded behind isDemoAuthAllowed().
  */
 function authenticateToken(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
 
   if (!token || token === 'null' || token === 'undefined') {
-    const demoUser = store.users.get('user_demo_learner');
-    req.user = {
-      id: demoUser ? demoUser.id : 'user_demo_learner',
-      email: demoUser ? demoUser.email : 'learner@learntrace.ai',
-    };
-    return next();
+    if (isDemoAuthAllowed()) {
+      const demoUser = store.users.get('user_demo_learner');
+      req.user = {
+        id: demoUser ? demoUser.id : 'user_demo_learner',
+        email: demoUser ? demoUser.email : 'learner@learntrace.ai',
+      };
+      return next();
+    }
+    res.status(401).json({
+      error: 'Authentication required. Missing Bearer authorization token.',
+      code: 'AUTH_TOKEN_MISSING'
+    });
+    return;
   }
 
   if (token === 'demo_token') {
-    req.user = { id: 'user_demo_learner', email: 'learner@learntrace.ai' };
-    return next();
+    if (isDemoAuthAllowed()) {
+      req.user = { id: 'user_demo_learner', email: 'learner@learntrace.ai' };
+      return next();
+    }
+    res.status(403).json({
+      error: 'Demo authentication is disabled in this environment.',
+      code: 'DEMO_AUTH_DISABLED'
+    });
+    return;
   }
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as { id: string; email: string };
+    if (!decoded || !decoded.id) {
+      res.status(401).json({
+        error: 'Invalid authentication token claims.',
+        code: 'INVALID_TOKEN'
+      });
+      return;
+    }
     let user = store.users.get(decoded.id);
     if (!user) {
       user = {
@@ -78,30 +131,20 @@ function authenticateToken(req: AuthenticatedRequest, res: Response, next: NextF
     }
     req.user = { id: user.id, email: user.email };
     return next();
-  } catch {
-    try {
-      const decodedUnverified = jwt.decode(token) as { id?: string; email?: string } | null;
-      if (decodedUnverified?.id) {
-        let user = store.users.get(decodedUnverified.id);
-        if (!user) {
-          user = {
-            id: decodedUnverified.id,
-            email: decodedUnverified.email || `${decodedUnverified.id}@learntrace.ai`,
-            passwordHash: '',
-            createdAt: new Date().toISOString(),
-          };
-          store.users.set(user.id, user);
-        }
-        req.user = { id: user.id, email: user.email };
-        return next();
-      }
-    } catch {
-      // ignore
+  } catch (err: any) {
+    if (err?.name === 'TokenExpiredError') {
+      res.status(401).json({
+        error: 'Authentication token has expired. Please log in again.',
+        code: 'TOKEN_EXPIRED'
+      });
+      return;
     }
+    res.status(401).json({
+      error: 'Invalid or corrupted authentication token signature.',
+      code: 'INVALID_TOKEN'
+    });
+    return;
   }
-
-  req.user = { id: 'user_demo_learner', email: 'learner@learntrace.ai' };
-  next();
 }
 
 function optionalAuthenticateToken(req: AuthenticatedRequest, res: Response, next: NextFunction): void {
@@ -1008,6 +1051,8 @@ mountRoute('post', '/ai/grade-open-ended', authenticateToken, async (req: Authen
   store.attempts.push(attempt);
   const updatedMastery = calculateSkillMasteryForUser(userId, skillId);
   saveStoreToDisk();
+  syncAttemptToDb(attempt);
+  syncMasteryToDb(userId, skillId, updatedMastery.masteryScore, updatedMastery.evidenceCount);
 
   res.status(200).json({
     ...evaluation,
@@ -1228,10 +1273,34 @@ mountRoute('post', '/goals/custom', optionalAuthenticateToken, (req: Authenticat
 /* ---------------- RESET / SEED DEMO ---------------- */
 
 mountRoute('post', '/reset-demo', async (req: Request, res: Response) => {
+  if (!isDemoAuthAllowed()) {
+    res.status(403).json({
+      error: 'Demo reset operations are disabled in this environment.',
+      code: 'DEMO_RESET_DISABLED'
+    });
+    return;
+  }
   await initializeDatabaseSeed();
   await initializeDatabaseConnection();
   recalculateAllUserMasteries('user_demo_learner');
   res.json({ message: 'Database and demo state successfully re-seeded to initial diagnostic baseline.' });
+});
+
+/**
+ * Global Error Sanitizer Middleware
+ * Ensures internal system error stacks, database queries, and credentials are never leaked to clients.
+ */
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error('[LearnTrace ErrorHandler] Handled uncaught route exception:', err?.message || err);
+
+  const status = typeof err?.status === 'number' && err.status >= 400 && err.status < 600 ? err.status : 500;
+  const isProd = process.env.NODE_ENV === 'production';
+
+  res.status(status).json({
+    error: isProd ? (status === 500 ? 'An unexpected internal error occurred. Please try again later.' : (err?.message || 'Request failed.')) : (err?.message || 'Internal server error'),
+    code: err?.code || 'INTERNAL_ERROR',
+    ...(isProd ? {} : { details: err?.stack || String(err) })
+  });
 });
 
 /**

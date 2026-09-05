@@ -16,7 +16,8 @@ import {
   AlertCircle,
   TrendingUp,
   ShieldCheck,
-  Zap
+  Zap,
+  FlaskConical
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAuth } from '../context/AuthContext';
@@ -383,6 +384,30 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
                 >
                   <FileDown className="w-4 h-4 text-slate-600" />
                   <span>Export JSON</span>
+                </button>
+              </div>
+
+              {/* Research & BKT Psychometrics Quick Navigation */}
+              <div className="p-4 rounded-xl bg-indigo-50/50 border border-indigo-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-1.5 text-xs font-semibold text-indigo-900">
+                    <FlaskConical className="w-4 h-4 text-indigo-600" />
+                    <span>Research & BKT Simulation Suite</span>
+                  </div>
+                  <p className="text-[11px] text-slate-600">
+                    Benchmark evidence-based heuristics against Bayesian Knowledge Tracing (BKT) and Deep Knowledge Tracing (DKT).
+                  </p>
+                </div>
+
+                <button
+                  id="btn-profile-launch-research"
+                  onClick={() => {
+                    onClose();
+                    onNavigateToTab('research');
+                  }}
+                  className="px-3.5 py-2 rounded-lg bg-white border border-indigo-200 hover:border-indigo-300 text-indigo-700 text-xs font-semibold shadow-2xs transition-colors cursor-pointer shrink-0"
+                >
+                  Open Research Workbench
                 </button>
               </div>
 
