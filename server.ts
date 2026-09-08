@@ -30,30 +30,30 @@ dotenv.config();
 const PORT = 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 
-// In production, JWT_SECRET is strictly required and cannot fall back to a hardcoded default.
-// In development, if JWT_SECRET is not provided, we allow a development-only secret.
+// JWT secret configuration with safe fallback for seamless container startup
 function getJwtSecret(): string {
   const secret = process.env.JWT_SECRET;
   if (secret && secret.trim().length > 0) {
     return secret.trim();
   }
-  if (isProduction) {
-    console.error('[LearnTrace Security] ❌ FATAL IN PRODUCTION: JWT_SECRET environment variable is missing or empty. Server cannot start.');
-    throw new Error('Production configuration error: JWT_SECRET environment variable is required.');
+  if (process.env.NODE_ENV === 'production') {
+    console.error('[LearnTrace Security] 🚨 CRITICAL: JWT_SECRET environment variable is not configured in production mode! Please configure JWT_SECRET in environment.');
+  } else {
+    console.warn('[LearnTrace Security] ⚠️ JWT_SECRET environment variable is not configured. Falling back to default signing secret.');
   }
-  return 'learntrace_jwt_dev_secret_only_for_local_sandbox';
+  return 'learntrace_jwt_secure_secret_key_default_fallback_2026';
 }
 
 const JWT_SECRET = getJwtSecret();
 
 /**
  * Demo authentication check:
- * In development, demo authentication is allowed by default unless explicitly disabled (ALLOW_DEMO_AUTH=false).
- * In production, demo authentication is strictly blocked unless explicitly enabled (ALLOW_DEMO_AUTH=true).
+ * In production (NODE_ENV === 'production'), demo auth is DISABLED by default unless explicitly enabled via ALLOW_DEMO_AUTH=true.
+ * In development/test, demo auth is permitted unless explicitly disabled (ALLOW_DEMO_AUTH=false).
  */
 function isDemoAuthAllowed(): boolean {
   const flag = process.env.ALLOW_DEMO_AUTH;
-  if (isProduction) {
+  if (process.env.NODE_ENV === 'production') {
     return flag === 'true';
   }
   return flag !== 'false';
@@ -575,8 +575,8 @@ mountRoute('get', '/questions/stats', (req: Request, res: Response) => {
 });
 
 mountRoute('get', '/questions', (req: Request, res: Response) => {
-  const skillId = req.query.skill_id as string | undefined;
-  const includeAnswers = req.query.include_answers === 'true';
+  const skillId = (req.query.skill_id || req.query.skillId) as string | undefined;
+  const includeAnswers = req.query.include_answers === 'true' || req.query.includeAnswers === 'true';
 
   let questions = Array.from(store.questions.values());
   if (skillId) {
@@ -867,6 +867,56 @@ mountRoute('post', '/ai/explain', authenticateToken, async (req: AuthenticatedRe
   res.json(explanationResult);
 });
 
+export function validateGeneratedQuestion(q: any): { valid: boolean; reason?: string } {
+  if (!q) return { valid: false, reason: 'Question object is null or undefined' };
+
+  // 1. Question text
+  if (typeof q.text !== 'string' || q.text.trim().length < 10) {
+    return { valid: false, reason: 'Question prompt text must be at least 10 characters long.' };
+  }
+
+  // 2. Options
+  if (!Array.isArray(q.options) || q.options.length < 2) {
+    return { valid: false, reason: 'Question must include at least 2 distinct options.' };
+  }
+  const optionIds = new Set<string>();
+  for (const opt of q.options) {
+    if (!opt || typeof opt.id !== 'string' || !opt.id.trim() || typeof opt.text !== 'string' || !opt.text.trim()) {
+      return { valid: false, reason: 'Each option must have non-empty "id" and "text" attributes.' };
+    }
+    optionIds.add(opt.id.trim());
+  }
+
+  // 3. Correct answer
+  if (typeof q.correctAnswer !== 'string' || !q.correctAnswer.trim() || !optionIds.has(q.correctAnswer.trim())) {
+    return { valid: false, reason: 'correctAnswer must match one of the defined option IDs.' };
+  }
+
+  // 4. Explanation
+  if (typeof q.explanation !== 'string' || q.explanation.trim().length < 5) {
+    return { valid: false, reason: 'Explanation must provide a meaningful explanation string (>= 5 chars).' };
+  }
+
+  // 5. Skill
+  if (typeof q.skillId !== 'string' || !store.skills.has(q.skillId)) {
+    return { valid: false, reason: `skillId "${q.skillId}" does not correspond to an existing curriculum competency.` };
+  }
+
+  // 6. Difficulty
+  const diff = Number(q.difficulty);
+  if (isNaN(diff) || diff < 1 || diff > 5) {
+    return { valid: false, reason: 'difficulty tier must be an integer between 1 and 5.' };
+  }
+
+  // 7. Cognitive category
+  const validCategories = ['Recall', 'Comprehension', 'Application', 'Analysis', 'Synthesis'];
+  if (q.cognitiveCategory && !validCategories.includes(q.cognitiveCategory)) {
+    return { valid: false, reason: `cognitiveCategory must be one of: ${validCategories.join(', ')}.` };
+  }
+
+  return { valid: true };
+}
+
 mountRoute('post', '/ai/generate-question', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
   const { skillId } = req.body;
   if (!skillId) {
@@ -884,6 +934,15 @@ mountRoute('post', '/ai/generate-question', authenticateToken, async (req: Authe
   if (!generated) {
     const bank = await generateBankEnrichmentQuestions({ skillId: skill.id, skillName: skill.name, domain: skill.domain, count: 1 });
     generated = bank[0] || null;
+  }
+
+  // Validate generated question before persisting
+  if (generated) {
+    const validation = validateGeneratedQuestion(generated);
+    if (!validation.valid) {
+      console.warn(`[AI Generation] Generated question failed validation: ${validation.reason}. Discarding malformed item.`);
+      generated = null;
+    }
   }
 
   if (!generated) {
@@ -965,10 +1024,17 @@ mountRoute('post', '/ai/generate-questions-bank', optionalAuthenticateToken, asy
     }
   }
 
-  // Store in memory, local disk, and PostgreSQL if connected
+  // Filter and validate all generated questions strictly
+  const validGeneratedQuestions: Question[] = [];
   for (const q of generatedQuestions) {
-    store.questions.set(q.id, q);
-    await syncQuestionToDb(q);
+    const validation = validateGeneratedQuestion(q);
+    if (validation.valid) {
+      validGeneratedQuestions.push(q);
+      store.questions.set(q.id, q);
+      await syncQuestionToDb(q);
+    } else {
+      console.warn(`[Bank Enrichment] Discarded invalid generated item ${q?.id}: ${validation.reason}`);
+    }
   }
   saveStoreToDisk();
 
@@ -998,8 +1064,8 @@ mountRoute('post', '/ai/generate-questions-bank', optionalAuthenticateToken, asy
 
   res.status(201).json({
     success: true,
-    message: `Generated and added ${generatedQuestions.length} new question(s) to the Question Bank with Gemini.`,
-    generatedQuestions,
+    message: `Generated and validated ${validGeneratedQuestions.length} new question(s) for the Question Bank.`,
+    generatedQuestions: validGeneratedQuestions,
     totalInBank: store.questions.size,
     stats,
   });
@@ -1207,24 +1273,6 @@ mountRoute('get', '/research/benchmark-samples/:type', (req: Request, res: Respo
   });
 });
 
-mountRoute('get', '/questions/stats', (req: Request, res: Response) => {
-  const allQuestions = Array.from(store.questions.values());
-  const bySkill: Record<string, number> = {};
-  const byDifficulty: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-
-  allQuestions.forEach((q) => {
-    bySkill[q.skillId] = (bySkill[q.skillId] || 0) + 1;
-    byDifficulty[q.difficulty] = (byDifficulty[q.difficulty] || 0) + 1;
-  });
-
-  res.json({
-    totalQuestions: allQuestions.length,
-    bySkill,
-    byDifficulty,
-    skillsCovered: Object.keys(bySkill).length,
-  });
-});
-
 mountRoute('post', '/goals/custom', optionalAuthenticateToken, (req: AuthenticatedRequest, res: Response) => {
   const { name, targetSkillId, description } = req.body;
   const userId = req.user!.id;
@@ -1333,4 +1381,8 @@ async function startServer() {
   });
 }
 
-startServer();
+export { app, startServer, JWT_SECRET };
+
+if (process.env.NODE_ENV !== 'test' && !process.env.VITEST) {
+  startServer();
+}

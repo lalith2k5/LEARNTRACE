@@ -104,6 +104,7 @@ function AppContent() {
               <DashboardPage
                 onStartQuizForSkill={handleStartQuizForSkill}
                 onNavigateToGraph={() => setActiveTab('graph')}
+                onNavigateToResearch={() => setActiveTab('research')}
               />
             </motion.div>
           )}
@@ -174,23 +175,19 @@ function AppContent() {
       </main>
 
       {/* Footer */}
-      <footer className="w-full border-t border-slate-200 bg-white py-5 mt-10 text-center text-xs text-slate-500 font-sans">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <footer className="w-full border-t border-slate-200 bg-white py-4 mt-8 text-xs text-slate-500 font-sans">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2.5">
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-800">LearnTrace</span>
-            <span className="text-slate-400">•</span>
-            <span className="text-slate-600">Cognitive Knowledge Graph & Adaptive Mastery Platform</span>
+            <span className="text-slate-300">•</span>
+            <span className="text-slate-500 text-[11px]">Cognitive Knowledge Graph & Adaptive Mastery Platform</span>
           </div>
           <div className="flex items-center gap-3 text-[11px] text-slate-400">
-            <span>Node.js & Express • React • Bayesian KT Engine</span>
-            <span className="text-slate-300">|</span>
-            <button
-              id="btn-footer-toggle-research"
-              onClick={() => setActiveTab(activeTab === 'research' ? 'dashboard' : 'research')}
-              className="text-slate-500 hover:text-[#1877F2] font-medium underline cursor-pointer transition-colors"
-            >
-              {activeTab === 'research' ? '← Back to Learner Dashboard' : 'Model Evaluation & BKT Sandbox'}
-            </button>
+            <span>Evidence-Based Knowledge Tracing</span>
+            <span className="text-slate-300">•</span>
+            <span>BKT & DKT Psychometrics</span>
+            <span className="text-slate-300">•</span>
+            <span>Ebbinghaus Retention Decay</span>
           </div>
         </div>
       </footer>

@@ -320,18 +320,18 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
     <div className="w-full max-w-4xl mx-auto space-y-6">
       
       {/* Skill & Mode Selector Header */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs space-y-4">
+      <div className="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-2xs space-y-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs uppercase tracking-wider font-mono text-[#1877F2] font-bold">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-[11px] uppercase tracking-wider font-semibold text-[#1877F2]">
                 Diagnostic & Mastery Assessment
               </span>
             </div>
-            <h2 className="text-xl font-bold text-slate-900 tracking-tight">
+            <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
               {activeSkillObj?.name || 'Skill Assessment'}
             </h2>
-            <p className="text-xs text-slate-500">{activeSkillObj?.description}</p>
+            <p className="text-xs text-slate-500 mt-0.5">{activeSkillObj?.description}</p>
           </div>
 
           <div className="flex items-center gap-2 flex-wrap">
@@ -341,7 +341,7 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
                 onClick={() => setAssessmentMode('multiple_choice')}
                 className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
                   assessmentMode === 'multiple_choice'
-                    ? 'bg-[#1877F2] text-white shadow-xs'
+                    ? 'bg-[#1877F2] text-white shadow-2xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -353,7 +353,7 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
                 onClick={() => setAssessmentMode('open_ended')}
                 className={`px-3 py-1.5 rounded-lg font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
                   assessmentMode === 'open_ended'
-                    ? 'bg-[#1877F2] text-white shadow-xs'
+                    ? 'bg-[#1877F2] text-white shadow-2xs'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
@@ -367,7 +367,7 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
               id="select-quiz-skill"
               value={selectedSkillId}
               onChange={(e) => setSelectedSkillId(e.target.value)}
-              className="bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#1877F2] cursor-pointer shadow-2xs"
+              className="bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:border-[#1877F2] cursor-pointer shadow-2xs"
             >
               {skills.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -380,7 +380,7 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
       </div>
 
       {/* Main Assessment Container */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-xs space-y-6">
+      <div className="bg-white border border-slate-200 rounded-xl p-5 sm:p-7 shadow-2xs space-y-6">
 
         {/* ----------------- MODE 1: MULTIPLE CHOICE ----------------- */}
         {assessmentMode === 'multiple_choice' ? (
@@ -416,14 +416,14 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
                 </div>
 
                 {/* Real-time Latency Tracker */}
-                <div className="flex items-center gap-2 font-mono text-xs text-slate-600 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+                <div className="flex items-center gap-2 font-mono text-xs text-slate-600 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
                   <Clock className="w-3.5 h-3.5 text-[#1877F2]" />
                   <span>{timerSeconds}s</span>
                 </div>
               </div>
 
               {/* Question Text */}
-              <div className="space-y-2 min-w-0">
+              <div className="space-y-2 min-w-0 max-w-3xl">
                 <h3 className="text-base sm:text-lg font-semibold text-slate-900 leading-relaxed break-words">
                   {currentQuestion.text}
                 </h3>
@@ -435,9 +435,9 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
                   const isSelected = selectedOptionId === opt.id;
                   const isSubmitted = gradingResult !== null;
                   
-                  let optionStyles = 'border-slate-200 bg-slate-50 hover:border-slate-300 hover:bg-slate-100/80 text-slate-800';
+                  let optionStyles = 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 text-slate-800';
                   if (isSelected && !isSubmitted) {
-                    optionStyles = 'border-[#1877F2] bg-blue-50/80 text-blue-950 ring-1 ring-[#1877F2]/30 shadow-xs';
+                    optionStyles = 'border-[#1877F2] bg-blue-50/70 text-blue-950 ring-2 ring-[#1877F2]/30 shadow-2xs';
                   }
 
                   return (
@@ -445,7 +445,7 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
                       key={opt.id}
                       onClick={() => handleSelectOption(opt.id)}
                       disabled={isSubmitted}
-                      className={`w-full p-4 rounded-xl border text-left text-xs sm:text-sm font-medium transition-all flex items-start sm:items-center justify-between gap-3 cursor-pointer min-w-0 ${optionStyles} ${
+                      className={`w-full p-3.5 sm:p-4 rounded-xl border text-left text-xs sm:text-sm font-medium transition-all flex items-start sm:items-center justify-between gap-3 cursor-pointer min-w-0 ${optionStyles} ${
                         isSubmitted ? 'cursor-default opacity-90' : ''
                       }`}
                     >
@@ -454,7 +454,7 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
                           className={`w-5 h-5 rounded-full border flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 sm:mt-0 ${
                             isSelected
                               ? 'border-[#1877F2] bg-[#1877F2] text-white'
-                              : 'border-slate-300 bg-white text-slate-600'
+                              : 'border-slate-300 bg-slate-50 text-slate-600'
                           }`}
                         >
                           {opt.id.replace('opt_', '')}
@@ -484,7 +484,7 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
                         onClick={() => setConfidence(lvl)}
                         className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition-all border cursor-pointer ${
                           confidence === lvl
-                            ? 'bg-[#1877F2] text-white border-[#1877F2] shadow-xs'
+                            ? 'bg-[#1877F2] text-white border-[#1877F2] shadow-2xs'
                             : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200'
                         }`}
                       >
@@ -514,7 +514,7 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
                   id="btn-submit-answer"
                   onClick={handleSubmitAnswer}
                   disabled={!selectedOptionId || submitting}
-                  className="w-full py-3.5 px-6 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-sm shadow-md shadow-[#1877F2]/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3 px-6 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold text-xs sm:text-sm shadow-2xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {submitting ? (
                     <>
@@ -557,12 +557,12 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
                             <span
                               className={`text-xs px-2.5 py-0.5 rounded-full font-bold border ${
                                 gradingResult.cognitiveState === 'CONFIDENT_MISCONCEPTION'
-                                  ? 'bg-amber-100 text-amber-900 border-amber-300'
-                                  : gradingResult.cognitiveState === 'SOLID_MASTERY'
-                                  ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
-                                  : gradingResult.cognitiveState === 'FRAGILE_KNOWLEDGE'
-                                  ? 'bg-yellow-100 text-yellow-900 border-yellow-300'
-                                  : 'bg-slate-100 text-slate-800 border-slate-200'
+                                   ? 'bg-amber-100 text-amber-900 border-amber-300'
+                                   : gradingResult.cognitiveState === 'SOLID_MASTERY'
+                                   ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
+                                   : gradingResult.cognitiveState === 'FRAGILE_KNOWLEDGE'
+                                   ? 'bg-yellow-100 text-yellow-900 border-yellow-300'
+                                   : 'bg-slate-100 text-slate-800 border-slate-200'
                               }`}
                             >
                               State: {gradingResult.cognitiveState.replace('_', ' ')}
@@ -597,16 +597,16 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
                       id="btn-ai-explain"
                       onClick={handleRequestAiExplanation}
                       disabled={loadingAi}
-                      className="flex-1 py-3 px-4 rounded-xl bg-white hover:bg-slate-50 border border-blue-300 text-[#1877F2] text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
+                      className="flex-1 py-2.5 px-4 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-indigo-700 text-xs font-semibold transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
                     >
-                      <Brain className={`w-4 h-4 text-[#1877F2] ${loadingAi ? 'animate-spin' : ''}`} />
+                      <Brain className={`w-4 h-4 text-indigo-600 ${loadingAi ? 'animate-spin' : ''}`} />
                       <span>{loadingAi ? 'Generating AI Breakdown...' : 'Explain with AI Tutor'}</span>
                     </button>
 
                     <button
                       id="btn-next-question"
                       onClick={handleNextQuestion}
-                      className="flex-1 py-3 px-5 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] text-white text-xs font-bold shadow-md shadow-[#1877F2]/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      className="flex-1 py-2.5 px-5 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] text-white text-xs font-semibold shadow-2xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <span>
                         {currentIndex < questions.length - 1 ? 'Next Question' : 'Finish Assessment'}
@@ -616,19 +616,53 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
                   </div>
 
                   {aiExplanation && (
-                    <div className="p-4 rounded-xl bg-blue-50/70 border border-blue-200 space-y-2 text-xs">
-                      <div className="flex items-center justify-between text-blue-900 font-bold">
+                    <div className="p-4 rounded-xl bg-blue-50/70 border border-blue-200 space-y-2.5 text-xs">
+                      <div className="flex items-center justify-between text-blue-900 font-bold flex-wrap gap-2">
                         <span className="flex items-center gap-1.5">
                           <Sparkles className="w-4 h-4 text-[#1877F2]" />
                           AI Tutor Conceptual Breakdown
                         </span>
-                        <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-blue-100 text-blue-800 border border-blue-200">
-                          {aiExplanation.source}
-                        </span>
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          {aiExplanation.keyConcept && (
+                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">
+                              Concept: {aiExplanation.keyConcept}
+                            </span>
+                          )}
+                          <span
+                            className={`text-[10px] uppercase font-mono px-2 py-0.5 rounded border ${
+                              aiExplanation.source === 'gemini'
+                                ? 'bg-blue-100 text-blue-800 border-blue-200'
+                                : aiExplanation.source === 'ollama'
+                                ? 'bg-purple-100 text-purple-800 border-purple-200'
+                                : 'bg-amber-100 text-amber-800 border-amber-200'
+                            }`}
+                          >
+                            {aiExplanation.source === 'gemini'
+                              ? 'Gemini 3.8 Flash'
+                              : aiExplanation.source === 'ollama'
+                              ? 'Ollama LLM'
+                              : 'Curriculum Pedagogical Notes (Offline Fallback)'}
+                          </span>
+                        </div>
                       </div>
+
+                      {aiExplanation.cognitiveDiagnosis && (
+                        <div className="p-2 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-[11px] font-medium flex items-center gap-1.5">
+                          <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                          <span>{aiExplanation.cognitiveDiagnosis}</span>
+                        </div>
+                      )}
+
                       <p className="text-slate-800 leading-relaxed font-sans text-sm">
                         {aiExplanation.explanation}
                       </p>
+
+                      {aiExplanation.correctAnswer && (
+                        <div className="text-[11px] text-slate-600 pt-1 border-t border-blue-100 flex items-center gap-1">
+                          <span className="font-semibold text-slate-700">Target Accurate Concept:</span>
+                          <span className="font-medium text-emerald-700">{aiExplanation.correctAnswer}</span>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -700,7 +734,7 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
               <button
                 onClick={handleSubmitOpenEnded}
                 disabled={gradingOpenEnded || !studentTextResponse.trim()}
-                className="w-full py-3.5 px-6 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-sm shadow-md shadow-[#1877F2]/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3 px-6 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold text-xs sm:text-sm shadow-2xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >
                 {gradingOpenEnded ? (
                   <>
@@ -719,7 +753,7 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
             {/* Open-Ended Grading Result */}
             {openEndedResult !== null && (
               <div className="space-y-4 pt-2">
-                <div className="p-5 rounded-xl bg-white border border-slate-200 space-y-4 shadow-xs">
+                <div className="p-5 rounded-xl bg-white border border-slate-200 space-y-4 shadow-2xs">
                   <div className="flex items-center justify-between flex-wrap gap-2">
                     <div className="flex items-center gap-2">
                       <span className="text-2xl font-black font-mono text-[#1877F2]">
@@ -779,7 +813,7 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
                     const nextPrompt = prompts[1] || prompts[0];
                     setOpenEndedPrompt(nextPrompt);
                   }}
-                  className="w-full py-3 px-5 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] text-white text-xs font-bold shadow-xs transition-all cursor-pointer"
+                  className="w-full py-2.5 px-5 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] text-white text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
                 >
                   Try Another Challenge
                 </button>

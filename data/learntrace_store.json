@@ -5,161 +5,18 @@
       {
         "id": "user_demo_learner",
         "email": "learner@learntrace.ai",
-        "passwordHash": "$2b$10$WZYGZpLSU7p1TMyEMCleXusE/EkLmw1nGAxssuBin.9KTIexy31MW",
-        "createdAt": "2026-08-27T15:52:45.005Z"
-      }
-    ],
-    [
-      "user_1788451781594_h45jl",
-      {
-        "id": "user_1788451781594_h45jl",
-        "email": "learner_page3_1788451781393@learntrace.ai",
-        "passwordHash": "$2b$10$ZchILHztb/nV3tAMSMKwzOzxNTIDMRggvIlsk1cD7ymUSlOdEyBqO",
-        "createdAt": "2026-09-03T16:09:41.594Z"
-      }
-    ],
-    [
-      "user_1788451801597_pauni",
-      {
-        "id": "user_1788451801597_pauni",
-        "email": "learner_page3_1788451801411@learntrace.ai",
-        "passwordHash": "$2b$10$IC9aeHqq5MmdE63aE6OR0uCe3ox4gDucexkqIosl4QHEv/GA076oq",
-        "createdAt": "2026-09-03T16:10:01.597Z"
-      }
-    ],
-    [
-      "user_1788451840148_tujbd",
-      {
-        "id": "user_1788451840148_tujbd",
-        "email": "learner_page3_1788451839957@learntrace.ai",
-        "passwordHash": "$2b$10$MN6T1alOkOkxmurEn8AHzu2.JJywkH9Ppbk/OeVoTBYIbfwf9npEu",
-        "createdAt": "2026-09-03T16:10:40.148Z"
-      }
-    ],
-    [
-      "user_1788452349085_kdsvu",
-      {
-        "id": "user_1788452349085_kdsvu",
-        "email": "learner_page3_1788452348869@learntrace.ai",
-        "passwordHash": "$2b$10$kI4SokA4B.7fZ31kbCZE2.plz.efFhmBcIBb92pmbVCzerv1/n5XO",
-        "createdAt": "2026-09-03T16:19:09.085Z"
-      }
-    ],
-    [
-      "user_1788539943760_wkmqg",
-      {
-        "id": "user_1788539943760_wkmqg",
-        "email": "userr@gmail.com",
-        "passwordHash": "$2b$10$enJdaiiGu9RkuHM.pbX1nO.xZyJSOzoNch7hrFEaW7CtTR3v7IaTm",
-        "createdAt": "2026-09-04T16:39:03.760Z"
-      }
-    ],
-    [
-      "user_1788541323577_o3a28",
-      {
-        "id": "user_1788541323577_o3a28",
-        "email": "student_1788541323332@university.edu",
-        "passwordHash": "$2b$10$rHGpl.uULyr.yA6czDQ.OeQpW8ATzXn9nvZslmt1xPvZ25FCFrXM.",
-        "createdAt": "2026-09-04T17:02:03.577Z"
-      }
-    ],
-    [
-      "user_1788541348449_y3tih",
-      {
-        "id": "user_1788541348449_y3tih",
-        "email": "student_1788541348229@university.edu",
-        "passwordHash": "$2b$10$yfgvEK0UHIxIy8IZsE0mM.dGu98FJiEqUH/nSk2xShZotG4P.clB.",
-        "createdAt": "2026-09-04T17:02:28.449Z"
+        "passwordHash": "$2b$10$P2P6jd45czNMiPHF/Jl6M./WkNXVmlThheaEthThul0tR5YK9.w5G",
+        "createdAt": "2026-09-01T16:43:02.424Z"
       }
     ]
   ],
   "userGoals": [
     [
-      "user_1788451781594_h45jl_goal_mle",
-      {
-        "userId": "user_1788451781594_h45jl",
-        "goalId": "goal_mle",
-        "selectedAt": "2026-09-03T16:09:41.594Z",
-        "goal": {
-          "id": "goal_mle",
-          "name": "Machine Learning Engineer",
-          "targetSkillId": "skill_ml",
-          "description": "Master foundational mathematics, statistics, model evaluation, and machine learning algorithms.",
-          "targetSkill": {
-            "id": "skill_ml",
-            "name": "Machine Learning",
-            "domain": "Artificial Intelligence",
-            "description": "Loss functions, gradient descent optimization, bias-variance tradeoff, classification, and neural algorithms."
-          }
-        }
-      }
-    ],
-    [
-      "user_1788451801597_pauni_goal_mle",
-      {
-        "userId": "user_1788451801597_pauni",
-        "goalId": "goal_mle",
-        "selectedAt": "2026-09-03T16:10:01.615Z",
-        "goal": {
-          "id": "goal_mle",
-          "name": "Machine Learning Engineer",
-          "targetSkillId": "skill_ml",
-          "description": "Master foundational mathematics, statistics, model evaluation, and machine learning algorithms.",
-          "targetSkill": {
-            "id": "skill_ml",
-            "name": "Machine Learning",
-            "domain": "Artificial Intelligence",
-            "description": "Loss functions, gradient descent optimization, bias-variance tradeoff, classification, and neural algorithms."
-          }
-        }
-      }
-    ],
-    [
-      "user_1788451840148_tujbd_goal_mle",
-      {
-        "userId": "user_1788451840148_tujbd",
-        "goalId": "goal_mle",
-        "selectedAt": "2026-09-03T16:10:40.169Z",
-        "goal": {
-          "id": "goal_mle",
-          "name": "Machine Learning Engineer",
-          "targetSkillId": "skill_ml",
-          "description": "Master foundational mathematics, statistics, model evaluation, and machine learning algorithms.",
-          "targetSkill": {
-            "id": "skill_ml",
-            "name": "Machine Learning",
-            "domain": "Artificial Intelligence",
-            "description": "Loss functions, gradient descent optimization, bias-variance tradeoff, classification, and neural algorithms."
-          }
-        }
-      }
-    ],
-    [
-      "user_demo_learner_goal_ds",
+      "user_demo_learner_goal_mle",
       {
         "userId": "user_demo_learner",
-        "goalId": "goal_ds",
-        "selectedAt": "2026-09-03T16:15:17.071Z",
-        "goal": {
-          "id": "goal_ds",
-          "name": "Data Science Specialist",
-          "targetSkillId": "skill_model_eval",
-          "description": "Master rigorous statistical inference, probability distributions, data wrangling, and predictive model validation.",
-          "targetSkill": {
-            "id": "skill_model_eval",
-            "name": "Model Evaluation",
-            "domain": "Applied Machine Learning",
-            "description": "Confusion matrices, Precision, Recall, F1-score, ROC-AUC, cross-validation, and error diagnostics."
-          }
-        }
-      }
-    ],
-    [
-      "user_1788452349085_kdsvu_goal_mle",
-      {
-        "userId": "user_1788452349085_kdsvu",
         "goalId": "goal_mle",
-        "selectedAt": "2026-09-03T16:19:09.114Z",
+        "selectedAt": "2026-09-01T16:43:02.424Z",
         "goal": {
           "id": "goal_mle",
           "name": "Machine Learning Engineer",
@@ -175,927 +32,15 @@
       }
     ],
     [
-      "user_1788539943760_wkmqg_goal_mle",
+      "test_learner_rec_goal_mle",
       {
-        "userId": "user_1788539943760_wkmqg",
+        "userId": "test_learner_rec",
         "goalId": "goal_mle",
-        "selectedAt": "2026-09-04T16:39:03.760Z",
-        "goal": {
-          "id": "goal_mle",
-          "name": "Machine Learning Engineer",
-          "targetSkillId": "skill_ml",
-          "description": "Master foundational mathematics, statistics, model evaluation, and machine learning algorithms.",
-          "targetSkill": {
-            "id": "skill_ml",
-            "name": "Machine Learning",
-            "domain": "Artificial Intelligence",
-            "description": "Loss functions, gradient descent optimization, bias-variance tradeoff, classification, and neural algorithms."
-          }
-        }
-      }
-    ],
-    [
-      "user_1788541323577_o3a28_goal_mle",
-      {
-        "userId": "user_1788541323577_o3a28",
-        "goalId": "goal_mle",
-        "selectedAt": "2026-09-04T17:02:03.577Z",
-        "goal": {
-          "id": "goal_mle",
-          "name": "Machine Learning Engineer",
-          "targetSkillId": "skill_ml",
-          "description": "Master foundational mathematics, statistics, model evaluation, and machine learning algorithms.",
-          "targetSkill": {
-            "id": "skill_ml",
-            "name": "Machine Learning",
-            "domain": "Artificial Intelligence",
-            "description": "Loss functions, gradient descent optimization, bias-variance tradeoff, classification, and neural algorithms."
-          }
-        }
-      }
-    ],
-    [
-      "user_1788541348449_y3tih_goal_mle",
-      {
-        "userId": "user_1788541348449_y3tih",
-        "goalId": "goal_mle",
-        "selectedAt": "2026-09-04T17:02:28.482Z",
-        "goal": {
-          "id": "goal_mle",
-          "name": "Machine Learning Engineer",
-          "targetSkillId": "skill_ml",
-          "description": "Master foundational mathematics, statistics, model evaluation, and machine learning algorithms.",
-          "targetSkill": {
-            "id": "skill_ml",
-            "name": "Machine Learning",
-            "domain": "Artificial Intelligence",
-            "description": "Loss functions, gradient descent optimization, bias-variance tradeoff, classification, and neural algorithms."
-          }
-        }
+        "selectedAt": "2026-09-08T16:43:02.322Z"
       }
     ]
   ],
   "questions": [
-    [
-      "q_py_1",
-      {
-        "id": "q_py_1",
-        "skillId": "skill_python",
-        "skillName": "Python",
-        "skillsTested": [
-          "skill_python"
-        ],
-        "difficulty": 1,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "What is the average time complexity of looking up a key in a standard Python dictionary?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "O(1) constant time"
-          },
-          {
-            "id": "opt_2",
-            "text": "O(n) linear time"
-          },
-          {
-            "id": "opt_3",
-            "text": "O(log n) logarithmic time"
-          },
-          {
-            "id": "opt_4",
-            "text": "O(n^2) quadratic time"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "Python dictionaries are implemented using hash tables with open addressing, yielding O(1) average time complexity for key lookups."
-      }
-    ],
-    [
-      "q_py_2",
-      {
-        "id": "q_py_2",
-        "skillId": "skill_python",
-        "skillName": "Python",
-        "skillsTested": [
-          "skill_python"
-        ],
-        "difficulty": 2,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "What does the expression `[x**2 for x in range(5) if x % 2 != 0]` evaluate to in Python?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "[1, 9]"
-          },
-          {
-            "id": "opt_2",
-            "text": "[0, 4, 16]"
-          },
-          {
-            "id": "opt_3",
-            "text": "[1, 9, 25]"
-          },
-          {
-            "id": "opt_4",
-            "text": "[1, 4, 9]"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "range(5) produces 0, 1, 2, 3, 4. The odd numbers are 1 and 3. Squaring them yields 1**2 = 1 and 3**2 = 9, resulting in [1, 9]."
-      }
-    ],
-    [
-      "q_py_3",
-      {
-        "id": "q_py_3",
-        "skillId": "skill_python",
-        "skillName": "Python",
-        "skillsTested": [
-          "skill_python"
-        ],
-        "difficulty": 3,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "In NumPy and Python data science pipelines, what is \"broadcasting\"?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "How NumPy treats arrays with different shapes during arithmetic operations without explicit loop overhead"
-          },
-          {
-            "id": "opt_2",
-            "text": "Transmitting array data over socket networks to worker nodes"
-          },
-          {
-            "id": "opt_3",
-            "text": "Converting multi-dimensional arrays into flat single-dimensional arrays"
-          },
-          {
-            "id": "opt_4",
-            "text": "Automatic type conversion from integer to floating point values"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "Broadcasting describes how NumPy executes arithmetic operations on arrays of differing shapes by virtually stretching trailing dimensions with size 1."
-      }
-    ],
-    [
-      "q_py_4",
-      {
-        "id": "q_py_4",
-        "skillId": "skill_python",
-        "skillName": "Python",
-        "skillsTested": [
-          "skill_python"
-        ],
-        "difficulty": 4,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "In Python, what is the key difference between `is` and `==` operators?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "`is` checks memory identity (same object reference), whereas `==` checks value equality"
-          },
-          {
-            "id": "opt_2",
-            "text": "`is` checks value equality, whereas `==` checks type compatibility"
-          },
-          {
-            "id": "opt_3",
-            "text": "`is` is only used for numerical comparisons"
-          },
-          {
-            "id": "opt_4",
-            "text": "They are completely interchangeable syntactical aliases"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "`is` compares whether two variables point to the exact same memory address (id(a) == id(b)), whereas `==` invokes the __eq__ method to compare evaluated values."
-      }
-    ],
-    [
-      "q_prob_1",
-      {
-        "id": "q_prob_1",
-        "skillId": "skill_prob",
-        "skillName": "Probability",
-        "skillsTested": [
-          "skill_prob"
-        ],
-        "difficulty": 2,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "If events A and B are independent, which of the following mathematical statements is strictly true?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "P(A and B) = P(A) * P(B)"
-          },
-          {
-            "id": "opt_2",
-            "text": "P(A or B) = P(A) + P(B)"
-          },
-          {
-            "id": "opt_3",
-            "text": "P(A | B) = 0"
-          },
-          {
-            "id": "opt_4",
-            "text": "P(A and B) = P(A) / P(B)"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "By the mathematical definition of statistical independence, the joint probability P(A and B) equals the product of their individual probabilities: P(A) * P(B)."
-      }
-    ],
-    [
-      "q_prob_2",
-      {
-        "id": "q_prob_2",
-        "skillId": "skill_prob",
-        "skillName": "Probability",
-        "skillsTested": [
-          "skill_prob"
-        ],
-        "difficulty": 3,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "If the probability of rolling a 6 on a fair die is 1/6, what is the probability of rolling at least one 6 in two independent rolls?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "11/36 (approx 30.6%)"
-          },
-          {
-            "id": "opt_2",
-            "text": "2/6 = 1/3 (approx 33.3%)"
-          },
-          {
-            "id": "opt_3",
-            "text": "1/36 (approx 2.8%)"
-          },
-          {
-            "id": "opt_4",
-            "text": "25/36 (approx 69.4%)"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "Use the complement rule: P(at least one 6) = 1 - P(no 6s in both rolls) = 1 - (5/6 * 5/6) = 1 - 25/36 = 11/36."
-      }
-    ],
-    [
-      "q_prob_3",
-      {
-        "id": "q_prob_3",
-        "skillId": "skill_prob",
-        "skillName": "Probability",
-        "skillsTested": [
-          "skill_prob"
-        ],
-        "difficulty": 4,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "For any two arbitrary events A and B, which general formula expresses P(A ∪ B)?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "P(A) + P(B) - P(A ∩ B)"
-          },
-          {
-            "id": "opt_2",
-            "text": "P(A) + P(B)"
-          },
-          {
-            "id": "opt_3",
-            "text": "P(A) * P(B) + P(A | B)"
-          },
-          {
-            "id": "opt_4",
-            "text": "P(A ∩ B) / P(B)"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "By the Principle of Inclusion-Exclusion, P(A ∪ B) = P(A) + P(B) - P(A ∩ B) to avoid double-counting the overlap."
-      }
-    ],
-    [
-      "q_cond_1",
-      {
-        "id": "q_cond_1",
-        "skillId": "skill_cond_prob",
-        "skillName": "Conditional Probability",
-        "skillsTested": [
-          "skill_prob",
-          "skill_cond_prob"
-        ],
-        "difficulty": 2,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "According to Bayes' Theorem, how is the posterior probability P(A | B) calculated from prior, likelihood, and evidence?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "[P(B | A) * P(A)] / P(B)"
-          },
-          {
-            "id": "opt_2",
-            "text": "[P(A | B) * P(B)] / P(A)"
-          },
-          {
-            "id": "opt_3",
-            "text": "P(A) * P(B) + P(B | A)"
-          },
-          {
-            "id": "opt_4",
-            "text": "P(B | A) / [P(A) * P(B)]"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "Bayes' Theorem relates posterior probability to likelihood, prior, and marginal evidence: P(A | B) = [P(B | A) * P(A)] / P(B)."
-      }
-    ],
-    [
-      "q_cond_2",
-      {
-        "id": "q_cond_2",
-        "skillId": "skill_cond_prob",
-        "skillName": "Conditional Probability",
-        "skillsTested": [
-          "skill_prob",
-          "skill_cond_prob"
-        ],
-        "difficulty": 3,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "If events A and B are mutually exclusive (disjoint) with P(A) > 0 and P(B) > 0, what is P(A | B)?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "0"
-          },
-          {
-            "id": "opt_2",
-            "text": "P(A)"
-          },
-          {
-            "id": "opt_3",
-            "text": "P(A) * P(B)"
-          },
-          {
-            "id": "opt_4",
-            "text": "1.0"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "Because mutually exclusive events cannot occur simultaneously, P(A and B) = 0. Therefore, P(A | B) = P(A and B) / P(B) = 0 / P(B) = 0."
-      }
-    ],
-    [
-      "q_cond_3",
-      {
-        "id": "q_cond_3",
-        "skillId": "skill_cond_prob",
-        "skillName": "Conditional Probability",
-        "skillsTested": [
-          "skill_prob",
-          "skill_cond_prob"
-        ],
-        "difficulty": 4,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "A disease has a 1% prevalence. A diagnostic test has 95% sensitivity (true positive) and 90% specificity (true negative). If a patient tests positive, what is the approximate posterior probability P(Disease | Positive)?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "~8.8% (due to the low base rate prevalence)"
-          },
-          {
-            "id": "opt_2",
-            "text": "95.0%"
-          },
-          {
-            "id": "opt_3",
-            "text": "85.5%"
-          },
-          {
-            "id": "opt_4",
-            "text": "50.0%"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "Applying Bayes' Theorem: P(Pos) = (0.01 * 0.95) + (0.99 * 0.10) = 0.0095 + 0.099 = 0.1085. P(D | Pos) = 0.0095 / 0.1085 ≈ 8.76%. The low base rate heavily influences the posterior."
-      }
-    ],
-    [
-      "q_dist_1",
-      {
-        "id": "q_dist_1",
-        "skillId": "skill_prob_dist",
-        "skillName": "Probability Distributions",
-        "skillsTested": [
-          "skill_prob_dist",
-          "skill_cond_prob"
-        ],
-        "difficulty": 2,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "For a continuous random variable with probability density function (PDF) f(x), what is the probability of the variable taking a single exact point value P(X = c)?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "0 (probability of an exact point is zero for continuous distributions)"
-          },
-          {
-            "id": "opt_2",
-            "text": "f(c)"
-          },
-          {
-            "id": "opt_3",
-            "text": "1.0"
-          },
-          {
-            "id": "opt_4",
-            "text": "Undefined without variance"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "In continuous distributions, probabilities correspond to the area under the PDF curve across an interval. The integral over a single zero-width point is strictly 0."
-      }
-    ],
-    [
-      "q_dist_2",
-      {
-        "id": "q_dist_2",
-        "skillId": "skill_prob_dist",
-        "skillName": "Probability Distributions",
-        "skillsTested": [
-          "skill_prob_dist"
-        ],
-        "difficulty": 3,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "Under a Standard Normal Distribution (mean μ = 0, std σ = 1), approximately what percentage of data falls within ±1 standard deviation?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "68.2%"
-          },
-          {
-            "id": "opt_2",
-            "text": "95.4%"
-          },
-          {
-            "id": "opt_3",
-            "text": "50.0%"
-          },
-          {
-            "id": "opt_4",
-            "text": "99.7%"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "By the Empirical Rule (68-95-99.7 rule) for Gaussian distributions, approximately 68.2% of observations fall within ±1σ of the mean."
-      }
-    ],
-    [
-      "q_dist_3",
-      {
-        "id": "q_dist_3",
-        "skillId": "skill_prob_dist",
-        "skillName": "Probability Distributions",
-        "skillsTested": [
-          "skill_prob_dist",
-          "skill_prob"
-        ],
-        "difficulty": 4,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "Which distribution models the number of discrete independent events occurring within a fixed interval of time or space given a constant average rate λ?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "Poisson Distribution"
-          },
-          {
-            "id": "opt_2",
-            "text": "Uniform Distribution"
-          },
-          {
-            "id": "opt_3",
-            "text": "Exponential Distribution (models continuous inter-arrival time)"
-          },
-          {
-            "id": "opt_4",
-            "text": "Bernoulli Distribution"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "The Poisson distribution models discrete count occurrences in a fixed interval with parameter λ, where P(X=k) = (λ^k * e^-λ) / k!."
-      }
-    ],
-    [
-      "q_stat_1",
-      {
-        "id": "q_stat_1",
-        "skillId": "skill_stats",
-        "skillName": "Statistics",
-        "skillsTested": [
-          "skill_stats"
-        ],
-        "difficulty": 2,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "What is the precise definition of a p-value in classical null hypothesis significance testing?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "The probability of observing sample results at least as extreme as observed, assuming the null hypothesis is true"
-          },
-          {
-            "id": "opt_2",
-            "text": "The probability that the null hypothesis is true"
-          },
-          {
-            "id": "opt_3",
-            "text": "The probability that the alternative hypothesis is false"
-          },
-          {
-            "id": "opt_4",
-            "text": "The percentage error of the estimation apparatus"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "The p-value is the probability of obtaining test results at least as extreme as the observed sample data, assuming that the null hypothesis is strictly true."
-      }
-    ],
-    [
-      "q_stat_2",
-      {
-        "id": "q_stat_2",
-        "skillId": "skill_stats",
-        "skillName": "Statistics",
-        "skillsTested": [
-          "skill_stats",
-          "skill_prob_dist"
-        ],
-        "difficulty": 3,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "What does the Central Limit Theorem (CLT) guarantee regarding the sampling distribution of the sample mean?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "As sample size increases, the distribution of sample means approaches a normal distribution regardless of population distribution shape"
-          },
-          {
-            "id": "opt_2",
-            "text": "All raw population variables become normally distributed as N increases"
-          },
-          {
-            "id": "opt_3",
-            "text": "Sample variance approaches zero when N > 30"
-          },
-          {
-            "id": "opt_4",
-            "text": "The sample median always equals the population mode"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "The CLT guarantees that the sampling distribution of the mean approaches Gaussian normality as sample size increases, provided the underlying population has finite variance."
-      }
-    ],
-    [
-      "q_stat_3",
-      {
-        "id": "q_stat_3",
-        "skillId": "skill_stats",
-        "skillName": "Statistics",
-        "skillsTested": [
-          "skill_stats"
-        ],
-        "difficulty": 4,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "What is a Type I error (False Positive) in hypothesis testing?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "Rejecting the null hypothesis when it is actually true (α level)"
-          },
-          {
-            "id": "opt_2",
-            "text": "Failing to reject the null hypothesis when it is false (β level)"
-          },
-          {
-            "id": "opt_3",
-            "text": "Incorrectly computing the sample standard deviation"
-          },
-          {
-            "id": "opt_4",
-            "text": "Selecting a non-random sample"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "A Type I error occurs when researchers reject a true null hypothesis, with the maximum acceptable probability conventionally bounded by α (e.g. 0.05)."
-      }
-    ],
-    [
-      "q_la_1",
-      {
-        "id": "q_la_1",
-        "skillId": "skill_linalg",
-        "skillName": "Linear Algebra",
-        "skillsTested": [
-          "skill_linalg"
-        ],
-        "difficulty": 2,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "If the dot product of two non-zero vectors u and v is equal to 0, what geometric relationship does this indicate?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "The two vectors are orthogonal (perpendicular) to each other"
-          },
-          {
-            "id": "opt_2",
-            "text": "The two vectors are parallel and pointing in the same direction"
-          },
-          {
-            "id": "opt_3",
-            "text": "One of the vectors must be the identity vector"
-          },
-          {
-            "id": "opt_4",
-            "text": "The angle between them is 0 degrees"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "Because u · v = ||u|| ||v|| cos(θ), a dot product of zero for non-zero vectors implies cos(θ) = 0, meaning θ = 90° (the vectors are orthogonal)."
-      }
-    ],
-    [
-      "q_la_2",
-      {
-        "id": "q_la_2",
-        "skillId": "skill_linalg",
-        "skillName": "Linear Algebra",
-        "skillsTested": [
-          "skill_linalg"
-        ],
-        "difficulty": 3,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "What is an eigenvector of a square matrix A corresponding to eigenvalue λ?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "A non-zero vector v such that A v = λ v (its direction is preserved under transformation)"
-          },
-          {
-            "id": "opt_2",
-            "text": "A vector whose elements always sum to 1"
-          },
-          {
-            "id": "opt_3",
-            "text": "The inverse column of matrix A"
-          },
-          {
-            "id": "opt_4",
-            "text": "Any vector that maps matrix A to the zero matrix"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "An eigenvector v satisfies A v = λ v. The linear transformation A scales vector v by factor λ without changing its span or directional line."
-      }
-    ],
-    [
-      "q_la_3",
-      {
-        "id": "q_la_3",
-        "skillId": "skill_linalg",
-        "skillName": "Linear Algebra",
-        "skillsTested": [
-          "skill_linalg"
-        ],
-        "difficulty": 4,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "What does the rank of a matrix represent?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "The maximum number of linearly independent column or row vectors in the matrix"
-          },
-          {
-            "id": "opt_2",
-            "text": "The sum of all diagonal elements (Trace)"
-          },
-          {
-            "id": "opt_3",
-            "text": "The determinant of the sub-matrices"
-          },
-          {
-            "id": "opt_4",
-            "text": "The total number of nonzero entries"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "The rank of a matrix is the dimension of the vector space spanned by its columns (or rows), equal to the number of linearly independent vectors."
-      }
-    ],
-    [
-      "q_eval_1",
-      {
-        "id": "q_eval_1",
-        "skillId": "skill_model_eval",
-        "skillName": "Model Evaluation",
-        "skillsTested": [
-          "skill_model_eval",
-          "skill_stats"
-        ],
-        "difficulty": 2,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "In a medical diagnostic classifier where missing a positive disease case is dangerous, which metric should be prioritized?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "Recall (Sensitivity) — minimizing False Negatives"
-          },
-          {
-            "id": "opt_2",
-            "text": "Specificity — minimizing False Positives only"
-          },
-          {
-            "id": "opt_3",
-            "text": "Raw overall Accuracy on imbalanced test set"
-          },
-          {
-            "id": "opt_4",
-            "text": "Mean Squared Error"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "Recall = TP / (TP + FN). When missing a positive condition has severe consequences, maximizing Recall minimizes False Negatives."
-      }
-    ],
-    [
-      "q_eval_2",
-      {
-        "id": "q_eval_2",
-        "skillId": "skill_model_eval",
-        "skillName": "Model Evaluation",
-        "skillsTested": [
-          "skill_model_eval"
-        ],
-        "difficulty": 3,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "What does the Area Under the ROC Curve (ROC-AUC) measure?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "The probability that the classifier ranks a randomly chosen positive instance higher than a randomly chosen negative instance"
-          },
-          {
-            "id": "opt_2",
-            "text": "The exact percentage of training records that fit within 1 standard deviation"
-          },
-          {
-            "id": "opt_3",
-            "text": "The optimal learning rate threshold for gradient descent"
-          },
-          {
-            "id": "opt_4",
-            "text": "The cross-entropy loss between training and test sets"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "ROC-AUC evaluates ranking quality across all classification thresholds, corresponding to the probability of ranking a random positive higher than a random negative."
-      }
-    ],
-    [
-      "q_eval_3",
-      {
-        "id": "q_eval_3",
-        "skillId": "skill_model_eval",
-        "skillName": "Model Evaluation",
-        "skillsTested": [
-          "skill_model_eval",
-          "skill_stats"
-        ],
-        "difficulty": 4,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "What is the harmonic mean of Precision and Recall known as?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "F1 Score"
-          },
-          {
-            "id": "opt_2",
-            "text": "Cohen's Kappa"
-          },
-          {
-            "id": "opt_3",
-            "text": "Matthews Correlation Coefficient"
-          },
-          {
-            "id": "opt_4",
-            "text": "Log-Loss"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "The F1-score is 2 * (Precision * Recall) / (Precision + Recall), giving a balanced measure especially when class distributions are uneven."
-      }
-    ],
-    [
-      "q_ml_1",
-      {
-        "id": "q_ml_1",
-        "skillId": "skill_ml",
-        "skillName": "Machine Learning",
-        "skillsTested": [
-          "skill_ml"
-        ],
-        "difficulty": 2,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "In the bias-variance tradeoff, what problem is characterized by high training accuracy but poor generalization to test data?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "Overfitting (high variance)"
-          },
-          {
-            "id": "opt_2",
-            "text": "Underfitting (high bias)"
-          },
-          {
-            "id": "opt_3",
-            "text": "High entropy loss"
-          },
-          {
-            "id": "opt_4",
-            "text": "Vanishing gradient"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "Overfitting occurs when a model fits noise in the training set rather than the underlying generative distribution, leading to low bias but high variance on unseen data."
-      }
-    ],
-    [
-      "q_ml_2",
-      {
-        "id": "q_ml_2",
-        "skillId": "skill_ml",
-        "skillName": "Machine Learning",
-        "skillsTested": [
-          "skill_ml",
-          "skill_linalg"
-        ],
-        "difficulty": 3,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "In Gradient Descent optimization, what role does the learning rate (alpha) parameter play?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "It controls the step size taken along the negative gradient vector at each iteration"
-          },
-          {
-            "id": "opt_2",
-            "text": "It sets the number of hidden layers in the network architecture"
-          },
-          {
-            "id": "opt_3",
-            "text": "It calculates the exact precision and recall of the validation set"
-          },
-          {
-            "id": "opt_4",
-            "text": "It determines the L1 regularization penalty"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "The learning rate hyperparameter scales the gradient update vector θ = θ - α * ∇J(θ), controlling how aggressively weights shift in parameter space toward the minimum of the loss function."
-      }
-    ],
-    [
-      "q_ml_3",
-      {
-        "id": "q_ml_3",
-        "skillId": "skill_ml",
-        "skillName": "Machine Learning",
-        "skillsTested": [
-          "skill_ml",
-          "skill_linalg"
-        ],
-        "difficulty": 4,
-        "questionType": "MULTIPLE_CHOICE",
-        "text": "How does L2 Regularization (Ridge) prevent overfitting in linear models?",
-        "options": [
-          {
-            "id": "opt_1",
-            "text": "By adding a penalty proportional to the sum of squared weights (||w||^2) to the loss function, shrinking weight magnitudes"
-          },
-          {
-            "id": "opt_2",
-            "text": "By setting irrelevant feature weights strictly to zero"
-          },
-          {
-            "id": "opt_3",
-            "text": "By removing random training samples during each batch"
-          },
-          {
-            "id": "opt_4",
-            "text": "By inverting the gradient direction"
-          }
-        ],
-        "correctAnswer": "opt_1",
-        "explanation": "L2 regularization adds λ * Σ w_i^2 to the loss function, penalizing large weights and smoothing decision boundaries."
-      }
-    ],
     [
       "q_py_01",
       {
@@ -14406,170 +13351,6 @@
         },
         "explanation": "By vector-matrix chain rule, ∂L/∂W = δ xᵀ (yielding an m × n outer product) and ∂L/∂x = Wᵀ δ (propagating the gradient backward to the previous layer)."
       }
-    ],
-    [
-      "q_gemini_fallback_1788451454879_0_rjnc",
-      {
-        "id": "q_gemini_fallback_1788451454879_0_rjnc",
-        "skillId": "skill_python",
-        "skillName": "Python",
-        "skillsTested": [
-          "skill_python"
-        ],
-        "text": "In Python, what is the computational complexity of checking if a key exists in a standard dict `k in my_dict` versus in a list `k in my_list` of size N? (Diagnostic Item #1)",
-        "difficulty": 2,
-        "cognitiveCategory": "Comprehension",
-        "options": [
-          {
-            "id": "A",
-            "text": "Dict is O(1) average; List is O(N) linear scan."
-          },
-          {
-            "id": "B",
-            "text": "Dict is O(log N) binary search; List is O(1)."
-          },
-          {
-            "id": "C",
-            "text": "Both require O(N) operations in memory."
-          },
-          {
-            "id": "D",
-            "text": "Dict is O(N) average; List is O(log N)."
-          }
-        ],
-        "correctAnswer": "A",
-        "explanation": "Python dictionaries utilize a hash table layout providing O(1) average lookup complexity, while list membership checks require an exhaustive O(N) sequential search.",
-        "distractorRationales": {
-          "A": "Plausible distractor based on standard linear approximation.",
-          "B": "Confuses notation with inverse transformation.",
-          "C": "Incomplete calculation omission.",
-          "D": "Boundary condition misunderstanding."
-        },
-        "questionType": "MULTIPLE_CHOICE"
-      }
-    ],
-    [
-      "q_gemini_fallback_1788451456768_0_ng0y",
-      {
-        "id": "q_gemini_fallback_1788451456768_0_ng0y",
-        "skillId": "skill_python",
-        "skillName": "Python",
-        "skillsTested": [
-          "skill_python"
-        ],
-        "text": "In Python, what is the computational complexity of checking if a key exists in a standard dict `k in my_dict` versus in a list `k in my_list` of size N? (Diagnostic Item #1)",
-        "difficulty": 2,
-        "cognitiveCategory": "Comprehension",
-        "options": [
-          {
-            "id": "A",
-            "text": "Dict is O(1) average; List is O(N) linear scan."
-          },
-          {
-            "id": "B",
-            "text": "Dict is O(log N) binary search; List is O(1)."
-          },
-          {
-            "id": "C",
-            "text": "Both require O(N) operations in memory."
-          },
-          {
-            "id": "D",
-            "text": "Dict is O(N) average; List is O(log N)."
-          }
-        ],
-        "correctAnswer": "A",
-        "explanation": "Python dictionaries utilize a hash table layout providing O(1) average lookup complexity, while list membership checks require an exhaustive O(N) sequential search.",
-        "distractorRationales": {
-          "A": "Plausible distractor based on standard linear approximation.",
-          "B": "Confuses notation with inverse transformation.",
-          "C": "Incomplete calculation omission.",
-          "D": "Boundary condition misunderstanding."
-        },
-        "questionType": "MULTIPLE_CHOICE"
-      }
-    ],
-    [
-      "q_gemini_fallback_1788539194636_0_ghlr",
-      {
-        "id": "q_gemini_fallback_1788539194636_0_ghlr",
-        "skillId": "skill_prob",
-        "skillName": "Probability",
-        "skillsTested": [
-          "skill_prob"
-        ],
-        "text": "Two independent events A and B have P(A) = 0.4 and P(B) = 0.5. What is the probability that at least one of the events occurs, P(A ∪ B)? (Diagnostic Item #1)",
-        "difficulty": 1,
-        "cognitiveCategory": "Application",
-        "options": [
-          {
-            "id": "A",
-            "text": "0.70"
-          },
-          {
-            "id": "B",
-            "text": "0.90"
-          },
-          {
-            "id": "C",
-            "text": "0.20"
-          },
-          {
-            "id": "D",
-            "text": "0.60"
-          }
-        ],
-        "correctAnswer": "A",
-        "explanation": "By inclusion-exclusion: P(A ∪ B) = P(A) + P(B) - P(A ∩ B). Independence means P(A ∩ B) = 0.4 * 0.5 = 0.20. Hence, 0.40 + 0.50 - 0.20 = 0.70.",
-        "distractorRationales": {
-          "A": "Plausible distractor based on standard linear approximation.",
-          "B": "Confuses notation with inverse transformation.",
-          "C": "Incomplete calculation omission.",
-          "D": "Boundary condition misunderstanding."
-        },
-        "questionType": "MULTIPLE_CHOICE"
-      }
-    ],
-    [
-      "q_gemini_fallback_1788539225269_0_ytx4",
-      {
-        "id": "q_gemini_fallback_1788539225269_0_ytx4",
-        "skillId": "skill_cond_prob",
-        "skillName": "Conditional Probability",
-        "skillsTested": [
-          "skill_cond_prob"
-        ],
-        "text": "A diagnostic medical test has 98% sensitivity and 95% specificity. If disease prevalence is 1%, what is P(Disease | Positive Test)? (Diagnostic Item #1)",
-        "difficulty": 2,
-        "cognitiveCategory": "Analysis",
-        "options": [
-          {
-            "id": "A",
-            "text": "Approximately 16.5%"
-          },
-          {
-            "id": "B",
-            "text": "98.0%"
-          },
-          {
-            "id": "C",
-            "text": "95.0%"
-          },
-          {
-            "id": "D",
-            "text": "50.0%"
-          }
-        ],
-        "correctAnswer": "A",
-        "explanation": "Applying Bayes Theorem: P(D|+) = (0.98 * 0.01) / [(0.98 * 0.01) + (0.05 * 0.99)] = 0.0098 / 0.0593 ≈ 0.165 (16.5%). Low prevalence dominates false positives.",
-        "distractorRationales": {
-          "A": "Plausible distractor based on standard linear approximation.",
-          "B": "Confuses notation with inverse transformation.",
-          "C": "Incomplete calculation omission.",
-          "D": "Boundary condition misunderstanding."
-        },
-        "questionType": "MULTIPLE_CHOICE"
-      }
     ]
   ],
   "attempts": [
@@ -14577,7 +13358,6 @@
       "id": "att_1",
       "userId": "user_demo_learner",
       "questionId": "q_py_1",
-      "questionText": "What is the average time complexity of looking up a key in a standard Python dictionary?",
       "skillId": "skill_python",
       "skillName": "Python",
       "skillsTested": [
@@ -14589,13 +13369,12 @@
       "confidence": 5,
       "attemptNumber": 1,
       "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-08-31T15:52:45.005Z"
+      "createdAt": "2026-09-05T16:43:02.424Z"
     },
     {
       "id": "att_2",
       "userId": "user_demo_learner",
       "questionId": "q_py_2",
-      "questionText": "What does the expression `[x**2 for x in range(5) if x % 2 != 0]` evaluate to in Python?",
       "skillId": "skill_python",
       "skillName": "Python",
       "skillsTested": [
@@ -14607,13 +13386,12 @@
       "confidence": 5,
       "attemptNumber": 1,
       "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-09-01T15:52:45.005Z"
+      "createdAt": "2026-09-06T16:43:02.424Z"
     },
     {
       "id": "att_3",
       "userId": "user_demo_learner",
       "questionId": "q_py_3",
-      "questionText": "In NumPy and Python data science pipelines, what is \"broadcasting\"?",
       "skillId": "skill_python",
       "skillName": "Python",
       "skillsTested": [
@@ -14625,13 +13403,12 @@
       "confidence": 4,
       "attemptNumber": 1,
       "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-09-02T15:52:45.005Z"
+      "createdAt": "2026-09-07T16:43:02.424Z"
     },
     {
       "id": "att_4",
       "userId": "user_demo_learner",
       "questionId": "q_prob_1",
-      "questionText": "If events A and B are independent, which of the following mathematical statements is strictly true?",
       "skillId": "skill_prob",
       "skillName": "Probability",
       "skillsTested": [
@@ -14643,13 +13420,12 @@
       "confidence": 4,
       "attemptNumber": 1,
       "cognitiveState": "CONFIDENT_MISCONCEPTION",
-      "createdAt": "2026-09-02T19:52:45.005Z"
+      "createdAt": "2026-09-07T20:43:02.424Z"
     },
     {
       "id": "att_5",
       "userId": "user_demo_learner",
       "questionId": "q_prob_2",
-      "questionText": "If the probability of rolling a 6 on a fair die is 1/6, what is the probability of rolling at least one 6 in two independent rolls?",
       "skillId": "skill_prob",
       "skillName": "Probability",
       "skillsTested": [
@@ -14661,13 +13437,12 @@
       "confidence": 3,
       "attemptNumber": 1,
       "cognitiveState": "UNCERTAIN_MISTAKE",
-      "createdAt": "2026-09-02T23:52:45.005Z"
+      "createdAt": "2026-09-08T00:43:02.424Z"
     },
     {
       "id": "att_6",
       "userId": "user_demo_learner",
       "questionId": "q_cond_1",
-      "questionText": "According to Bayes' Theorem, how is the posterior probability P(A | B) calculated from prior, likelihood, and evidence?",
       "skillId": "skill_cond_prob",
       "skillName": "Conditional Probability",
       "skillsTested": [
@@ -14680,13 +13455,12 @@
       "confidence": 3,
       "attemptNumber": 1,
       "cognitiveState": "UNCERTAIN_MISTAKE",
-      "createdAt": "2026-09-03T01:52:45.005Z"
+      "createdAt": "2026-09-08T02:43:02.424Z"
     },
     {
       "id": "att_7",
       "userId": "user_demo_learner",
       "questionId": "q_stat_1",
-      "questionText": "What is the precise definition of a p-value in classical null hypothesis significance testing?",
       "skillId": "skill_stats",
       "skillName": "Statistics",
       "skillsTested": [
@@ -14698,13 +13472,12 @@
       "confidence": 4,
       "attemptNumber": 1,
       "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-09-03T03:52:45.005Z"
+      "createdAt": "2026-09-08T04:43:02.424Z"
     },
     {
       "id": "att_8",
       "userId": "user_demo_learner",
       "questionId": "q_stat_2",
-      "questionText": "What does the Central Limit Theorem (CLT) guarantee regarding the sampling distribution of the sample mean?",
       "skillId": "skill_stats",
       "skillName": "Statistics",
       "skillsTested": [
@@ -14717,13 +13490,12 @@
       "confidence": 3,
       "attemptNumber": 1,
       "cognitiveState": "NORMAL_MASTERY",
-      "createdAt": "2026-09-03T05:52:45.005Z"
+      "createdAt": "2026-09-08T06:43:02.424Z"
     },
     {
       "id": "att_9",
       "userId": "user_demo_learner",
       "questionId": "q_la_1",
-      "questionText": "If the dot product of two non-zero vectors u and v is equal to 0, what geometric relationship does this indicate?",
       "skillId": "skill_linalg",
       "skillName": "Linear Algebra",
       "skillsTested": [
@@ -14735,13 +13507,12 @@
       "confidence": 4,
       "attemptNumber": 1,
       "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-09-03T07:52:45.005Z"
+      "createdAt": "2026-09-08T08:43:02.424Z"
     },
     {
       "id": "att_10",
       "userId": "user_demo_learner",
       "questionId": "q_la_2",
-      "questionText": "What is an eigenvector of a square matrix A corresponding to eigenvalue λ?",
       "skillId": "skill_linalg",
       "skillName": "Linear Algebra",
       "skillsTested": [
@@ -14753,13 +13524,12 @@
       "confidence": 2,
       "attemptNumber": 1,
       "cognitiveState": "UNCERTAIN_MISTAKE",
-      "createdAt": "2026-09-03T09:52:45.005Z"
+      "createdAt": "2026-09-08T10:43:02.424Z"
     },
     {
       "id": "att_11",
       "userId": "user_demo_learner",
       "questionId": "q_eval_1",
-      "questionText": "In a medical diagnostic classifier where missing a positive disease case is dangerous, which metric should be prioritized?",
       "skillId": "skill_model_eval",
       "skillName": "Model Evaluation",
       "skillsTested": [
@@ -14772,13 +13542,12 @@
       "confidence": 3,
       "attemptNumber": 1,
       "cognitiveState": "NORMAL_MASTERY",
-      "createdAt": "2026-09-03T11:52:45.005Z"
+      "createdAt": "2026-09-08T12:43:02.424Z"
     },
     {
       "id": "att_12",
       "userId": "user_demo_learner",
       "questionId": "q_ml_1",
-      "questionText": "In the bias-variance tradeoff, what problem is characterized by high training accuracy but poor generalization to test data?",
       "skillId": "skill_ml",
       "skillName": "Machine Learning",
       "skillsTested": [
@@ -14790,13 +13559,12 @@
       "confidence": 3,
       "attemptNumber": 1,
       "cognitiveState": "NORMAL_MASTERY",
-      "createdAt": "2026-09-03T13:52:45.005Z"
+      "createdAt": "2026-09-08T14:43:02.424Z"
     },
     {
       "id": "att_13",
       "userId": "user_demo_learner",
       "questionId": "q_ml_2",
-      "questionText": "In Gradient Descent optimization, what role does the learning rate (alpha) parameter play?",
       "skillId": "skill_ml",
       "skillName": "Machine Learning",
       "skillsTested": [
@@ -14809,482 +13577,83 @@
       "confidence": 3,
       "attemptNumber": 1,
       "cognitiveState": "UNCERTAIN_MISTAKE",
-      "createdAt": "2026-09-03T14:52:45.005Z"
-    },
-    {
-      "id": "att_1788451840205_zdewo",
-      "userId": "user_1788451840148_tujbd",
-      "questionId": "q_prob_1",
-      "questionText": "If events A and B are independent, which of the following mathematical statements is strictly true?",
-      "skillId": "skill_prob",
-      "skillName": "Probability",
-      "skillsTested": [
-        "skill_prob"
-      ],
-      "selectedAnswer": "opt_2",
-      "correct": false,
-      "timeTakenSeconds": 12,
-      "confidence": 4,
-      "attemptNumber": 1,
-      "cognitiveState": "CONFIDENT_MISCONCEPTION",
-      "createdAt": "2026-09-03T16:10:40.205Z"
-    },
-    {
-      "id": "att_1788451840217_209ob",
-      "userId": "user_1788451840148_tujbd",
-      "questionId": "q_prob_2",
-      "questionText": "If the probability of rolling a 6 on a fair die is 1/6, what is the probability of rolling at least one 6 in two independent rolls?",
-      "skillId": "skill_prob",
-      "skillName": "Probability",
-      "skillsTested": [
-        "skill_prob"
-      ],
-      "selectedAnswer": "opt_2",
-      "correct": false,
-      "timeTakenSeconds": 12,
-      "confidence": 4,
-      "attemptNumber": 1,
-      "cognitiveState": "CONFIDENT_MISCONCEPTION",
-      "createdAt": "2026-09-03T16:10:40.217Z"
-    },
-    {
-      "id": "att_1788451840228_uluun",
-      "userId": "user_1788451840148_tujbd",
-      "questionId": "q_prob_3",
-      "questionText": "For any two arbitrary events A and B, which general formula expresses P(A ∪ B)?",
-      "skillId": "skill_prob",
-      "skillName": "Probability",
-      "skillsTested": [
-        "skill_prob"
-      ],
-      "selectedAnswer": "opt_2",
-      "correct": false,
-      "timeTakenSeconds": 12,
-      "confidence": 4,
-      "attemptNumber": 1,
-      "cognitiveState": "CONFIDENT_MISCONCEPTION",
-      "createdAt": "2026-09-03T16:10:40.228Z"
-    },
-    {
-      "id": "att_1788451840254_eoa6e",
-      "userId": "user_1788451840148_tujbd",
-      "questionId": "q_prob_1",
-      "questionText": "If events A and B are independent, which of the following mathematical statements is strictly true?",
-      "skillId": "skill_prob",
-      "skillName": "Probability",
-      "skillsTested": [
-        "skill_prob"
-      ],
-      "selectedAnswer": "opt_1",
-      "correct": true,
-      "timeTakenSeconds": 8,
-      "confidence": 5,
-      "attemptNumber": 2,
-      "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-09-03T16:10:40.254Z"
-    },
-    {
-      "id": "att_1788451840266_v07oe",
-      "userId": "user_1788451840148_tujbd",
-      "questionId": "q_prob_2",
-      "questionText": "If the probability of rolling a 6 on a fair die is 1/6, what is the probability of rolling at least one 6 in two independent rolls?",
-      "skillId": "skill_prob",
-      "skillName": "Probability",
-      "skillsTested": [
-        "skill_prob"
-      ],
-      "selectedAnswer": "opt_1",
-      "correct": true,
-      "timeTakenSeconds": 8,
-      "confidence": 5,
-      "attemptNumber": 2,
-      "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-09-03T16:10:40.266Z"
-    },
-    {
-      "id": "att_1788451840275_1dkil",
-      "userId": "user_1788451840148_tujbd",
-      "questionId": "q_prob_3",
-      "questionText": "For any two arbitrary events A and B, which general formula expresses P(A ∪ B)?",
-      "skillId": "skill_prob",
-      "skillName": "Probability",
-      "skillsTested": [
-        "skill_prob"
-      ],
-      "selectedAnswer": "opt_1",
-      "correct": true,
-      "timeTakenSeconds": 8,
-      "confidence": 5,
-      "attemptNumber": 2,
-      "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-09-03T16:10:40.275Z"
-    },
-    {
-      "id": "att_1788452299819_2e7p0",
-      "userId": "user_demo_learner",
-      "questionId": "q_prob_1",
-      "questionText": "If events A and B are independent, which of the following mathematical statements is strictly true?",
-      "skillId": "skill_prob",
-      "skillName": "Probability",
-      "skillsTested": [
-        "skill_prob"
-      ],
-      "selectedAnswer": "opt_1",
-      "correct": true,
-      "timeTakenSeconds": 3,
-      "confidence": 3,
-      "attemptNumber": 2,
-      "cognitiveState": "NORMAL_MASTERY",
-      "createdAt": "2026-09-03T16:18:19.819Z"
-    },
-    {
-      "id": "att_1788452331349_zn17u",
-      "userId": "user_demo_learner",
-      "questionId": "q_prob_2",
-      "questionText": "If the probability of rolling a 6 on a fair die is 1/6, what is the probability of rolling at least one 6 in two independent rolls?",
-      "skillId": "skill_prob",
-      "skillName": "Probability",
-      "skillsTested": [
-        "skill_prob"
-      ],
-      "selectedAnswer": "opt_4",
-      "correct": false,
-      "timeTakenSeconds": 3,
-      "confidence": 3,
-      "attemptNumber": 2,
-      "cognitiveState": "UNCERTAIN_MISTAKE",
-      "createdAt": "2026-09-03T16:18:51.349Z"
-    },
-    {
-      "id": "att_1788452349151_wdfd2",
-      "userId": "user_1788452349085_kdsvu",
-      "questionId": "q_prob_1",
-      "questionText": "If events A and B are independent, which of the following mathematical statements is strictly true?",
-      "skillId": "skill_prob",
-      "skillName": "Probability",
-      "skillsTested": [
-        "skill_prob"
-      ],
-      "selectedAnswer": "opt_2",
-      "correct": false,
-      "timeTakenSeconds": 12,
-      "confidence": 4,
-      "attemptNumber": 1,
-      "cognitiveState": "CONFIDENT_MISCONCEPTION",
-      "createdAt": "2026-09-03T16:19:09.151Z"
-    },
-    {
-      "id": "att_1788452349160_x9hok",
-      "userId": "user_1788452349085_kdsvu",
-      "questionId": "q_prob_2",
-      "questionText": "If the probability of rolling a 6 on a fair die is 1/6, what is the probability of rolling at least one 6 in two independent rolls?",
-      "skillId": "skill_prob",
-      "skillName": "Probability",
-      "skillsTested": [
-        "skill_prob"
-      ],
-      "selectedAnswer": "opt_2",
-      "correct": false,
-      "timeTakenSeconds": 12,
-      "confidence": 4,
-      "attemptNumber": 1,
-      "cognitiveState": "CONFIDENT_MISCONCEPTION",
-      "createdAt": "2026-09-03T16:19:09.160Z"
-    },
-    {
-      "id": "att_1788452349172_v6o8t",
-      "userId": "user_1788452349085_kdsvu",
-      "questionId": "q_prob_3",
-      "questionText": "For any two arbitrary events A and B, which general formula expresses P(A ∪ B)?",
-      "skillId": "skill_prob",
-      "skillName": "Probability",
-      "skillsTested": [
-        "skill_prob"
-      ],
-      "selectedAnswer": "opt_2",
-      "correct": false,
-      "timeTakenSeconds": 12,
-      "confidence": 4,
-      "attemptNumber": 1,
-      "cognitiveState": "CONFIDENT_MISCONCEPTION",
-      "createdAt": "2026-09-03T16:19:09.172Z"
-    },
-    {
-      "id": "att_1788452349201_88b99",
-      "userId": "user_1788452349085_kdsvu",
-      "questionId": "q_prob_1",
-      "questionText": "If events A and B are independent, which of the following mathematical statements is strictly true?",
-      "skillId": "skill_prob",
-      "skillName": "Probability",
-      "skillsTested": [
-        "skill_prob"
-      ],
-      "selectedAnswer": "opt_1",
-      "correct": true,
-      "timeTakenSeconds": 8,
-      "confidence": 5,
-      "attemptNumber": 2,
-      "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-09-03T16:19:09.201Z"
-    },
-    {
-      "id": "att_1788452349209_fhga2",
-      "userId": "user_1788452349085_kdsvu",
-      "questionId": "q_prob_2",
-      "questionText": "If the probability of rolling a 6 on a fair die is 1/6, what is the probability of rolling at least one 6 in two independent rolls?",
-      "skillId": "skill_prob",
-      "skillName": "Probability",
-      "skillsTested": [
-        "skill_prob"
-      ],
-      "selectedAnswer": "opt_1",
-      "correct": true,
-      "timeTakenSeconds": 8,
-      "confidence": 5,
-      "attemptNumber": 2,
-      "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-09-03T16:19:09.209Z"
-    },
-    {
-      "id": "att_1788452349218_xvyz7",
-      "userId": "user_1788452349085_kdsvu",
-      "questionId": "q_prob_3",
-      "questionText": "For any two arbitrary events A and B, which general formula expresses P(A ∪ B)?",
-      "skillId": "skill_prob",
-      "skillName": "Probability",
-      "skillsTested": [
-        "skill_prob"
-      ],
-      "selectedAnswer": "opt_1",
-      "correct": true,
-      "timeTakenSeconds": 8,
-      "confidence": 5,
-      "attemptNumber": 2,
-      "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-09-03T16:19:09.218Z"
-    },
-    {
-      "id": "att_1788540230507_xe54d",
-      "userId": "user_1788539943760_wkmqg",
-      "questionId": "q_py_1",
-      "questionText": "What is the average time complexity of looking up a key in a standard Python dictionary?",
-      "skillId": "skill_python",
-      "skillName": "Python",
-      "skillsTested": [
-        "skill_python"
-      ],
-      "selectedAnswer": "opt_3",
-      "correct": false,
-      "timeTakenSeconds": 4,
-      "confidence": 3,
-      "attemptNumber": 1,
-      "cognitiveState": "UNCERTAIN_MISTAKE",
-      "createdAt": "2026-09-04T16:43:50.507Z"
-    },
-    {
-      "id": "att_1788540272571_ap66t",
-      "userId": "user_1788539943760_wkmqg",
-      "questionId": "q_py_2",
-      "questionText": "What does the expression `[x**2 for x in range(5) if x % 2 != 0]` evaluate to in Python?",
-      "skillId": "skill_python",
-      "skillName": "Python",
-      "skillsTested": [
-        "skill_python"
-      ],
-      "selectedAnswer": "opt_2",
-      "correct": false,
-      "timeTakenSeconds": 4,
-      "confidence": 5,
-      "attemptNumber": 1,
-      "cognitiveState": "CONFIDENT_MISCONCEPTION",
-      "createdAt": "2026-09-04T16:44:32.571Z"
-    },
-    {
-      "id": "att_1788541348518_n2o4b",
-      "userId": "user_1788541348449_y3tih",
-      "questionId": "q_prob_1",
-      "questionText": "If events A and B are independent, which of the following mathematical statements is strictly true?",
-      "skillId": "skill_prob",
-      "skillName": "Probability",
-      "skillsTested": [
-        "skill_prob"
-      ],
-      "selectedAnswer": "opt_a",
-      "correct": false,
-      "timeTakenSeconds": 15,
-      "confidence": 4,
-      "attemptNumber": 1,
-      "cognitiveState": "CONFIDENT_MISCONCEPTION",
-      "createdAt": "2026-09-04T17:02:28.518Z"
-    },
-    {
-      "id": "att_oe_1788541368361_3zdl3",
-      "userId": "user_demo_learner",
-      "questionId": "open_ended_skill_prob",
-      "questionText": "Explain the difference between mutually exclusive and independent events.",
-      "skillId": "skill_prob",
-      "skillName": "Probability",
-      "skillsTested": [
-        "skill_prob"
-      ],
-      "selectedAnswer": "Mutually exclusive events cannot occur simultaneously, so P(A and B) = 0. Independent events mean the occurrence of A...",
-      "correct": true,
-      "timeTakenSeconds": 45,
-      "confidence": 5,
-      "attemptNumber": 5,
-      "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-09-04T17:02:48.361Z"
+      "createdAt": "2026-09-08T15:43:02.424Z"
     }
   ],
   "masteries": [
     [
-      "user_demo_learner_skill_python",
+      "test_learner_rec_skill_prob",
       {
-        "userId": "user_demo_learner",
-        "skillId": "skill_python",
-        "skillName": "Python",
-        "domain": "Programming & Data Science",
-        "masteryScore": 0.88,
-        "rawMasteryScore": 0.99,
-        "retentionRate": 0.89,
-        "daysSinceLastAttempt": 2,
-        "needsSpacedReview": false,
-        "interpretation": "Strong",
-        "evidenceCount": 3,
-        "bktEstimate": 0.953,
-        "lastUpdated": "2026-09-04T16:57:38.158Z"
-      }
-    ],
-    [
-      "user_demo_learner_skill_prob",
-      {
-        "userId": "user_demo_learner",
+        "userId": "test_learner_rec",
         "skillId": "skill_prob",
         "skillName": "Probability",
         "domain": "Mathematics & Statistics",
-        "masteryScore": 0.46,
-        "rawMasteryScore": 0.46,
-        "retentionRate": 1,
-        "daysSinceLastAttempt": 0,
-        "needsSpacedReview": false,
-        "interpretation": "Weak",
-        "evidenceCount": 6,
-        "bktEstimate": 0.684,
-        "lastUpdated": "2026-09-04T17:02:48.361Z"
-      }
-    ],
-    [
-      "user_demo_learner_skill_cond_prob",
-      {
-        "userId": "user_demo_learner",
-        "skillId": "skill_cond_prob",
-        "skillName": "Conditional Probability",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "rawMasteryScore": 0,
-        "retentionRate": 0.87,
-        "daysSinceLastAttempt": 1.6,
-        "needsSpacedReview": false,
+        "masteryScore": 0.2,
         "interpretation": "Weak",
         "evidenceCount": 1,
-        "bktEstimate": 0.199,
-        "lastUpdated": "2026-09-04T16:57:38.158Z"
+        "lastUpdated": "2026-09-08T16:43:02.323Z"
       }
     ],
     [
-      "user_demo_learner_skill_prob_dist",
+      "test_learner_rec_skill_ml",
       {
-        "userId": "user_demo_learner",
-        "skillId": "skill_prob_dist",
-        "skillName": "Probability Distributions",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0.77,
-        "rawMasteryScore": 0.88,
-        "retentionRate": 0.87,
-        "daysSinceLastAttempt": 1.5,
-        "needsSpacedReview": false,
-        "interpretation": "Good foundation",
-        "evidenceCount": 1,
-        "bktEstimate": 0.499,
-        "lastUpdated": "2026-09-04T16:57:38.158Z"
-      }
-    ],
-    [
-      "user_demo_learner_skill_stats",
-      {
-        "userId": "user_demo_learner",
-        "skillId": "skill_stats",
-        "skillName": "Statistics",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0.84,
-        "rawMasteryScore": 0.9,
-        "retentionRate": 0.93,
-        "daysSinceLastAttempt": 1.2,
-        "needsSpacedReview": false,
-        "interpretation": "Strong",
-        "evidenceCount": 3,
-        "bktEstimate": 0.953,
-        "lastUpdated": "2026-09-04T16:57:38.158Z"
-      }
-    ],
-    [
-      "user_demo_learner_skill_linalg",
-      {
-        "userId": "user_demo_learner",
-        "skillId": "skill_linalg",
-        "skillName": "Linear Algebra",
-        "domain": "Mathematics & Computing",
-        "masteryScore": 0.15,
-        "rawMasteryScore": 0.16,
-        "retentionRate": 0.93,
-        "daysSinceLastAttempt": 1.1,
-        "needsSpacedReview": false,
-        "interpretation": "Weak",
-        "evidenceCount": 3,
-        "bktEstimate": 0.22,
-        "lastUpdated": "2026-09-04T16:57:38.158Z"
-      }
-    ],
-    [
-      "user_demo_learner_skill_model_eval",
-      {
-        "userId": "user_demo_learner",
-        "skillId": "skill_model_eval",
-        "skillName": "Model Evaluation",
-        "domain": "Applied Machine Learning",
-        "masteryScore": 0.79,
-        "rawMasteryScore": 0.88,
-        "retentionRate": 0.9,
-        "daysSinceLastAttempt": 1.2,
-        "needsSpacedReview": false,
-        "interpretation": "Good foundation",
-        "evidenceCount": 1,
-        "bktEstimate": 0.499,
-        "lastUpdated": "2026-09-04T16:57:38.158Z"
-      }
-    ],
-    [
-      "user_demo_learner_skill_ml",
-      {
-        "userId": "user_demo_learner",
+        "userId": "test_learner_rec",
         "skillId": "skill_ml",
         "skillName": "Machine Learning",
         "domain": "Artificial Intelligence",
-        "masteryScore": 0.29,
-        "rawMasteryScore": 0.31,
-        "retentionRate": 0.92,
-        "daysSinceLastAttempt": 1.1,
-        "needsSpacedReview": false,
+        "masteryScore": 0,
         "interpretation": "Weak",
-        "evidenceCount": 2,
-        "bktEstimate": 0.276,
-        "lastUpdated": "2026-09-04T16:57:38.158Z"
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-08T16:43:02.323Z"
       }
     ],
     [
-      "user_1788451781594_h45jl_skill_python",
+      "test_learner_rec_skill_stats",
       {
-        "userId": "user_1788451781594_h45jl",
+        "userId": "test_learner_rec",
+        "skillId": "skill_stats",
+        "skillName": "Statistics",
+        "domain": "Mathematics & Statistics",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-08T16:43:02.323Z"
+      }
+    ],
+    [
+      "test_learner_rec_skill_linalg",
+      {
+        "userId": "test_learner_rec",
+        "skillId": "skill_linalg",
+        "skillName": "Linear Algebra",
+        "domain": "Mathematics & Computing",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-08T16:43:02.323Z"
+      }
+    ],
+    [
+      "test_learner_rec_skill_model_eval",
+      {
+        "userId": "test_learner_rec",
+        "skillId": "skill_model_eval",
+        "skillName": "Model Evaluation",
+        "domain": "Applied Machine Learning",
+        "masteryScore": 0,
+        "interpretation": "Weak",
+        "evidenceCount": 0,
+        "bktEstimate": 0.15,
+        "lastUpdated": "2026-09-08T16:43:02.323Z"
+      }
+    ],
+    [
+      "test_learner_rec_skill_python",
+      {
+        "userId": "test_learner_rec",
         "skillId": "skill_python",
         "skillName": "Python",
         "domain": "Programming & Data Science",
@@ -15292,41 +13661,13 @@
         "interpretation": "Weak",
         "evidenceCount": 0,
         "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:09:41.594Z"
+        "lastUpdated": "2026-09-08T16:43:02.323Z"
       }
     ],
     [
-      "user_1788451781594_h45jl_skill_prob",
+      "test_learner_rec_skill_prob_dist",
       {
-        "userId": "user_1788451781594_h45jl",
-        "skillId": "skill_prob",
-        "skillName": "Probability",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:09:41.594Z"
-      }
-    ],
-    [
-      "user_1788451781594_h45jl_skill_cond_prob",
-      {
-        "userId": "user_1788451781594_h45jl",
-        "skillId": "skill_cond_prob",
-        "skillName": "Conditional Probability",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:09:41.594Z"
-      }
-    ],
-    [
-      "user_1788451781594_h45jl_skill_prob_dist",
-      {
-        "userId": "user_1788451781594_h45jl",
+        "userId": "test_learner_rec",
         "skillId": "skill_prob_dist",
         "skillName": "Probability Distributions",
         "domain": "Mathematics & Statistics",
@@ -15334,97 +13675,13 @@
         "interpretation": "Weak",
         "evidenceCount": 0,
         "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:09:41.594Z"
+        "lastUpdated": "2026-09-08T16:43:02.323Z"
       }
     ],
     [
-      "user_1788451781594_h45jl_skill_stats",
+      "test_learner_rec_skill_cond_prob",
       {
-        "userId": "user_1788451781594_h45jl",
-        "skillId": "skill_stats",
-        "skillName": "Statistics",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:09:41.594Z"
-      }
-    ],
-    [
-      "user_1788451781594_h45jl_skill_linalg",
-      {
-        "userId": "user_1788451781594_h45jl",
-        "skillId": "skill_linalg",
-        "skillName": "Linear Algebra",
-        "domain": "Mathematics & Computing",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:09:41.594Z"
-      }
-    ],
-    [
-      "user_1788451781594_h45jl_skill_model_eval",
-      {
-        "userId": "user_1788451781594_h45jl",
-        "skillId": "skill_model_eval",
-        "skillName": "Model Evaluation",
-        "domain": "Applied Machine Learning",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:09:41.594Z"
-      }
-    ],
-    [
-      "user_1788451781594_h45jl_skill_ml",
-      {
-        "userId": "user_1788451781594_h45jl",
-        "skillId": "skill_ml",
-        "skillName": "Machine Learning",
-        "domain": "Artificial Intelligence",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:09:41.594Z"
-      }
-    ],
-    [
-      "user_1788451801597_pauni_skill_python",
-      {
-        "userId": "user_1788451801597_pauni",
-        "skillId": "skill_python",
-        "skillName": "Python",
-        "domain": "Programming & Data Science",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:10:01.597Z"
-      }
-    ],
-    [
-      "user_1788451801597_pauni_skill_prob",
-      {
-        "userId": "user_1788451801597_pauni",
-        "skillId": "skill_prob",
-        "skillName": "Probability",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:10:01.597Z"
-      }
-    ],
-    [
-      "user_1788451801597_pauni_skill_cond_prob",
-      {
-        "userId": "user_1788451801597_pauni",
+        "userId": "test_learner_rec",
         "skillId": "skill_cond_prob",
         "skillName": "Conditional Probability",
         "domain": "Mathematics & Statistics",
@@ -15432,655 +13689,9 @@
         "interpretation": "Weak",
         "evidenceCount": 0,
         "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:10:01.597Z"
-      }
-    ],
-    [
-      "user_1788451801597_pauni_skill_prob_dist",
-      {
-        "userId": "user_1788451801597_pauni",
-        "skillId": "skill_prob_dist",
-        "skillName": "Probability Distributions",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:10:01.597Z"
-      }
-    ],
-    [
-      "user_1788451801597_pauni_skill_stats",
-      {
-        "userId": "user_1788451801597_pauni",
-        "skillId": "skill_stats",
-        "skillName": "Statistics",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:10:01.597Z"
-      }
-    ],
-    [
-      "user_1788451801597_pauni_skill_linalg",
-      {
-        "userId": "user_1788451801597_pauni",
-        "skillId": "skill_linalg",
-        "skillName": "Linear Algebra",
-        "domain": "Mathematics & Computing",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:10:01.597Z"
-      }
-    ],
-    [
-      "user_1788451801597_pauni_skill_model_eval",
-      {
-        "userId": "user_1788451801597_pauni",
-        "skillId": "skill_model_eval",
-        "skillName": "Model Evaluation",
-        "domain": "Applied Machine Learning",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:10:01.597Z"
-      }
-    ],
-    [
-      "user_1788451801597_pauni_skill_ml",
-      {
-        "userId": "user_1788451801597_pauni",
-        "skillId": "skill_ml",
-        "skillName": "Machine Learning",
-        "domain": "Artificial Intelligence",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:10:01.597Z"
-      }
-    ],
-    [
-      "user_1788451840148_tujbd_skill_python",
-      {
-        "userId": "user_1788451840148_tujbd",
-        "skillId": "skill_python",
-        "skillName": "Python",
-        "domain": "Programming & Data Science",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:10:40.149Z"
-      }
-    ],
-    [
-      "user_1788451840148_tujbd_skill_prob",
-      {
-        "userId": "user_1788451840148_tujbd",
-        "skillId": "skill_prob",
-        "skillName": "Probability",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0.6,
-        "rawMasteryScore": 0.6,
-        "retentionRate": 1,
-        "daysSinceLastAttempt": 0,
-        "needsSpacedReview": false,
-        "interpretation": "Moderate",
-        "evidenceCount": 5,
-        "bktEstimate": 0.862,
-        "lastUpdated": "2026-09-03T16:10:40.271Z"
-      }
-    ],
-    [
-      "user_1788451840148_tujbd_skill_cond_prob",
-      {
-        "userId": "user_1788451840148_tujbd",
-        "skillId": "skill_cond_prob",
-        "skillName": "Conditional Probability",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:10:40.149Z"
-      }
-    ],
-    [
-      "user_1788451840148_tujbd_skill_prob_dist",
-      {
-        "userId": "user_1788451840148_tujbd",
-        "skillId": "skill_prob_dist",
-        "skillName": "Probability Distributions",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:10:40.149Z"
-      }
-    ],
-    [
-      "user_1788451840148_tujbd_skill_stats",
-      {
-        "userId": "user_1788451840148_tujbd",
-        "skillId": "skill_stats",
-        "skillName": "Statistics",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:10:40.149Z"
-      }
-    ],
-    [
-      "user_1788451840148_tujbd_skill_linalg",
-      {
-        "userId": "user_1788451840148_tujbd",
-        "skillId": "skill_linalg",
-        "skillName": "Linear Algebra",
-        "domain": "Mathematics & Computing",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:10:40.149Z"
-      }
-    ],
-    [
-      "user_1788451840148_tujbd_skill_model_eval",
-      {
-        "userId": "user_1788451840148_tujbd",
-        "skillId": "skill_model_eval",
-        "skillName": "Model Evaluation",
-        "domain": "Applied Machine Learning",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:10:40.149Z"
-      }
-    ],
-    [
-      "user_1788451840148_tujbd_skill_ml",
-      {
-        "userId": "user_1788451840148_tujbd",
-        "skillId": "skill_ml",
-        "skillName": "Machine Learning",
-        "domain": "Artificial Intelligence",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:10:40.149Z"
-      }
-    ],
-    [
-      "user_1788452349085_kdsvu_skill_python",
-      {
-        "userId": "user_1788452349085_kdsvu",
-        "skillId": "skill_python",
-        "skillName": "Python",
-        "domain": "Programming & Data Science",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:19:09.085Z"
-      }
-    ],
-    [
-      "user_1788452349085_kdsvu_skill_prob",
-      {
-        "userId": "user_1788452349085_kdsvu",
-        "skillId": "skill_prob",
-        "skillName": "Probability",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0.6,
-        "rawMasteryScore": 0.6,
-        "retentionRate": 1,
-        "daysSinceLastAttempt": 0,
-        "needsSpacedReview": false,
-        "interpretation": "Moderate",
-        "evidenceCount": 5,
-        "bktEstimate": 0.862,
-        "lastUpdated": "2026-09-03T16:19:09.214Z"
-      }
-    ],
-    [
-      "user_1788452349085_kdsvu_skill_cond_prob",
-      {
-        "userId": "user_1788452349085_kdsvu",
-        "skillId": "skill_cond_prob",
-        "skillName": "Conditional Probability",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:19:09.085Z"
-      }
-    ],
-    [
-      "user_1788452349085_kdsvu_skill_prob_dist",
-      {
-        "userId": "user_1788452349085_kdsvu",
-        "skillId": "skill_prob_dist",
-        "skillName": "Probability Distributions",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:19:09.085Z"
-      }
-    ],
-    [
-      "user_1788452349085_kdsvu_skill_stats",
-      {
-        "userId": "user_1788452349085_kdsvu",
-        "skillId": "skill_stats",
-        "skillName": "Statistics",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:19:09.085Z"
-      }
-    ],
-    [
-      "user_1788452349085_kdsvu_skill_linalg",
-      {
-        "userId": "user_1788452349085_kdsvu",
-        "skillId": "skill_linalg",
-        "skillName": "Linear Algebra",
-        "domain": "Mathematics & Computing",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:19:09.085Z"
-      }
-    ],
-    [
-      "user_1788452349085_kdsvu_skill_model_eval",
-      {
-        "userId": "user_1788452349085_kdsvu",
-        "skillId": "skill_model_eval",
-        "skillName": "Model Evaluation",
-        "domain": "Applied Machine Learning",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:19:09.085Z"
-      }
-    ],
-    [
-      "user_1788452349085_kdsvu_skill_ml",
-      {
-        "userId": "user_1788452349085_kdsvu",
-        "skillId": "skill_ml",
-        "skillName": "Machine Learning",
-        "domain": "Artificial Intelligence",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-03T16:19:09.085Z"
-      }
-    ],
-    [
-      "user_1788539943760_wkmqg_skill_python",
-      {
-        "userId": "user_1788539943760_wkmqg",
-        "skillId": "skill_python",
-        "skillName": "Python",
-        "domain": "Programming & Data Science",
-        "masteryScore": 0,
-        "rawMasteryScore": 0,
-        "retentionRate": 1,
-        "daysSinceLastAttempt": 0,
-        "needsSpacedReview": false,
-        "interpretation": "Weak",
-        "evidenceCount": 1,
-        "bktEstimate": 0.199,
-        "lastUpdated": "2026-09-04T16:43:50.513Z"
-      }
-    ],
-    [
-      "user_1788539943760_wkmqg_skill_prob",
-      {
-        "userId": "user_1788539943760_wkmqg",
-        "skillId": "skill_prob",
-        "skillName": "Probability",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T16:39:03.760Z"
-      }
-    ],
-    [
-      "user_1788539943760_wkmqg_skill_cond_prob",
-      {
-        "userId": "user_1788539943760_wkmqg",
-        "skillId": "skill_cond_prob",
-        "skillName": "Conditional Probability",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T16:39:03.760Z"
-      }
-    ],
-    [
-      "user_1788539943760_wkmqg_skill_prob_dist",
-      {
-        "userId": "user_1788539943760_wkmqg",
-        "skillId": "skill_prob_dist",
-        "skillName": "Probability Distributions",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T16:39:03.760Z"
-      }
-    ],
-    [
-      "user_1788539943760_wkmqg_skill_stats",
-      {
-        "userId": "user_1788539943760_wkmqg",
-        "skillId": "skill_stats",
-        "skillName": "Statistics",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T16:39:03.760Z"
-      }
-    ],
-    [
-      "user_1788539943760_wkmqg_skill_linalg",
-      {
-        "userId": "user_1788539943760_wkmqg",
-        "skillId": "skill_linalg",
-        "skillName": "Linear Algebra",
-        "domain": "Mathematics & Computing",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T16:39:03.760Z"
-      }
-    ],
-    [
-      "user_1788539943760_wkmqg_skill_model_eval",
-      {
-        "userId": "user_1788539943760_wkmqg",
-        "skillId": "skill_model_eval",
-        "skillName": "Model Evaluation",
-        "domain": "Applied Machine Learning",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T16:39:03.760Z"
-      }
-    ],
-    [
-      "user_1788539943760_wkmqg_skill_ml",
-      {
-        "userId": "user_1788539943760_wkmqg",
-        "skillId": "skill_ml",
-        "skillName": "Machine Learning",
-        "domain": "Artificial Intelligence",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T16:39:03.760Z"
-      }
-    ],
-    [
-      "user_1788541323577_o3a28_skill_python",
-      {
-        "userId": "user_1788541323577_o3a28",
-        "skillId": "skill_python",
-        "skillName": "Python",
-        "domain": "Programming & Data Science",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T17:02:03.578Z"
-      }
-    ],
-    [
-      "user_1788541323577_o3a28_skill_prob",
-      {
-        "userId": "user_1788541323577_o3a28",
-        "skillId": "skill_prob",
-        "skillName": "Probability",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T17:02:03.578Z"
-      }
-    ],
-    [
-      "user_1788541323577_o3a28_skill_cond_prob",
-      {
-        "userId": "user_1788541323577_o3a28",
-        "skillId": "skill_cond_prob",
-        "skillName": "Conditional Probability",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T17:02:03.578Z"
-      }
-    ],
-    [
-      "user_1788541323577_o3a28_skill_prob_dist",
-      {
-        "userId": "user_1788541323577_o3a28",
-        "skillId": "skill_prob_dist",
-        "skillName": "Probability Distributions",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T17:02:03.578Z"
-      }
-    ],
-    [
-      "user_1788541323577_o3a28_skill_stats",
-      {
-        "userId": "user_1788541323577_o3a28",
-        "skillId": "skill_stats",
-        "skillName": "Statistics",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T17:02:03.578Z"
-      }
-    ],
-    [
-      "user_1788541323577_o3a28_skill_linalg",
-      {
-        "userId": "user_1788541323577_o3a28",
-        "skillId": "skill_linalg",
-        "skillName": "Linear Algebra",
-        "domain": "Mathematics & Computing",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T17:02:03.578Z"
-      }
-    ],
-    [
-      "user_1788541323577_o3a28_skill_model_eval",
-      {
-        "userId": "user_1788541323577_o3a28",
-        "skillId": "skill_model_eval",
-        "skillName": "Model Evaluation",
-        "domain": "Applied Machine Learning",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T17:02:03.578Z"
-      }
-    ],
-    [
-      "user_1788541323577_o3a28_skill_ml",
-      {
-        "userId": "user_1788541323577_o3a28",
-        "skillId": "skill_ml",
-        "skillName": "Machine Learning",
-        "domain": "Artificial Intelligence",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T17:02:03.578Z"
-      }
-    ],
-    [
-      "user_1788541348449_y3tih_skill_python",
-      {
-        "userId": "user_1788541348449_y3tih",
-        "skillId": "skill_python",
-        "skillName": "Python",
-        "domain": "Programming & Data Science",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T17:02:28.450Z"
-      }
-    ],
-    [
-      "user_1788541348449_y3tih_skill_prob",
-      {
-        "userId": "user_1788541348449_y3tih",
-        "skillId": "skill_prob",
-        "skillName": "Probability",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "rawMasteryScore": 0,
-        "retentionRate": 1,
-        "daysSinceLastAttempt": 0,
-        "needsSpacedReview": false,
-        "interpretation": "Weak",
-        "evidenceCount": 1,
-        "bktEstimate": 0.199,
-        "lastUpdated": "2026-09-04T17:02:28.524Z"
-      }
-    ],
-    [
-      "user_1788541348449_y3tih_skill_cond_prob",
-      {
-        "userId": "user_1788541348449_y3tih",
-        "skillId": "skill_cond_prob",
-        "skillName": "Conditional Probability",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T17:02:28.450Z"
-      }
-    ],
-    [
-      "user_1788541348449_y3tih_skill_prob_dist",
-      {
-        "userId": "user_1788541348449_y3tih",
-        "skillId": "skill_prob_dist",
-        "skillName": "Probability Distributions",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T17:02:28.450Z"
-      }
-    ],
-    [
-      "user_1788541348449_y3tih_skill_stats",
-      {
-        "userId": "user_1788541348449_y3tih",
-        "skillId": "skill_stats",
-        "skillName": "Statistics",
-        "domain": "Mathematics & Statistics",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T17:02:28.450Z"
-      }
-    ],
-    [
-      "user_1788541348449_y3tih_skill_linalg",
-      {
-        "userId": "user_1788541348449_y3tih",
-        "skillId": "skill_linalg",
-        "skillName": "Linear Algebra",
-        "domain": "Mathematics & Computing",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T17:02:28.450Z"
-      }
-    ],
-    [
-      "user_1788541348449_y3tih_skill_model_eval",
-      {
-        "userId": "user_1788541348449_y3tih",
-        "skillId": "skill_model_eval",
-        "skillName": "Model Evaluation",
-        "domain": "Applied Machine Learning",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T17:02:28.450Z"
-      }
-    ],
-    [
-      "user_1788541348449_y3tih_skill_ml",
-      {
-        "userId": "user_1788541348449_y3tih",
-        "skillId": "skill_ml",
-        "skillName": "Machine Learning",
-        "domain": "Artificial Intelligence",
-        "masteryScore": 0,
-        "interpretation": "Weak",
-        "evidenceCount": 0,
-        "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-04T17:02:28.450Z"
+        "lastUpdated": "2026-09-08T16:43:02.323Z"
       }
     ]
   ],
-  "savedAt": "2026-09-04T17:02:48.361Z"
+  "savedAt": "2026-09-08T16:43:02.424Z"
 }

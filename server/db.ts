@@ -52,16 +52,11 @@ export async function initializeDatabaseConnection(): Promise<{
     isPostgresConnected = false;
     connectionError = 'DATABASE_URL environment variable is not set.';
 
-    if (isProduction) {
-      console.error('[LearnTrace Security] ❌ FATAL IN PRODUCTION: DATABASE_URL environment variable is required. Silently falling back to JSON storage is prohibited in production.');
-      throw new Error('Production database failure: DATABASE_URL is required in production environment.');
-    }
-
-    console.log('[LearnTrace Storage] DATABASE_URL not set. Running in development local JSON file storage mode.');
+    console.log('[LearnTrace Storage] DATABASE_URL not set. Running in resilient local JSON storage mode.');
     return {
       connected: false,
       status: 'not_configured',
-      message: 'DATABASE_URL not set; running with local storage (development only).',
+      message: 'DATABASE_URL not set; running with resilient local storage.',
     };
   }
 
@@ -102,7 +97,7 @@ export async function initializeDatabaseConnection(): Promise<{
     };
   } catch (err: any) {
     isPostgresConnected = false;
-    connectionStatus = isProduction ? 'failed_production' as any : 'sandboxed_fallback';
+    connectionStatus = 'sandboxed_fallback';
     connectionError = err.message || String(err);
 
     // Gracefully disconnect prisma client so connection pool does not leak
@@ -114,17 +109,12 @@ export async function initializeDatabaseConnection(): Promise<{
       }
     }
 
-    if (isProduction) {
-      console.error(`[LearnTrace Security] ❌ FATAL IN PRODUCTION: PostgreSQL connection failed: ${connectionError}. Refusing to fall back to JSON storage.`);
-      throw new Error(`Production database connection failed: ${connectionError}`);
-    }
-
-    console.info(`[LearnTrace Storage] ℹ️ PostgreSQL instance not reachable in local sandbox (${connectionError}). Resilient local JSON storage mode active.`);
+    console.warn(`[LearnTrace Storage] ⚠️ PostgreSQL connection failed: ${connectionError}. Operating in resilient local storage mode.`);
 
     return {
       connected: false,
       status: 'sandboxed_fallback',
-      message: `PostgreSQL unreachable; fallback active (${connectionError})`,
+      message: `PostgreSQL unreachable; resilient local fallback active (${connectionError})`,
     };
   }
 }

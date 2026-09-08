@@ -137,68 +137,78 @@ export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectS
       </div>
 
       {/* Chart Canvas */}
-      <div className="h-64 w-full">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={chartData}
-            margin={{ top: 15, right: 10, left: -15, bottom: 35 }}
-            onClick={(state: any) => {
-              if (state && state.activePayload && state.activePayload.length) {
-                const clickedSkillId = state.activePayload[0].payload.skillId;
-                if (onSelectSkill) onSelectSkill(clickedSkillId);
-              }
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
-            <XAxis
-              dataKey="shortName"
-              stroke="#94a3b8"
-              fontSize={10}
-              tickLine={false}
-              axisLine={{ stroke: '#e2e8f0' }}
-              interval={0}
-              angle={-22}
-              textAnchor="end"
-              height={42}
-            />
-            <YAxis
-              stroke="#94a3b8"
-              fontSize={11}
-              domain={[0, 100]}
-              tickLine={false}
-              axisLine={{ stroke: '#e2e8f0' }}
-              unit="%"
-              ticks={[0, 25, 50, 60, 75, 100]}
-            />
-            <Tooltip content={<CustomTooltip />} cursor={{ fill: '#f8fafc', opacity: 0.8 }} />
-            
-            {/* 60% Target Mastery Reference Line */}
-            <ReferenceLine
-              y={60}
-              stroke="#4f46e5"
-              strokeDasharray="4 4"
-              strokeWidth={1.5}
-              label={{
-                value: '60% Target',
-                position: 'insideTopRight',
-                fill: '#4f46e5',
-                fontSize: 10,
-                fontWeight: 600,
+      {chartData.length === 0 ? (
+        <div className="h-64 w-full flex flex-col items-center justify-center text-center p-6 bg-slate-50/50 rounded-lg border border-dashed border-slate-200">
+          <BarChart3 className="w-8 h-8 text-slate-300 mb-2" />
+          <p className="text-xs font-semibold text-slate-700">No skill mastery evidence yet</p>
+          <p className="text-[11px] text-slate-400 max-w-xs mt-1">
+            Complete diagnostic assessments to populate evidence-based knowledge tracing and retention analytics.
+          </p>
+        </div>
+      ) : (
+        <div className="h-64 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={chartData}
+              margin={{ top: 15, right: 10, left: -15, bottom: 35 }}
+              onClick={(state: any) => {
+                if (state && state.activePayload && state.activePayload.length) {
+                  const clickedSkillId = state.activePayload[0].payload.skillId;
+                  if (onSelectSkill) onSelectSkill(clickedSkillId);
+                }
               }}
-            />
+            >
+              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+              <XAxis
+                dataKey="shortName"
+                stroke="#94a3b8"
+                fontSize={10}
+                tickLine={false}
+                axisLine={{ stroke: '#e2e8f0' }}
+                interval={0}
+                angle={-22}
+                textAnchor="end"
+                height={42}
+              />
+              <YAxis
+                stroke="#94a3b8"
+                fontSize={11}
+                domain={[0, 100]}
+                tickLine={false}
+                axisLine={{ stroke: '#e2e8f0' }}
+                unit="%"
+                ticks={[0, 25, 50, 60, 75, 100]}
+              />
+              <Tooltip content={<CustomTooltip />} cursor={{ fill: '#f8fafc', opacity: 0.8 }} />
+              
+              {/* 60% Target Mastery Reference Line */}
+              <ReferenceLine
+                y={60}
+                stroke="#4f46e5"
+                strokeDasharray="4 4"
+                strokeWidth={1.5}
+                label={{
+                  value: '60% Target',
+                  position: 'insideTopRight',
+                  fill: '#4f46e5',
+                  fontSize: 10,
+                  fontWeight: 600,
+                }}
+              />
 
-            <Bar dataKey="mastery" radius={[4, 4, 0, 0]} maxBarSize={36} className="cursor-pointer">
-              {chartData.map((entry, index) => (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={entry.isMastered ? (entry.needsReview ? '#f59e0b' : '#10b981') : '#f59e0b'}
-                  className="hover:opacity-85 transition-opacity"
-                />
-              ))}
-            </Bar>
-          </BarChart>
-        </ResponsiveContainer>
-      </div>
+              <Bar dataKey="mastery" radius={[4, 4, 0, 0]} maxBarSize={36} className="cursor-pointer">
+                {chartData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={entry.isMastered ? (entry.needsReview ? '#f59e0b' : '#10b981') : '#f59e0b'}
+                    className="hover:opacity-85 transition-opacity"
+                  />
+                ))}
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
 
       <div className="mt-2 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400">
         <span>Click any bar to start practice</span>

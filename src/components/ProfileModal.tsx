@@ -73,6 +73,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
   // Reset progress state
   const [resetting, setResetting] = useState(false);
   const [resetMessage, setResetMessage] = useState<string | null>(null);
+  const [confirmResetOpen, setConfirmResetOpen] = useState(false);
 
   const fetchStats = async () => {
     if (!isOpen) return;
@@ -145,13 +146,11 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
   };
 
   const handleResetProgress = async () => {
-    if (!confirm('Are you sure you want to reset your practice attempts and mastery calculations? This cannot be undone.')) {
-      return;
-    }
     try {
       setResetting(true);
       await api.resetUserProgress();
       setResetMessage('Your diagnostic trace attempts have been reset.');
+      setConfirmResetOpen(false);
       fetchStats();
       onRefreshAll();
     } catch (err: any) {
@@ -538,14 +537,40 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
                   </div>
                 )}
 
-                <button
-                  id="btn-reset-user-progress"
-                  onClick={handleResetProgress}
-                  disabled={resetting}
-                  className="px-3.5 py-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
-                >
-                  {resetting ? 'Resetting Progress...' : 'Reset My Progress'}
-                </button>
+                {!confirmResetOpen ? (
+                  <button
+                    id="btn-reset-user-progress"
+                    onClick={() => setConfirmResetOpen(true)}
+                    disabled={resetting}
+                    className="px-3.5 py-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+                  >
+                    Reset My Progress
+                  </button>
+                ) : (
+                  <div className="p-3 bg-white rounded-lg border border-rose-200 space-y-2">
+                    <p className="text-xs font-semibold text-rose-900">
+                      Are you sure? This will delete all your attempts and reset mastery scores to initial priors.
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <button
+                        id="btn-confirm-reset-user-progress"
+                        onClick={handleResetProgress}
+                        disabled={resetting}
+                        className="px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold transition-colors cursor-pointer"
+                      >
+                        {resetting ? 'Resetting...' : 'Yes, Reset Progress'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setConfirmResetOpen(false)}
+                        disabled={resetting}
+                        className="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium transition-colors cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
 
             </div>

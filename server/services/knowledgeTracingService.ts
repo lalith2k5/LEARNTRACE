@@ -8,14 +8,47 @@ export const DEFAULT_BKT_PARAMS: BktParameters = {
 };
 
 /**
+ * Normalizes BKT parameters from any schema variation (e.g. pT vs pTransit, pS vs pSlip, pG vs pGuess)
+ */
+export function normalizeBktParams(rawParams?: any): BktParameters {
+  if (!rawParams || typeof rawParams !== 'object') {
+    return { ...DEFAULT_BKT_PARAMS };
+  }
+
+  const pL0 = typeof rawParams.pL0 === 'number' && !isNaN(rawParams.pL0)
+    ? Math.max(0.01, Math.min(0.99, rawParams.pL0))
+    : DEFAULT_BKT_PARAMS.pL0;
+
+  const pTransit = typeof rawParams.pTransit === 'number' && !isNaN(rawParams.pTransit)
+    ? Math.max(0.01, Math.min(0.99, rawParams.pTransit))
+    : (typeof rawParams.pT === 'number' && !isNaN(rawParams.pT)
+      ? Math.max(0.01, Math.min(0.99, rawParams.pT))
+      : DEFAULT_BKT_PARAMS.pTransit);
+
+  const pSlip = typeof rawParams.pSlip === 'number' && !isNaN(rawParams.pSlip)
+    ? Math.max(0.01, Math.min(0.50, rawParams.pSlip))
+    : (typeof rawParams.pS === 'number' && !isNaN(rawParams.pS)
+      ? Math.max(0.01, Math.min(0.50, rawParams.pS))
+      : DEFAULT_BKT_PARAMS.pSlip);
+
+  const pGuess = typeof rawParams.pGuess === 'number' && !isNaN(rawParams.pGuess)
+    ? Math.max(0.01, Math.min(0.50, rawParams.pGuess))
+    : (typeof rawParams.pG === 'number' && !isNaN(rawParams.pG)
+      ? Math.max(0.01, Math.min(0.50, rawParams.pG))
+      : DEFAULT_BKT_PARAMS.pGuess);
+
+  return { pL0, pTransit, pSlip, pGuess };
+}
+
+/**
  * Bayesian Knowledge Tracing (BKT)
  * Computes posterior probability of mastery after observing binary evidence sequence.
  */
 export function computeBktMasterySequence(
   attempts: Array<{ correct: boolean }>,
-  params: BktParameters = DEFAULT_BKT_PARAMS
+  rawParams: any = DEFAULT_BKT_PARAMS
 ): number[] {
-  const { pL0, pTransit, pSlip, pGuess } = params;
+  const { pL0, pTransit, pSlip, pGuess } = normalizeBktParams(rawParams);
   let pL = pL0;
   const history: number[] = [pL];
 

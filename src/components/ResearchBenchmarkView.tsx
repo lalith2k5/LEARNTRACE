@@ -80,6 +80,7 @@ export const ResearchBenchmarkView: React.FC<ResearchBenchmarkViewProps> = ({ on
   const [evaluatingDataset, setEvaluatingDataset] = useState<boolean>(false);
   const [benchmarkResults, setBenchmarkResults] = useState<any | null>(null);
   const [customCsvInput, setCustomCsvInput] = useState<string>('');
+  const [customCsvError, setCustomCsvError] = useState<string | null>(null);
 
   // Questions Bank State
   const [questionStats, setQuestionStats] = useState<any | null>(null);
@@ -162,6 +163,7 @@ export const ResearchBenchmarkView: React.FC<ResearchBenchmarkViewProps> = ({ on
 
   const handleCustomCsvEvaluation = async () => {
     if (!customCsvInput.trim()) return;
+    setCustomCsvError(null);
 
     try {
       setEvaluatingDataset(true);
@@ -183,7 +185,7 @@ export const ResearchBenchmarkView: React.FC<ResearchBenchmarkViewProps> = ({ on
       });
 
       if (records.length === 0) {
-        alert('Could not parse any valid records from CSV. Format: userId,skillId,correct,confidence,timeTakenSeconds');
+        setCustomCsvError('Could not parse any valid records from CSV. Expected header and format: userId,skillId,correct,confidence,timeTakenSeconds');
         return;
       }
 
@@ -193,8 +195,9 @@ export const ResearchBenchmarkView: React.FC<ResearchBenchmarkViewProps> = ({ on
         bktParams,
       });
       setBenchmarkResults(evalRes);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Custom CSV evaluation error:', err);
+      setCustomCsvError(err?.message || 'Failed to evaluate custom CSV dataset.');
     } finally {
       setEvaluatingDataset(false);
     }
@@ -290,12 +293,12 @@ export const ResearchBenchmarkView: React.FC<ResearchBenchmarkViewProps> = ({ on
     document.body.removeChild(link);
   };
 
-  const chartData = simulationPoints.map((p) => ({
+  const chartData = simulationPoints.map((p: any) => ({
     step: `Step ${p.step}`,
-    outcome: p.correct ? 'Correct' : 'Incorrect',
-    'LearnTrace Heuristic': Math.round(p.learnTraceHeuristic * 100),
-    'BKT (Bayesian KT)': Math.round(p.bktProbability * 100),
-    'DKT (Recurrent Neural)': Math.round(p.dktProbability * 100),
+    outcome: p.isCorrect !== undefined ? (p.isCorrect ? 'Correct' : 'Incorrect') : (p.correct ? 'Correct' : 'Incorrect'),
+    'LearnTrace Heuristic': Math.round(((p.learnTraceScore !== undefined ? p.learnTraceScore : p.learnTraceHeuristic) || 0) * 100),
+    'BKT (Bayesian KT)': Math.round(((p.bktScore !== undefined ? p.bktScore : p.bktProbability) || 0) * 100),
+    'DKT (Recurrent Neural)': Math.round(((p.dktScore !== undefined ? p.dktScore : p.dktProbability) || 0) * 100),
   }));
 
   // Filtered questions
@@ -413,13 +416,13 @@ export const ResearchBenchmarkView: React.FC<ResearchBenchmarkViewProps> = ({ on
       </div>
 
       {/* Navigation Sub-Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
+      <div className="bg-slate-100/90 p-1.5 rounded-xl border border-slate-200 flex items-center gap-1.5 flex-wrap">
         <button
           onClick={() => setActiveTab('simulation')}
-          className={`px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer ${
+          className={`px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer ${
             activeTab === 'simulation'
               ? 'bg-[#1877F2] text-white shadow-2xs'
-              : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
           }`}
         >
           <FlaskConical className="w-3.5 h-3.5" />
@@ -428,10 +431,10 @@ export const ResearchBenchmarkView: React.FC<ResearchBenchmarkViewProps> = ({ on
 
         <button
           onClick={() => setActiveTab('benchmark')}
-          className={`px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer ${
+          className={`px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer ${
             activeTab === 'benchmark'
               ? 'bg-[#1877F2] text-white shadow-2xs'
-              : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
           }`}
         >
           <Award className="w-3.5 h-3.5" />
@@ -440,14 +443,19 @@ export const ResearchBenchmarkView: React.FC<ResearchBenchmarkViewProps> = ({ on
 
         <button
           onClick={() => setActiveTab('questions')}
-          className={`px-4 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-colors cursor-pointer ${
+          className={`px-3.5 py-2 rounded-lg text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer ${
             activeTab === 'questions'
               ? 'bg-[#1877F2] text-white shadow-2xs'
-              : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+              : 'text-slate-600 hover:text-slate-900 hover:bg-white/60'
           }`}
         >
           <BookOpen className="w-3.5 h-3.5" />
-          Question Bank Repository ({questionStats?.totalQuestions || 24})
+          Question Bank Repository
+          <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+            activeTab === 'questions' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'
+          }`}>
+            {questionStats?.totalQuestions || 24}
+          </span>
         </button>
       </div>
 
@@ -839,6 +847,22 @@ export const ResearchBenchmarkView: React.FC<ResearchBenchmarkViewProps> = ({ on
                   Evaluate CSV
                 </button>
               </div>
+
+              {customCsvError && (
+                <div className="p-2.5 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5">
+                    <AlertTriangle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
+                    <span>{customCsvError}</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setCustomCsvError(null)}
+                    className="text-rose-500 hover:text-rose-700 text-xs font-medium cursor-pointer"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -1032,12 +1056,145 @@ export const ResearchBenchmarkView: React.FC<ResearchBenchmarkViewProps> = ({ on
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
-              <span className="text-xs text-slate-300 bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>Auto-Enrichment Active</span>
-              </span>
+              <button
+                id="btn-toggle-ai-gen-panel"
+                onClick={() => setShowGenPanel(!showGenPanel)}
+                className="text-xs font-semibold px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white border border-indigo-400/30 flex items-center gap-1.5 cursor-pointer shadow-2xs transition-all"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                <span>{showGenPanel ? 'Close AI Generator' : 'Generate AI Questions'}</span>
+              </button>
             </div>
           </div>
+
+          {/* AI Question Generation Admin Panel */}
+          {showGenPanel && (
+            <div className="p-5 rounded-xl bg-white border border-indigo-200 shadow-sm space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Cpu className="w-4 h-4 text-indigo-600" />
+                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                    On-Demand AI Question Synthesis & Validation
+                  </h4>
+                </div>
+                <span className="text-[11px] text-slate-500">
+                  Strict schema validation enforced before bank insertion
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div className="space-y-1">
+                  <label className="text-[11px] font-semibold text-slate-700">Target Skill</label>
+                  <select
+                    value={genSkillId}
+                    onChange={(e) => setGenSkillId(e.target.value)}
+                    className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  >
+                    <option value="all">All Skills (Balanced Distribution)</option>
+                    <option value="skill_python">Python Programming</option>
+                    <option value="skill_prob">Probability Foundations</option>
+                    <option value="skill_cond_prob">Conditional Probability</option>
+                    <option value="skill_prob_dist">Probability Distributions</option>
+                    <option value="skill_stats">Statistical Inference</option>
+                    <option value="skill_linalg">Linear Algebra</option>
+                    <option value="skill_model_eval">Model Evaluation</option>
+                    <option value="skill_ml">Machine Learning</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[11px] font-semibold text-slate-700">Difficulty Level</label>
+                  <select
+                    value={genDifficulty}
+                    onChange={(e) => setGenDifficulty(e.target.value)}
+                    className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  >
+                    <option value="all">Varied / Auto</option>
+                    <option value="1">1 - Beginner / Recall</option>
+                    <option value="2">2 - Elementary</option>
+                    <option value="3">3 - Intermediate Application</option>
+                    <option value="4">4 - Advanced Analysis</option>
+                    <option value="5">5 - Expert Synthesis</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[11px] font-semibold text-slate-700">Cognitive Category</label>
+                  <select
+                    value={genCategory}
+                    onChange={(e) => setGenCategory(e.target.value)}
+                    className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                  >
+                    <option value="all">Varied / Auto</option>
+                    <option value="Recall">Recall</option>
+                    <option value="Comprehension">Comprehension</option>
+                    <option value="Application">Application</option>
+                    <option value="Analysis">Analysis</option>
+                    <option value="Synthesis">Synthesis</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-[11px] font-semibold text-slate-700">Item Batch Count</label>
+                  <div className="flex items-center gap-2">
+                    <select
+                      value={genCount}
+                      onChange={(e) => setGenCount(Number(e.target.value))}
+                      className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+                    >
+                      <option value="1">1 Item</option>
+                      <option value="2">2 Items</option>
+                      <option value="3">3 Items</option>
+                      <option value="5">5 Items</option>
+                    </select>
+                    <button
+                      id="btn-run-ai-gen"
+                      onClick={handleGenerateQuestions}
+                      disabled={generatingQuestions}
+                      className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition-all flex items-center justify-center gap-1.5 shrink-0 cursor-pointer disabled:opacity-50"
+                    >
+                      {generatingQuestions ? (
+                        <>
+                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          <span>Generating...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-3.5 h-3.5" />
+                          <span>Generate</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {genStatusMessage && (
+                <div
+                  className={`p-3 rounded-lg text-xs border flex items-center justify-between gap-2 ${
+                    genStatusMessage.type === 'success'
+                      ? 'bg-emerald-50 border-emerald-200 text-emerald-800'
+                      : 'bg-rose-50 border-rose-200 text-rose-800'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    {genStatusMessage.type === 'success' ? (
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    ) : (
+                      <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+                    )}
+                    <span>{genStatusMessage.text}</span>
+                  </div>
+                  <button
+                    onClick={() => setGenStatusMessage(null)}
+                    className="text-[11px] font-semibold text-slate-500 hover:text-slate-800 cursor-pointer"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Question Bank Metrics Overview */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">

@@ -18,6 +18,8 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
   message,
   onStartQuizForSkill,
   onStartLearningGap,
+  onRecalculateMastery,
+  recalculating = false,
 }) => {
   if (loading) {
     return (
@@ -33,20 +35,34 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
   if (!recommendation) {
     return (
       <div className="w-full bg-white border border-slate-200 rounded-xl p-6 sm:p-7 shadow-2xs">
-        <div className="flex items-start gap-4">
-          <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shrink-0">
-            <CheckCircle2 className="w-5 h-5" />
-          </div>
-          <div className="space-y-1">
-            <h3 className="text-base font-bold text-slate-900">Curriculum Target Reached</h3>
-            <p className="text-xs text-slate-500 leading-relaxed max-w-xl">
-              {message || 'You have achieved target mastery for all prerequisite topics in your selected learning goal.'}
-            </p>
-            <div className="pt-2 text-[11px] text-slate-500 flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-              <span>Mastery automatically recalculates when you complete new diagnostic assessments.</span>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-100 flex items-center justify-center shrink-0">
+              <CheckCircle2 className="w-5 h-5" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-base font-bold text-slate-900">Curriculum Target Reached</h3>
+              <p className="text-xs text-slate-500 leading-relaxed max-w-xl">
+                {message || 'You have achieved target mastery for all prerequisite topics in your selected learning goal.'}
+              </p>
+              <div className="pt-2 text-[11px] text-slate-500 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span>Mastery automatically recalculates when you complete new diagnostic assessments.</span>
+              </div>
             </div>
           </div>
+
+          {onRecalculateMastery && (
+            <button
+              id="btn-recalculate-mastery-done"
+              onClick={onRecalculateMastery}
+              disabled={recalculating}
+              className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1.5 shrink-0 cursor-pointer disabled:opacity-50"
+            >
+              <RotateCcw className={`w-3.5 h-3.5 ${recalculating ? 'animate-spin text-[#1877F2]' : ''}`} />
+              <span>{recalculating ? 'Recalculating...' : 'Recalculate Mastery'}</span>
+            </button>
+          )}
         </div>
       </div>
     );
@@ -123,6 +139,19 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
             >
               <BookOpen className="w-3.5 h-3.5 text-amber-600 shrink-0" />
               <span className="whitespace-nowrap">Start Learning Gap</span>
+            </button>
+          )}
+
+          {onRecalculateMastery && (
+            <button
+              id="btn-rec-recalculate-mastery"
+              onClick={onRecalculateMastery}
+              disabled={recalculating}
+              className="w-full py-1.5 px-3 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 min-w-0"
+              title="Recalculate mastery"
+            >
+              <RotateCcw className={`w-3 h-3 ${recalculating ? 'animate-spin text-[#1877F2]' : 'text-slate-400'}`} />
+              <span className="whitespace-nowrap">{recalculating ? 'Recalculating...' : 'Recalculate Mastery'}</span>
             </button>
           )}
 

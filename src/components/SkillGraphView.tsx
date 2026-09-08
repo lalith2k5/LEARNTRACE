@@ -19,18 +19,23 @@ import { Skill } from '../types';
 const SkillNodeComponent = ({ data }: { data: any }) => {
   const masteryPct = Math.round((data.mastery || 0) * 100);
   const isMastered = masteryPct >= 60;
+  const isAssessed = data.mastery !== undefined && data.evidenceCount > 0;
+  const isGap = isAssessed && !isMastered;
+
+  let borderStyle = 'bg-white border-slate-200 hover:border-slate-300';
+  if (data.isRecommended) {
+    borderStyle = 'bg-gradient-to-b from-blue-50/90 to-white border-[#1877F2] ring-2 ring-[#1877F2]/40 shadow-xs';
+  } else if (data.isTarget) {
+    borderStyle = 'bg-purple-50/50 border-purple-400 shadow-xs';
+  } else if (isMastered) {
+    borderStyle = 'bg-white border-emerald-400 shadow-xs';
+  } else if (isGap) {
+    borderStyle = 'bg-white border-amber-400 shadow-xs';
+  }
 
   return (
     <div
-      className={`min-w-[200px] max-w-[240px] p-3.5 rounded-xl border shadow-md transition-all cursor-pointer ${
-        data.isRecommended
-          ? 'bg-gradient-to-b from-blue-50/90 to-white border-[#1877F2] ring-2 ring-[#1877F2]/40 shadow-blue-100'
-          : data.isTarget
-          ? 'bg-purple-50/50 border-purple-400'
-          : isMastered
-          ? 'bg-white border-emerald-300 shadow-emerald-50'
-          : 'bg-white border-slate-200'
-      }`}
+      className={`min-w-[210px] max-w-[240px] p-3.5 rounded-xl border transition-all cursor-pointer select-none ${borderStyle}`}
     >
       <Handle type="target" position={Position.Left} className="!bg-[#1877F2] !w-2.5 !h-2.5 !border-2 !border-white" />
 
@@ -41,7 +46,7 @@ const SkillNodeComponent = ({ data }: { data: any }) => {
         </span>
 
         {data.isRecommended ? (
-          <span className="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-[#1877F2] border border-blue-200 animate-pulse">
+          <span className="inline-flex items-center gap-1 text-[9px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-[#1877F2] border border-blue-200">
             <Sparkles className="w-2.5 h-2.5 text-[#1877F2]" />
             Recommended
           </span>
@@ -55,11 +60,20 @@ const SkillNodeComponent = ({ data }: { data: any }) => {
             <CheckCircle2 className="w-2.5 h-2.5" />
             Mastered
           </span>
-        ) : null}
+        ) : isGap ? (
+          <span className="inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-50 text-amber-700 border border-amber-200">
+            <AlertCircle className="w-2.5 h-2.5" />
+            Skill Gap
+          </span>
+        ) : (
+          <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-slate-100 text-slate-500">
+            Unassessed
+          </span>
+        )}
       </div>
 
       {/* Title */}
-      <div className="font-bold text-sm text-slate-900 mb-2 truncate">
+      <div className="font-bold text-xs sm:text-sm text-slate-900 mb-2 truncate" title={data.label}>
         {data.label}
       </div>
 
@@ -67,16 +81,16 @@ const SkillNodeComponent = ({ data }: { data: any }) => {
       <div className="space-y-1">
         <div className="flex items-center justify-between text-[11px] font-mono">
           <span className="text-slate-500">Mastery</span>
-          <span className={isMastered ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold'}>
-            {masteryPct}%
+          <span className={isMastered ? 'text-emerald-600 font-bold' : isGap ? 'text-amber-600 font-bold' : 'text-slate-400 font-medium'}>
+            {isAssessed ? `${masteryPct}%` : 'Not tested'}
           </span>
         </div>
         <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200/60">
           <div
-            className={`h-full rounded-full transition-all ${
-              isMastered ? 'bg-emerald-500' : 'bg-amber-500'
+            className={`h-full rounded-full transition-all duration-300 ${
+              isMastered ? 'bg-emerald-500' : isGap ? 'bg-amber-500' : 'bg-slate-300'
             }`}
-            style={{ width: `${Math.min(masteryPct, 100)}%` }}
+            style={{ width: isAssessed ? `${Math.min(masteryPct, 100)}%` : '0%' }}
           />
         </div>
       </div>
@@ -175,9 +189,9 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* React Flow Container */}
-        <div className="lg:col-span-2 h-[520px] bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow-xs relative">
+        <div className="lg:col-span-2 h-[520px] xl:h-[580px] bg-slate-50 border border-slate-200 rounded-xl overflow-hidden shadow-2xs relative">
           {loading ? (
-            <div className="w-full h-full flex items-center justify-center text-slate-500 text-sm">
+            <div className="w-full h-full flex flex-col items-center justify-center text-slate-500 text-xs">
               <Network className="w-8 h-8 animate-pulse text-[#1877F2] mb-2" />
               <span>Building Knowledge Graph...</span>
             </div>
@@ -190,6 +204,7 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
               onNodeClick={onNodeClick}
               nodeTypes={nodeTypes}
               fitView
+              fitViewOptions={{ padding: 0.25 }}
               attributionPosition="bottom-left"
               className="bg-slate-50"
             >
@@ -199,14 +214,14 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
           )}
 
           {/* Quick Flow Hint */}
-          <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-200 shadow-xs text-[11px] text-slate-600 flex items-center gap-2 pointer-events-none">
+          <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-xs px-3 py-1.5 rounded-lg border border-slate-200 shadow-2xs text-[11px] text-slate-600 flex items-center gap-2 pointer-events-none">
             <Info className="w-3.5 h-3.5 text-[#1877F2]" />
-            <span>Click any skill node to inspect prerequisites & start practice</span>
+            <span>Click any node to inspect details and launch diagnostic quiz</span>
           </div>
         </div>
 
         {/* Node Inspection Drawer */}
-        <div className="h-full bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col justify-between space-y-6">
+        <div className="h-full bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-2xs flex flex-col justify-between space-y-5">
           {selectedSkill ? (
             <div className="space-y-4">
               
@@ -214,14 +229,14 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
                 <span className="text-[10px] uppercase font-bold text-[#1877F2] tracking-wider">
                   {selectedSkill.domain}
                 </span>
-                <h3 className="text-2xl font-bold text-slate-900 mt-0.5">{selectedSkill.label}</h3>
-                <p className="text-xs text-slate-600 mt-2 leading-relaxed">
+                <h3 className="text-lg sm:text-xl font-bold text-slate-900 mt-0.5">{selectedSkill.label}</h3>
+                <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
                   {selectedSkill.description || 'No description available for this skill.'}
                 </p>
               </div>
 
               {/* Status & Mastery Card */}
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
+              <div className="p-4 rounded-lg bg-slate-50 border border-slate-200/80 space-y-2.5">
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-slate-500">Mastery Level:</span>
                   <span
@@ -257,7 +272,7 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
                 </div>
 
                 {selectedSkill.isTarget && (
-                  <div className="text-[11px] text-purple-700 font-medium pt-1 border-t border-slate-200 flex items-center gap-1">
+                  <div className="text-[11px] text-purple-700 font-medium pt-1.5 border-t border-slate-200 flex items-center gap-1">
                     <Target className="w-3 h-3" />
                     Target Milestone for Selected Goal
                   </div>
@@ -265,22 +280,22 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
               </div>
 
               {/* Dependency Relationship Visualizer */}
-              <div className="p-3.5 rounded-xl bg-slate-50/80 border border-slate-200 text-xs space-y-2">
+              <div className="p-3.5 rounded-lg bg-slate-50/80 border border-slate-200/80 text-xs space-y-2">
                 <div className="font-semibold text-slate-800 flex items-center gap-1.5">
                   <Layers className="w-3.5 h-3.5 text-[#1877F2]" />
                   Prerequisite Learning Flow
                 </div>
                 <p className="text-[11px] text-slate-600 leading-relaxed">
-                  Arrows indicate sequence: <code className="text-[#1877F2] font-bold bg-blue-50 px-1 rounded">A → B</code> means{' '}
-                  <strong className="text-slate-800">Topic A is foundational</strong>. Mastering A unlocks and prepares you for B.
+                  Directed edges represent dependencies: <code className="text-[#1877F2] font-semibold bg-blue-50 px-1 py-0.5 rounded">A → B</code> signifies{' '}
+                  <strong className="text-slate-800 font-medium">Topic A precedes B</strong>.
                 </p>
               </div>
 
             </div>
           ) : (
-            <div className="text-center py-12 text-slate-400 text-sm">
+            <div className="text-center py-12 text-slate-400 text-xs">
               <Network className="w-8 h-8 mx-auto mb-2 text-slate-400" />
-              Select any skill node on the canvas to inspect its prerequisites.
+              Select any skill node on the canvas to inspect its prerequisites and mastery.
             </div>
           )}
 
@@ -288,9 +303,9 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
             <button
               id={`btn-inspect-practice-${selectedSkill.id}`}
               onClick={() => onStartQuizForSkill(selectedSkill.id)}
-              className="w-full py-3 px-4 rounded-xl bg-[#1877F2] hover:bg-[#166fe5] text-white font-bold text-sm shadow-md shadow-[#1877F2]/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-2.5 px-4 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] text-white font-semibold text-xs shadow-2xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
-              <Play className="w-4 h-4 fill-current" />
+              <Play className="w-3.5 h-3.5 fill-current" />
               <span>Practice {selectedSkill.label} Quiz</span>
             </button>
           )}

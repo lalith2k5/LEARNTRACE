@@ -100,6 +100,120 @@ export function calculateDownstreamCountInChain(skillId: string, relevantSkillId
 }
 
 /**
+ * Detects whether a directed cycle exists in the prerequisite graph.
+ * Uses DFS with recursion-stack state tracking (3-color model).
+ * Returns { hasCycle: boolean, cycle?: string[] }
+ */
+export function detectCycle(customPrerequisites?: SkillPrerequisite[]): { hasCycle: boolean; cycle?: string[] } {
+  const prereqs = customPrerequisites || store.prerequisites;
+  const adj = new Map<string, string[]>();
+  const allNodes = new Set<string>();
+
+  for (const p of prereqs) {
+    allNodes.add(p.prerequisiteSkillId);
+    allNodes.add(p.skillId);
+    if (!adj.has(p.prerequisiteSkillId)) {
+      adj.set(p.prerequisiteSkillId, []);
+    }
+    adj.get(p.prerequisiteSkillId)!.push(p.skillId);
+  }
+
+  const state = new Map<string, 'unvisited' | 'visiting' | 'visited'>();
+  for (const node of allNodes) {
+    state.set(node, 'unvisited');
+  }
+
+  const path: string[] = [];
+
+  function dfs(u: string): boolean {
+    state.set(u, 'visiting');
+    path.push(u);
+
+    const neighbors = adj.get(u) || [];
+    for (const v of neighbors) {
+      if (state.get(v) === 'visiting') {
+        const cycleStartIndex = path.indexOf(v);
+        path.push(v);
+        return true;
+      }
+      if (state.get(v) === 'unvisited') {
+        if (dfs(v)) return true;
+      }
+    }
+
+    state.set(u, 'visited');
+    path.pop();
+    return false;
+  }
+
+  for (const node of allNodes) {
+    if (state.get(node) === 'unvisited') {
+      if (dfs(node)) {
+        return { hasCycle: true, cycle: [...path] };
+      }
+    }
+  }
+
+  return { hasCycle: false };
+}
+
+/**
+ * Returns a valid topological sorting of skills such that all prerequisites
+ * appear BEFORE their dependents.
+ * Uses Kahn's algorithm (in-degree resolution).
+ * Throws an error if a cycle is detected.
+ */
+export function getTopologicalSort(skillIds?: string[], customPrerequisites?: SkillPrerequisite[]): Skill[] {
+  const prereqs = customPrerequisites || store.prerequisites;
+  const targetIds = new Set(skillIds || Array.from(store.skills.keys()));
+
+  const inDegree = new Map<string, number>();
+  const adj = new Map<string, string[]>();
+
+  for (const id of targetIds) {
+    inDegree.set(id, 0);
+    adj.set(id, []);
+  }
+
+  for (const p of prereqs) {
+    if (targetIds.has(p.prerequisiteSkillId) && targetIds.has(p.skillId)) {
+      adj.get(p.prerequisiteSkillId)!.push(p.skillId);
+      inDegree.set(p.skillId, (inDegree.get(p.skillId) || 0) + 1);
+    }
+  }
+
+  const queue: string[] = [];
+  for (const [id, deg] of inDegree.entries()) {
+    if (deg === 0) {
+      queue.push(id);
+    }
+  }
+
+  const result: Skill[] = [];
+
+  while (queue.length > 0) {
+    const u = queue.shift()!;
+    const skill = store.skills.get(u) || { id: u, name: u, domain: 'General', description: '' };
+    result.push(skill);
+
+    const dependents = adj.get(u) || [];
+    for (const v of dependents) {
+      const newDeg = (inDegree.get(v) || 0) - 1;
+      inDegree.set(v, newDeg);
+      if (newDeg === 0) {
+        queue.push(v);
+      }
+    }
+  }
+
+  if (result.length < targetIds.size) {
+    throw new Error('Cycle detected in prerequisite graph; topological sort impossible.');
+  }
+
+  return result;
+}
+
+/**
  * Returns full graph representation formatted for React Flow with optimal visual coordinates
  */
 export function getGraphPayload(userMasteriesMap: Map<string, number>, targetSkillId?: string, recommendedSkillId?: string) {

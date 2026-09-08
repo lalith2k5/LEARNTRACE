@@ -36,15 +36,27 @@ export async function callGeminiWithFallback<T>(
   for (const model of candidateModels) {
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
-        return await fn(model, ai);
+        // Race with a 5-second per-attempt timeout to ensure zero latency freeze for learner
+        const callPromise = fn(model, ai);
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('AI generation timed out after 5000ms')), 5000)
+        );
+
+        return await Promise.race([callPromise, timeoutPromise]);
       } catch (err: any) {
         const errorMsg = String(err?.message || err || '');
         const statusCode = err?.status || err?.code || (errorMsg.includes('503') || errorMsg.includes('UNAVAILABLE') ? 503 : 0);
-        const isTransient = statusCode === 503 || statusCode === 429 || errorMsg.includes('high demand') || errorMsg.includes('UNAVAILABLE');
+        const isQuota = errorMsg.includes('resource_exhausted') || errorMsg.includes('RESOURCE_EXHAUSTED') || errorMsg.includes('quota');
+        const isTransient = statusCode === 503 || statusCode === 429 || errorMsg.includes('high demand') || errorMsg.includes('UNAVAILABLE') || errorMsg.includes('timed out');
+
+        if (isQuota) {
+          console.warn(`[LearnTrace AI] Quota/resource exhausted for ${model}. Falling back to pedagogical algorithmic rubric.`);
+          return null; // Don't burn through other models when quota is exhausted
+        }
 
         if (isTransient && attempt === 0) {
           // Brief backoff before retry on same model
-          await new Promise((resolve) => setTimeout(resolve, 500));
+          await new Promise((resolve) => setTimeout(resolve, 300));
           continue;
         }
 
