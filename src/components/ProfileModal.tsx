@@ -391,10 +391,10 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-1.5 text-xs font-semibold text-indigo-900">
                     <FlaskConical className="w-4 h-4 text-indigo-600" />
-                    <span>Research & BKT Simulation Suite</span>
+                    <span>Research & Model Simulation Suite</span>
                   </div>
                   <p className="text-[11px] text-slate-600">
-                    Benchmark evidence-based heuristics against Bayesian Knowledge Tracing (BKT) and Deep Knowledge Tracing (DKT).
+                    Benchmark evidence-based heuristics against Bayesian Knowledge Tracing (BKT) and Deep Knowledge Tracing (DKT) research simulations.
                   </p>
                 </div>
 

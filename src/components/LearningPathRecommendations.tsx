@@ -196,7 +196,7 @@ export const LearningPathRecommendations: React.FC<LearningPathRecommendationsPr
                     </div>
 
                     <div className="flex items-center gap-1.5 shrink-0">
-                      {/* Start Learning Gap Button */}
+                      {/* Review Learning Gap Button */}
                       <button
                         id={`btn-learning-gap-${step.skillId}`}
                         onClick={() => handleOpenGap(step)}
@@ -204,10 +204,10 @@ export const LearningPathRecommendations: React.FC<LearningPathRecommendationsPr
                         className="px-2.5 py-1.5 rounded-md text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200/80 shrink-0"
                       >
                         <BookOpen className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                        <span className="whitespace-nowrap">Learning Gap</span>
+                        <span className="whitespace-nowrap">Review Gap</span>
                       </button>
 
-                      {/* Immediate Practice / Re-Test Button */}
+                      {/* Immediate Retake Assessment Button */}
                       <button
                         id={`btn-path-practice-${step.skillId}`}
                         onClick={() => onSelectSkill(step.skillId)}
@@ -218,7 +218,7 @@ export const LearningPathRecommendations: React.FC<LearningPathRecommendationsPr
                         }`}
                       >
                         <Play className="w-3 h-3 fill-current shrink-0" />
-                        <span className="whitespace-nowrap">Re-Test</span>
+                        <span className="whitespace-nowrap">Retake Assessment</span>
                       </button>
                     </div>
                   </div>
@@ -230,12 +230,12 @@ export const LearningPathRecommendations: React.FC<LearningPathRecommendationsPr
       </div>
 
       {/* Footer Info */}
-      <div className="mt-4 pt-3.5 border-t border-slate-100 text-[11px] text-slate-400 flex flex-wrap items-center justify-between gap-2">
+      <div className="mt-4 pt-3.5 border-t border-slate-100 text-[11px] text-slate-500 flex flex-wrap items-center justify-between gap-2">
         <span className="flex items-center gap-1.5">
-          <Layers className="w-3.5 h-3.5 text-slate-400" />
+          <Layers className="w-3.5 h-3.5 text-slate-500" />
           Ordered by prerequisite sequence (foundational topics first)
         </span>
-        <span className="text-slate-400">Click &quot;Start Learning Gap&quot; to review theory before re-testing</span>
+        <span className="text-slate-500">Click &quot;Review Gap&quot; to study theory before retaking assessments</span>
       </div>
 
       {/* ------------------------------------------------------------- */}
@@ -596,7 +596,7 @@ export const LearningPathRecommendations: React.FC<LearningPathRecommendationsPr
                     className="flex-1 sm:flex-none py-2.5 px-5 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] text-white text-xs font-bold transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-sm"
                   >
                     <Play className="w-3.5 h-3.5 fill-current" />
-                    <span>Take Re-Test Now</span>
+                    <span>Retake Assessment</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>

@@ -102,23 +102,15 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onRefre
               />
             </div>
 
-            {/* CENTER / MAIN: Unified Primary Navigation (Laptop & Desktop) */}
+            {/* CENTER / MAIN: Primary Navigation with Clear Learner vs Research Separation */}
             <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5" role="tablist" aria-label="Main Navigation">
-              {navItems.map((item) => {
+              {/* Learner Experience Tabs */}
+              {navItems.filter((i) => !i.isResearch).map((item) => {
                 const Icon = item.icon;
                 const isActive = activeTab === item.id;
-                const isResearch = item.isResearch;
 
-                let activeClass = 'bg-[#1877F2] text-white shadow-xs font-semibold';
-                let inactiveClass = 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 font-medium';
-
-                if (isResearch) {
-                  if (isActive) {
-                    activeClass = 'bg-indigo-600 text-white shadow-xs font-semibold';
-                  } else {
-                    inactiveClass = 'text-indigo-700/90 hover:text-indigo-900 hover:bg-indigo-50/70 border border-indigo-100 font-medium';
-                  }
-                }
+                const activeClass = 'bg-[#1877F2] text-white shadow-xs font-semibold';
+                const inactiveClass = 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80 font-medium';
 
                 return (
                   <button
@@ -132,25 +124,53 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onRefre
                     }`}
                   >
                     <Icon className={`w-4 h-4 shrink-0 transition-colors ${
-                      isActive 
-                        ? 'text-white' 
-                        : isResearch 
-                        ? 'text-indigo-600' 
-                        : 'text-slate-400'
+                      isActive ? 'text-white' : 'text-slate-500'
                     }`} />
                     <span className="whitespace-nowrap">{item.label}</span>
 
                     {item.badge && (
                       <span className={`text-[10px] px-1.5 py-0.2 rounded font-bold uppercase tracking-wider ${
-                        isActive 
-                          ? 'bg-white/20 text-white' 
-                          : isResearch 
-                          ? 'bg-indigo-100 text-indigo-700' 
-                          : 'bg-slate-100 text-slate-600'
+                        isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
                       }`}>
                         {item.badge}
                       </span>
                     )}
+                  </button>
+                );
+              })}
+
+              {/* Visual Divider Between Learner Mode and Research Mode */}
+              <div className="h-5 w-[1px] bg-slate-200 mx-1 xl:mx-1.5" aria-hidden="true" />
+
+              {/* Research & Model Evaluation Tab */}
+              {navItems.filter((i) => i.isResearch).map((item) => {
+                const Icon = item.icon;
+                const isActive = activeTab === item.id;
+
+                const activeClass = 'bg-indigo-600 text-white shadow-xs font-semibold ring-2 ring-indigo-300';
+                const inactiveClass = 'text-indigo-700 hover:text-indigo-950 hover:bg-indigo-50/80 border border-indigo-200/90 font-medium bg-indigo-50/40';
+
+                return (
+                  <button
+                    key={item.id}
+                    id={`nav-tab-${item.id}`}
+                    role="tab"
+                    aria-selected={isActive}
+                    onClick={() => setActiveTab(item.id)}
+                    className={`relative flex items-center gap-2 px-3 py-2 xl:px-3.5 xl:py-2 rounded-lg text-xs transition-all duration-150 cursor-pointer select-none ${
+                      isActive ? activeClass : inactiveClass
+                    }`}
+                  >
+                    <Icon className={`w-4 h-4 shrink-0 transition-colors ${
+                      isActive ? 'text-white' : 'text-indigo-600'
+                    }`} />
+                    <span className="whitespace-nowrap font-semibold">{item.label}</span>
+
+                    <span className={`text-[10px] px-1.5 py-0.2 rounded font-bold uppercase tracking-wider ${
+                      isActive ? 'bg-white/25 text-white' : 'bg-indigo-100 text-indigo-800'
+                    }`}>
+                      Lab
+                    </span>
                   </button>
                 );
               })}
@@ -297,57 +317,104 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab, onRefre
               transition={{ duration: 0.2 }}
               className="lg:hidden border-t border-slate-200 bg-white px-4 py-3 overflow-hidden shadow-lg"
             >
-              <div className="space-y-1.5">
-                {navItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = activeTab === item.id;
-                  const isResearch = item.isResearch;
-                  
-                  return (
-                    <button
-                      key={item.id}
-                      id={`mobile-nav-${item.id}`}
-                      onClick={() => {
-                        setActiveTab(item.id);
-                        setMobileMenuOpen(false);
-                      }}
-                      className={`w-full flex items-center justify-between p-3 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                        isActive
-                          ? isResearch 
-                            ? 'bg-indigo-50 text-indigo-700 border border-indigo-200' 
-                            : 'bg-blue-50 text-[#1877F2] border border-blue-200'
-                          : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200/70'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className={`p-1.5 rounded-lg ${
-                          isActive 
-                            ? isResearch ? 'bg-indigo-600 text-white' : 'bg-[#1877F2] text-white' 
-                            : isResearch ? 'bg-white text-indigo-600 border border-slate-200' : 'bg-white text-slate-500 border border-slate-200'
-                        }`}>
-                          <Icon className="w-4 h-4" />
-                        </div>
-                        <div className="text-left">
-                          <div className="font-bold text-slate-900 flex items-center gap-2">
-                            <span>{item.label}</span>
-                            {item.badge && (
-                              <span className={`text-[10px] px-1.5 py-0.2 rounded font-bold uppercase tracking-wider ${
-                                isResearch ? 'bg-indigo-100 text-indigo-700' : 'bg-slate-200 text-slate-700'
-                              }`}>
-                                {item.badge}
-                              </span>
-                            )}
+              <div className="space-y-3 py-1">
+                {/* Learner Section */}
+                <div className="space-y-1">
+                  <div className="text-[10px] font-bold tracking-wider text-slate-600 uppercase px-2 mb-1">
+                    Learner Workspace
+                  </div>
+                  {navItems.filter((i) => !i.isResearch).map((item) => {
+                    const Icon = item.icon;
+                    const isActive = activeTab === item.id;
+                    
+                    return (
+                      <button
+                        key={item.id}
+                        id={`mobile-nav-${item.id}`}
+                        onClick={() => {
+                          setActiveTab(item.id);
+                          setMobileMenuOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between p-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                          isActive
+                            ? 'bg-blue-50 text-[#1877F2] border border-blue-200'
+                            : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200/70'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`p-1.5 rounded-lg ${
+                            isActive ? 'bg-[#1877F2] text-white' : 'bg-white text-slate-500 border border-slate-200'
+                          }`}>
+                            <Icon className="w-4 h-4" />
                           </div>
-                          <div className="text-[11px] text-slate-400 font-normal">{item.description}</div>
+                          <div className="text-left">
+                            <div className="font-bold text-slate-900 flex items-center gap-2">
+                              <span>{item.label}</span>
+                              {item.badge && (
+                                <span className="text-[10px] px-1.5 py-0.2 rounded font-bold uppercase tracking-wider bg-slate-200 text-slate-700">
+                                  {item.badge}
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-[11px] text-slate-500 font-normal">{item.description}</div>
+                          </div>
                         </div>
-                      </div>
 
-                      {isActive && (
-                        <CheckCircle2 className={`w-4 h-4 shrink-0 ${isResearch ? 'text-indigo-600' : 'text-[#1877F2]'}`} />
-                      )}
-                    </button>
-                  );
-                })}
+                        {isActive && (
+                          <CheckCircle2 className="w-4 h-4 shrink-0 text-[#1877F2]" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Research Section */}
+                <div className="space-y-1 pt-1 border-t border-slate-100">
+                  <div className="text-[10px] font-bold tracking-wider text-indigo-700 uppercase px-2 mb-1">
+                    Research & Model Evaluation
+                  </div>
+                  {navItems.filter((i) => i.isResearch).map((item) => {
+                    const Icon = item.icon;
+                    const isActive = activeTab === item.id;
+                    
+                    return (
+                      <button
+                        key={item.id}
+                        id={`mobile-nav-${item.id}`}
+                        onClick={() => {
+                          setActiveTab(item.id);
+                          setMobileMenuOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between p-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                          isActive
+                            ? 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+                            : 'bg-indigo-50/40 text-indigo-900 hover:bg-indigo-50 border border-indigo-100'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`p-1.5 rounded-lg ${
+                            isActive ? 'bg-indigo-600 text-white' : 'bg-white text-indigo-600 border border-indigo-200'
+                          }`}>
+                            <Icon className="w-4 h-4" />
+                          </div>
+                          <div className="text-left">
+                            <div className="font-bold text-slate-900 flex items-center gap-2">
+                              <span>{item.label}</span>
+                              <span className="text-[10px] px-1.5 py-0.2 rounded font-bold uppercase tracking-wider bg-indigo-100 text-indigo-800">
+                                Lab
+                              </span>
+                            </div>
+                            <div className="text-[11px] text-slate-500 font-normal">{item.description}</div>
+                          </div>
+                        </div>
+
+                        {isActive && (
+                          <CheckCircle2 className="w-4 h-4 shrink-0 text-indigo-600" />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             </motion.div>
           )}

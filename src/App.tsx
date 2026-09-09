@@ -105,6 +105,7 @@ function AppContent() {
                 onStartQuizForSkill={handleStartQuizForSkill}
                 onNavigateToGraph={() => setActiveTab('graph')}
                 onNavigateToResearch={() => setActiveTab('research')}
+                onNavigateToGoals={() => setActiveTab('goals')}
               />
             </motion.div>
           )}
@@ -174,20 +175,20 @@ function AppContent() {
         </AnimatePresence>
       </main>
 
-      {/* Footer */}
-      <footer className="w-full border-t border-slate-200 bg-white py-4 mt-8 text-xs text-slate-500 font-sans">
+      {/* Learner-Friendly Footer */}
+      <footer className="w-full border-t border-slate-200 bg-white py-4 mt-8 text-xs text-slate-600 font-sans">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2.5">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-800">LearnTrace</span>
+            <span className="font-bold text-slate-900">LearnTrace</span>
             <span className="text-slate-300">•</span>
-            <span className="text-slate-500 text-[11px]">Cognitive Knowledge Graph & Adaptive Mastery Platform</span>
+            <span className="text-slate-600 text-[11px]">AI-Assisted Adaptive Learning & Knowledge Tracing</span>
           </div>
-          <div className="flex items-center gap-3 text-[11px] text-slate-400">
-            <span>Evidence-Based Knowledge Tracing</span>
+          <div className="flex items-center gap-3 text-[11px] text-slate-500">
+            <span>Adaptive Diagnostic Practice</span>
             <span className="text-slate-300">•</span>
-            <span>BKT & DKT Psychometrics</span>
+            <span>Prerequisite Skill Mapping</span>
             <span className="text-slate-300">•</span>
-            <span>Ebbinghaus Retention Decay</span>
+            <span>Personalized Learning Sequence</span>
           </div>
         </div>
       </footer>

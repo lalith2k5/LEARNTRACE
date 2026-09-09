@@ -63,3 +63,8 @@
   color: #0f172a;
 }
 
+/* Ensure no watermark or React Flow attribution is exposed */
+.react-flow__attribution {
+  display: none !important;
+}
+

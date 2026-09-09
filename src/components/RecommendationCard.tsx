@@ -60,7 +60,7 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
               className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1.5 shrink-0 cursor-pointer disabled:opacity-50"
             >
               <RotateCcw className={`w-3.5 h-3.5 ${recalculating ? 'animate-spin text-[#1877F2]' : ''}`} />
-              <span>{recalculating ? 'Recalculating...' : 'Recalculate Mastery'}</span>
+              <span>{recalculating ? 'Refreshing...' : 'Refresh Progress'}</span>
             </button>
           )}
         </div>
@@ -84,7 +84,7 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
             </span>
 
             {recommendation.downstreamCount !== undefined && recommendation.downstreamCount > 0 && (
-              <span className="text-[11px] font-medium text-slate-500">
+              <span className="text-[11px] font-medium text-slate-600">
                 • Unblocks {recommendation.downstreamCount} subsequent skill{recommendation.downstreamCount > 1 ? 's' : ''}
               </span>
             )}
@@ -94,14 +94,15 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
               {recommendation.skillName}
             </h2>
-            <p className="text-xs text-slate-600 mt-1 leading-relaxed">
+            <p className="text-xs sm:text-[13px] text-slate-600 mt-1.5 leading-relaxed">
+              <span className="font-semibold text-slate-800">Why: </span>
               {recommendation.reasonText}
             </p>
           </div>
 
           {/* Progress bar */}
           <div className="w-full max-w-sm pt-0.5">
-            <div className="flex justify-between text-[11px] text-slate-500 mb-1 font-medium">
+            <div className="flex justify-between text-[11px] text-slate-600 mb-1 font-medium">
               <span>Current Mastery</span>
               <span className={masteryPercent >= 60 ? 'text-emerald-600 font-bold' : 'text-amber-600 font-bold'}>
                 {masteryPercent}% / 60% threshold
@@ -138,7 +139,7 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
               className="w-full py-2 px-3 rounded-lg text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200/80 text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer min-w-0"
             >
               <BookOpen className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-              <span className="whitespace-nowrap">Start Learning Gap</span>
+              <span className="whitespace-nowrap">Review Learning Gap</span>
             </button>
           )}
 
@@ -147,17 +148,17 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
               id="btn-rec-recalculate-mastery"
               onClick={onRecalculateMastery}
               disabled={recalculating}
-              className="w-full py-1.5 px-3 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 min-w-0"
-              title="Recalculate mastery"
+              className="w-full py-1.5 px-3 rounded-lg text-slate-700 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 text-xs font-medium transition-colors flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50 min-w-0"
+              title="Refresh learning progress"
             >
-              <RotateCcw className={`w-3 h-3 ${recalculating ? 'animate-spin text-[#1877F2]' : 'text-slate-400'}`} />
-              <span className="whitespace-nowrap">{recalculating ? 'Recalculating...' : 'Recalculate Mastery'}</span>
+              <RotateCcw className={`w-3 h-3 ${recalculating ? 'animate-spin text-[#1877F2]' : 'text-slate-500'}`} />
+              <span className="whitespace-nowrap">{recalculating ? 'Refreshing...' : 'Refresh Progress'}</span>
             </button>
           )}
 
-          <div className="w-full py-1.5 px-2 text-center text-[11px] text-slate-500 flex items-center justify-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            <span>Auto-updates upon quiz completion</span>
+          <div className="w-full py-1 px-2 text-center text-[10px] text-slate-500 flex items-center justify-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+            <span>Mastery automatically updates when you complete new assessments.</span>
           </div>
         </div>
 

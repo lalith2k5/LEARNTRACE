@@ -5,8 +5,8 @@
       {
         "id": "user_demo_learner",
         "email": "learner@learntrace.ai",
-        "passwordHash": "$2b$10$P2P6jd45czNMiPHF/Jl6M./WkNXVmlThheaEthThul0tR5YK9.w5G",
-        "createdAt": "2026-09-01T16:43:02.424Z"
+        "passwordHash": "$2b$10$G77q6Z9tnepyuxftUIKxM.CnqNhb1XEGIhHZn/Xo0.XG53/V5XjjC",
+        "createdAt": "2026-09-02T17:48:03.359Z"
       }
     ]
   ],
@@ -16,7 +16,7 @@
       {
         "userId": "user_demo_learner",
         "goalId": "goal_mle",
-        "selectedAt": "2026-09-01T16:43:02.424Z",
+        "selectedAt": "2026-09-02T17:48:03.359Z",
         "goal": {
           "id": "goal_mle",
           "name": "Machine Learning Engineer",
@@ -36,7 +36,7 @@
       {
         "userId": "test_learner_rec",
         "goalId": "goal_mle",
-        "selectedAt": "2026-09-08T16:43:02.322Z"
+        "selectedAt": "2026-09-09T17:48:03.261Z"
       }
     ]
   ],
@@ -13369,7 +13369,7 @@
       "confidence": 5,
       "attemptNumber": 1,
       "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-09-05T16:43:02.424Z"
+      "createdAt": "2026-09-06T17:48:03.359Z"
     },
     {
       "id": "att_2",
@@ -13386,7 +13386,7 @@
       "confidence": 5,
       "attemptNumber": 1,
       "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-09-06T16:43:02.424Z"
+      "createdAt": "2026-09-07T17:48:03.359Z"
     },
     {
       "id": "att_3",
@@ -13403,7 +13403,7 @@
       "confidence": 4,
       "attemptNumber": 1,
       "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-09-07T16:43:02.424Z"
+      "createdAt": "2026-09-08T17:48:03.359Z"
     },
     {
       "id": "att_4",
@@ -13420,7 +13420,7 @@
       "confidence": 4,
       "attemptNumber": 1,
       "cognitiveState": "CONFIDENT_MISCONCEPTION",
-      "createdAt": "2026-09-07T20:43:02.424Z"
+      "createdAt": "2026-09-08T21:48:03.359Z"
     },
     {
       "id": "att_5",
@@ -13437,7 +13437,7 @@
       "confidence": 3,
       "attemptNumber": 1,
       "cognitiveState": "UNCERTAIN_MISTAKE",
-      "createdAt": "2026-09-08T00:43:02.424Z"
+      "createdAt": "2026-09-09T01:48:03.359Z"
     },
     {
       "id": "att_6",
@@ -13455,7 +13455,7 @@
       "confidence": 3,
       "attemptNumber": 1,
       "cognitiveState": "UNCERTAIN_MISTAKE",
-      "createdAt": "2026-09-08T02:43:02.424Z"
+      "createdAt": "2026-09-09T03:48:03.359Z"
     },
     {
       "id": "att_7",
@@ -13472,7 +13472,7 @@
       "confidence": 4,
       "attemptNumber": 1,
       "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-09-08T04:43:02.424Z"
+      "createdAt": "2026-09-09T05:48:03.359Z"
     },
     {
       "id": "att_8",
@@ -13490,7 +13490,7 @@
       "confidence": 3,
       "attemptNumber": 1,
       "cognitiveState": "NORMAL_MASTERY",
-      "createdAt": "2026-09-08T06:43:02.424Z"
+      "createdAt": "2026-09-09T07:48:03.359Z"
     },
     {
       "id": "att_9",
@@ -13507,7 +13507,7 @@
       "confidence": 4,
       "attemptNumber": 1,
       "cognitiveState": "SOLID_MASTERY",
-      "createdAt": "2026-09-08T08:43:02.424Z"
+      "createdAt": "2026-09-09T09:48:03.359Z"
     },
     {
       "id": "att_10",
@@ -13524,7 +13524,7 @@
       "confidence": 2,
       "attemptNumber": 1,
       "cognitiveState": "UNCERTAIN_MISTAKE",
-      "createdAt": "2026-09-08T10:43:02.424Z"
+      "createdAt": "2026-09-09T11:48:03.359Z"
     },
     {
       "id": "att_11",
@@ -13542,7 +13542,7 @@
       "confidence": 3,
       "attemptNumber": 1,
       "cognitiveState": "NORMAL_MASTERY",
-      "createdAt": "2026-09-08T12:43:02.424Z"
+      "createdAt": "2026-09-09T13:48:03.359Z"
     },
     {
       "id": "att_12",
@@ -13559,7 +13559,7 @@
       "confidence": 3,
       "attemptNumber": 1,
       "cognitiveState": "NORMAL_MASTERY",
-      "createdAt": "2026-09-08T14:43:02.424Z"
+      "createdAt": "2026-09-09T15:48:03.359Z"
     },
     {
       "id": "att_13",
@@ -13577,7 +13577,7 @@
       "confidence": 3,
       "attemptNumber": 1,
       "cognitiveState": "UNCERTAIN_MISTAKE",
-      "createdAt": "2026-09-08T15:43:02.424Z"
+      "createdAt": "2026-09-09T16:48:03.359Z"
     }
   ],
   "masteries": [
@@ -13591,7 +13591,7 @@
         "masteryScore": 0.2,
         "interpretation": "Weak",
         "evidenceCount": 1,
-        "lastUpdated": "2026-09-08T16:43:02.323Z"
+        "lastUpdated": "2026-09-09T17:48:03.262Z"
       }
     ],
     [
@@ -13605,7 +13605,7 @@
         "interpretation": "Weak",
         "evidenceCount": 0,
         "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-08T16:43:02.323Z"
+        "lastUpdated": "2026-09-09T17:48:03.262Z"
       }
     ],
     [
@@ -13619,7 +13619,7 @@
         "interpretation": "Weak",
         "evidenceCount": 0,
         "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-08T16:43:02.323Z"
+        "lastUpdated": "2026-09-09T17:48:03.262Z"
       }
     ],
     [
@@ -13633,7 +13633,7 @@
         "interpretation": "Weak",
         "evidenceCount": 0,
         "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-08T16:43:02.323Z"
+        "lastUpdated": "2026-09-09T17:48:03.262Z"
       }
     ],
     [
@@ -13647,7 +13647,7 @@
         "interpretation": "Weak",
         "evidenceCount": 0,
         "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-08T16:43:02.323Z"
+        "lastUpdated": "2026-09-09T17:48:03.262Z"
       }
     ],
     [
@@ -13661,7 +13661,7 @@
         "interpretation": "Weak",
         "evidenceCount": 0,
         "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-08T16:43:02.323Z"
+        "lastUpdated": "2026-09-09T17:48:03.262Z"
       }
     ],
     [
@@ -13675,7 +13675,7 @@
         "interpretation": "Weak",
         "evidenceCount": 0,
         "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-08T16:43:02.323Z"
+        "lastUpdated": "2026-09-09T17:48:03.262Z"
       }
     ],
     [
@@ -13689,9 +13689,9 @@
         "interpretation": "Weak",
         "evidenceCount": 0,
         "bktEstimate": 0.15,
-        "lastUpdated": "2026-09-08T16:43:02.323Z"
+        "lastUpdated": "2026-09-09T17:48:03.262Z"
       }
     ]
   ],
-  "savedAt": "2026-09-08T16:43:02.424Z"
+  "savedAt": "2026-09-09T17:48:03.359Z"
 }

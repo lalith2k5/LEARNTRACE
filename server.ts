@@ -466,7 +466,25 @@ mountRoute('get', '/skills/graph', optionalAuthenticateToken, (req: Authenticate
   const recResult = getPrioritizedRecommendation(userId);
   const recommendedSkillId = recResult.recommendation?.skillId;
 
-  const payload = getGraphPayload(userMasteriesMap, targetSkillId, recommendedSkillId);
+  // Aggregate user attempt statistics per skill
+  const userAttempts = store.attempts.filter((a) => a.userId === userId);
+  const skillAttemptsMap = new Map<string, { attempts: number; correct: number; avgConfidence: number }>();
+  for (const skill of store.skills.values()) {
+    const sAttempts = userAttempts.filter(
+      (a) => a.skillId === skill.id || (a.skillsTested && a.skillsTested.includes(skill.id))
+    );
+    const correctCount = sAttempts.filter((a) => a.correct).length;
+    const avgConf = sAttempts.length
+      ? sAttempts.reduce((acc, a) => acc + (a.confidence || 3), 0) / sAttempts.length
+      : 0;
+    skillAttemptsMap.set(skill.id, {
+      attempts: sAttempts.length,
+      correct: correctCount,
+      avgConfidence: Math.round(avgConf * 10) / 10,
+    });
+  }
+
+  const payload = getGraphPayload(userMasteriesMap, targetSkillId, recommendedSkillId, skillAttemptsMap);
   res.json(payload);
 });
 
@@ -670,6 +688,7 @@ mountRoute('post', '/attempts', authenticateToken, (req: AuthenticatedRequest, r
     createdAt: new Date().toISOString(),
   };
 
+  const priorMastery = getUserMastery(userId, question.skillId);
   store.attempts.push(attempt);
   saveStoreToDisk();
   syncAttemptToDb(attempt);
@@ -686,6 +705,7 @@ mountRoute('post', '/attempts', authenticateToken, (req: AuthenticatedRequest, r
     success: true,
     correct: isCorrect,
     attempt,
+    priorMastery,
     updatedMastery: primaryMastery,
     correctAnswerText: !isCorrect
       ? question.options.find((o) => o.id === question.correctAnswer)?.text
@@ -1226,7 +1246,7 @@ mountRoute('get', '/research/bkt-compare', optionalAuthenticateToken, (req: Auth
     modelsCompared: [
       'LearnTrace Recency-Weighted Heuristic',
       'Bayesian Knowledge Tracing (BKT)',
-      'Deep Knowledge Tracing (DKT Neural Approximation)',
+      'Deep Knowledge Tracing (DKT Neural Simulation for Research)',
     ],
     skills: comparisonData,
   });

@@ -395,7 +395,7 @@ export function evaluateEducationalDataset(
   const keyFindings = [
     `LearnTrace Heuristic achieved AUC-ROC of ${ltAuc.auc.toFixed(3)} with confidence-weighted penalty detection.`,
     `BKT (Bayesian Knowledge Tracing) achieved AUC-ROC of ${bktAuc.auc.toFixed(3)} (RMSE: ${bktStats.rmse.toFixed(3)}) with strong interpretability on discrete skill acquisition.`,
-    `DKT (Deep Knowledge Tracing) achieved AUC-ROC of ${dktAuc.auc.toFixed(3)} with continuous latent state modulation for long-horizon sequences.`,
+    `DKT (Deep Knowledge Tracing) Neural Simulation achieved AUC-ROC of ${dktAuc.auc.toFixed(3)} as a neural approximation for research benchmark comparisons.`,
     `Total inference latency across ${records.length} interactions: ${elapsed}ms (${(elapsed / Math.max(1, records.length)).toFixed(2)}ms / interaction).`
   ];
 
@@ -424,7 +424,7 @@ export function evaluateEducationalDataset(
         ...bktStats,
       },
       dkt: {
-        modelName: 'Deep Knowledge Tracing (Recurrent Neural Simulation)',
+        modelName: 'Deep Knowledge Tracing (DKT Neural Simulation / Research Benchmark)',
         auc: dktAuc.auc,
         aucRoc: dktAuc.auc,
         rocCurve: dktAuc.rocCurve,

@@ -202,6 +202,7 @@ class ApiClient {
     success: boolean;
     correct: boolean;
     attempt: Attempt;
+    priorMastery?: number;
     updatedMastery: SkillMastery;
     correctAnswerText?: string;
     explanation?: string;

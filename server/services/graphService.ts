@@ -216,7 +216,12 @@ export function getTopologicalSort(skillIds?: string[], customPrerequisites?: Sk
 /**
  * Returns full graph representation formatted for React Flow with optimal visual coordinates
  */
-export function getGraphPayload(userMasteriesMap: Map<string, number>, targetSkillId?: string, recommendedSkillId?: string) {
+export function getGraphPayload(
+  userMasteriesMap: Map<string, number>,
+  targetSkillId?: string,
+  recommendedSkillId?: string,
+  skillStatsMap?: Map<string, { attempts: number; correct: number; avgConfidence: number }>
+) {
   const skills = Array.from(store.skills.values());
   
   // Custom structured coordinates for pedagogical DAG visualization
@@ -234,8 +239,18 @@ export function getGraphPayload(userMasteriesMap: Map<string, number>, targetSki
   const nodes = skills.map((skill, index) => {
     const mastery = userMasteriesMap.get(skill.id) ?? 0;
     const directPrereqs = getDirectPrerequisites(skill.id);
+    const prereqList = directPrereqs.map((p) => {
+      const pMastery = userMasteriesMap.get(p.id) ?? 0;
+      return {
+        id: p.id,
+        name: p.name,
+        mastery: pMastery,
+        isMastered: pMastery >= 0.6,
+      };
+    });
     const isReady = directPrereqs.every((p) => (userMasteriesMap.get(p.id) ?? 0) >= 0.6);
     const position = nodePositions[skill.id] || { x: 100 + (index % 4) * 260, y: 80 + Math.floor(index / 4) * 180 };
+    const stats = skillStatsMap?.get(skill.id) || { attempts: 0, correct: 0, avgConfidence: 0 };
 
     return {
       id: skill.id,
@@ -252,6 +267,10 @@ export function getGraphPayload(userMasteriesMap: Map<string, number>, targetSki
         isReady,
         isRecommended: skill.id === recommendedSkillId,
         prerequisiteCount: directPrereqs.length,
+        prerequisites: prereqList,
+        evidenceCount: stats.attempts,
+        correctCount: stats.correct,
+        avgConfidence: stats.avgConfidence,
       },
     };
   });

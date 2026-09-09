@@ -11,7 +11,7 @@ import {
   Position,
   BackgroundVariant,
 } from '@xyflow/react';
-import { Network, Sparkles, Target, CheckCircle2, AlertCircle, ArrowRight, Play, Info, Layers } from 'lucide-react';
+import { Network, Sparkles, Target, CheckCircle2, AlertCircle, ArrowRight, Play, Info, Layers, Activity } from 'lucide-react';
 import { api } from '../api/client';
 import { Skill } from '../types';
 
@@ -35,13 +35,13 @@ const SkillNodeComponent = ({ data }: { data: any }) => {
 
   return (
     <div
-      className={`min-w-[210px] max-w-[240px] p-3.5 rounded-xl border transition-all cursor-pointer select-none ${borderStyle}`}
+      className={`min-w-[230px] max-w-[260px] p-4 rounded-xl border transition-all cursor-pointer select-none ${borderStyle}`}
     >
       <Handle type="target" position={Position.Left} className="!bg-[#1877F2] !w-2.5 !h-2.5 !border-2 !border-white" />
 
       {/* Header tags */}
-      <div className="flex items-center justify-between gap-1 mb-1.5">
-        <span className="text-[10px] uppercase font-bold tracking-wider text-slate-500">
+      <div className="flex items-center justify-between gap-1.5 mb-1.5">
+        <span className="text-[10px] uppercase font-bold tracking-wider text-slate-600">
           {data.domain}
         </span>
 
@@ -66,26 +66,26 @@ const SkillNodeComponent = ({ data }: { data: any }) => {
             Skill Gap
           </span>
         ) : (
-          <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-slate-100 text-slate-500">
-            Unassessed
+          <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-slate-100 text-slate-600">
+            Not Assessed
           </span>
         )}
       </div>
 
       {/* Title */}
-      <div className="font-bold text-xs sm:text-sm text-slate-900 mb-2 truncate" title={data.label}>
+      <div className="font-bold text-sm text-slate-900 mb-2 truncate leading-snug" title={data.label}>
         {data.label}
       </div>
 
       {/* Progress Bar */}
       <div className="space-y-1">
         <div className="flex items-center justify-between text-[11px] font-mono">
-          <span className="text-slate-500">Mastery</span>
-          <span className={isMastered ? 'text-emerald-600 font-bold' : isGap ? 'text-amber-600 font-bold' : 'text-slate-400 font-medium'}>
+          <span className="text-slate-600">Mastery</span>
+          <span className={isMastered ? 'text-emerald-600 font-bold' : isGap ? 'text-amber-600 font-bold' : 'text-slate-500 font-medium'}>
             {isAssessed ? `${masteryPct}%` : 'Not tested'}
           </span>
         </div>
-        <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200/60">
+        <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200/60">
           <div
             className={`h-full rounded-full transition-all duration-300 ${
               isMastered ? 'bg-emerald-500' : isGap ? 'bg-amber-500' : 'bg-slate-300'
@@ -169,18 +169,26 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
         </div>
 
         {/* Legend */}
-        <div className="flex items-center gap-4 text-xs">
+        <div className="flex items-center gap-3.5 flex-wrap text-xs">
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-[#1877F2] ring-2 ring-blue-200" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#1877F2] ring-2 ring-blue-200" />
             <span className="text-slate-700 font-medium">Recommended</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-emerald-500" />
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
             <span className="text-slate-700 font-medium">Mastered (≥60%)</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-3 h-3 rounded-full bg-amber-500" />
+            <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
             <span className="text-slate-700 font-medium">Skill Gap</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-purple-500" />
+            <span className="text-slate-700 font-medium">Goal Target</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-slate-400" />
+            <span className="text-slate-600 font-medium">Not Assessed</span>
           </div>
         </div>
       </div>
@@ -205,7 +213,7 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
               nodeTypes={nodeTypes}
               fitView
               fitViewOptions={{ padding: 0.25 }}
-              attributionPosition="bottom-left"
+              proOptions={{ hideAttribution: true }}
               className="bg-slate-50"
             >
               <Background variant={BackgroundVariant.Dots} gap={20} size={1.2} color="#cbd5e1" />
@@ -236,11 +244,11 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
               </div>
 
               {/* Status & Mastery Card */}
-              <div className="p-4 rounded-lg bg-slate-50 border border-slate-200/80 space-y-2.5">
+              <div className="p-4 rounded-lg bg-slate-50 border border-slate-200/80 space-y-3">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-500">Mastery Level:</span>
+                  <span className="text-slate-500 font-medium">Mastery:</span>
                   <span
-                    className={`font-mono font-bold ${
+                    className={`font-mono font-bold text-sm ${
                       Math.round((selectedSkill.mastery || 0) * 100) >= 60
                         ? 'text-emerald-600'
                         : 'text-amber-600'
@@ -251,44 +259,64 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
                 </div>
 
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-500">Prerequisite Readiness:</span>
-                  <span
-                    className={`font-semibold flex items-center gap-1 ${
-                      selectedSkill.isReady ? 'text-emerald-600' : 'text-amber-600'
-                    }`}
-                  >
-                    {selectedSkill.isReady ? (
-                      <>
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        Ready to Learn
-                      </>
-                    ) : (
-                      <>
-                        <AlertCircle className="w-3.5 h-3.5" />
-                        Prerequisites Weak
-                      </>
+                  <span className="text-slate-500 font-medium">Status:</span>
+                  <span className="font-semibold text-slate-800">
+                    {selectedSkill.interpretation?.label || (
+                      Math.round((selectedSkill.mastery || 0) * 100) >= 60
+                        ? 'Mastered'
+                        : selectedSkill.evidenceCount > 0
+                        ? 'Progressing'
+                        : 'Not Assessed'
                     )}
                   </span>
                 </div>
 
+                {/* Evidence Section */}
+                <div className="pt-2 border-t border-slate-200/80 space-y-1 text-xs">
+                  <div className="font-semibold text-slate-700 flex items-center gap-1.5">
+                    <Activity className="w-3.5 h-3.5 text-[#1877F2]" />
+                    <span>Evidence:</span>
+                  </div>
+                  <div className="text-[11px] text-slate-600 pl-5 space-y-0.5">
+                    <div>{selectedSkill.evidenceCount || 0} attempts • {selectedSkill.correctCount || 0} correct</div>
+                    <div>
+                      {selectedSkill.avgConfidence && selectedSkill.avgConfidence > 0
+                        ? `${selectedSkill.avgConfidence >= 4 ? 'High' : selectedSkill.avgConfidence >= 2.5 ? 'Medium' : 'Low'} confidence (${selectedSkill.avgConfidence}/5)`
+                        : 'No confidence ratings recorded'}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Prerequisites Section */}
+                <div className="pt-2 border-t border-slate-200/80 space-y-1.5 text-xs">
+                  <div className="font-semibold text-slate-700 flex items-center gap-1.5">
+                    <Layers className="w-3.5 h-3.5 text-[#1877F2]" />
+                    <span>Prerequisites:</span>
+                  </div>
+                  {selectedSkill.prerequisites && selectedSkill.prerequisites.length > 0 ? (
+                    <div className="space-y-1 pl-1">
+                      {selectedSkill.prerequisites.map((p: any) => (
+                        <div key={p.id} className="flex items-center justify-between text-[11px] bg-white px-2 py-1 rounded border border-slate-200">
+                          <span className="font-medium text-slate-800">{p.name}</span>
+                          <span className={p.isMastered ? 'text-emerald-600 font-bold' : 'text-amber-600 font-medium'}>
+                            {p.isMastered ? '✓ (Mastered)' : `${Math.round(p.mastery * 100)}% (In Progress)`}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-[11px] text-slate-500 pl-5">
+                      Foundational topic (no prior prerequisites).
+                    </p>
+                  )}
+                </div>
+
                 {selectedSkill.isTarget && (
-                  <div className="text-[11px] text-purple-700 font-medium pt-1.5 border-t border-slate-200 flex items-center gap-1">
-                    <Target className="w-3 h-3" />
+                  <div className="text-[11px] text-purple-700 font-medium pt-2 border-t border-slate-200 flex items-center gap-1">
+                    <Target className="w-3 h-3 text-purple-600" />
                     Target Milestone for Selected Goal
                   </div>
                 )}
-              </div>
-
-              {/* Dependency Relationship Visualizer */}
-              <div className="p-3.5 rounded-lg bg-slate-50/80 border border-slate-200/80 text-xs space-y-2">
-                <div className="font-semibold text-slate-800 flex items-center gap-1.5">
-                  <Layers className="w-3.5 h-3.5 text-[#1877F2]" />
-                  Prerequisite Learning Flow
-                </div>
-                <p className="text-[11px] text-slate-600 leading-relaxed">
-                  Directed edges represent dependencies: <code className="text-[#1877F2] font-semibold bg-blue-50 px-1 py-0.5 rounded">A → B</code> signifies{' '}
-                  <strong className="text-slate-800 font-medium">Topic A precedes B</strong>.
-                </p>
               </div>
 
             </div>
@@ -306,7 +334,7 @@ export const SkillGraphView: React.FC<SkillGraphViewProps> = ({ onStartQuizForSk
               className="w-full py-2.5 px-4 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] text-white font-semibold text-xs shadow-2xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
             >
               <Play className="w-3.5 h-3.5 fill-current" />
-              <span>Practice {selectedSkill.label} Quiz</span>
+              <span>Practice {selectedSkill.label}</span>
             </button>
           )}
 

@@ -120,18 +120,18 @@ export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectS
               </span>
             )}
           </div>
-          <p className="text-xs text-slate-400">Production evidence-based estimation with time-decayed Ebbinghaus retention and recency weighting</p>
+          <p className="text-xs text-slate-500">Estimated from diagnostic answers, response times, and memory retention over time</p>
         </div>
 
         {/* Legend */}
         <div className="flex items-center gap-3 text-xs font-medium">
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block" />
-            <span className="text-slate-600 text-[11px]">Mastered (≥60%)</span>
+            <span className="text-slate-700 text-[11px]">Mastered (≥60%)</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-sm bg-amber-500 inline-block" />
-            <span className="text-slate-600 text-[11px]">Gap / Decayed (&lt;60%)</span>
+            <span className="text-slate-700 text-[11px]">Gap / Decayed (&lt;60%)</span>
           </div>
         </div>
       </div>
@@ -210,9 +210,9 @@ export const MasteryChart: React.FC<MasteryChartProps> = ({ masteries, onSelectS
         </div>
       )}
 
-      <div className="mt-2 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400">
-        <span>Click any bar to start practice</span>
-        <span className="truncate max-w-full">Ebbinghaus Retention S(t) = S₀ · (1 + 0.25N)</span>
+      <div className="mt-2 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-500">
+        <span className="font-medium text-slate-700">Click any bar to practice that topic</span>
+        <span className="truncate max-w-full text-slate-500">Your mastery is estimated from recent answers, confidence, response time, and memory retention.</span>
       </div>
 
     </div>

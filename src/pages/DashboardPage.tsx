@@ -1,50 +1,91 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { RecommendationCard } from '../components/RecommendationCard';
-import { MasteryChart } from '../components/MasteryChart';
-import { LearningPathView } from '../components/LearningPathView';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { api } from '../api/client';
-import { SkillMastery, Recommendation, LearningPathStep, Attempt } from '../types';
+import { 
+  SkillMastery, 
+  Recommendation, 
+  LearningPathStep, 
+  Attempt, 
+  SkillGap 
+} from '../types';
 import { useAuth } from '../context/AuthContext';
-import { Activity, Clock, CheckCircle2, XCircle, ShieldCheck, Target, Award, BookOpen, RotateCcw, FlaskConical, ArrowRight, AlertTriangle, RefreshCw } from 'lucide-react';
+import { 
+  AlertTriangle, 
+  RefreshCw, 
+  FlaskConical,
+  ShieldCheck,
+  ChevronRight
+} from 'lucide-react';
+import { DashboardHeader } from '../components/dashboard/DashboardHeader';
+import { OnboardingCard } from '../components/dashboard/OnboardingCard';
+import { NextBestActionCard } from '../components/dashboard/NextBestActionCard';
+import { ProgressOverview } from '../components/dashboard/ProgressOverview';
+import { SkillsNeedingAttentionCard } from '../components/dashboard/SkillsNeedingAttentionCard';
+import { LearningPathPreviewCard } from '../components/dashboard/LearningPathPreviewCard';
+import { RecentActivityFeed } from '../components/dashboard/RecentActivityFeed';
+import { LearningGapModal } from '../components/dashboard/LearningGapModal';
 
 interface DashboardPageProps {
   onStartQuizForSkill: (skillId: string) => void;
   onNavigateToGraph: () => void;
   onNavigateToResearch?: () => void;
+  onNavigateToGoals?: () => void;
 }
 
 export const DashboardPage: React.FC<DashboardPageProps> = ({
   onStartQuizForSkill,
   onNavigateToGraph,
   onNavigateToResearch,
+  onNavigateToGoals,
 }) => {
-  const { currentGoal } = useAuth();
+  const { user, currentGoal } = useAuth();
   const [masteries, setMasteries] = useState<SkillMastery[]>([]);
   const [recommendation, setRecommendation] = useState<Recommendation | null>(null);
-  const [recMessage, setRecMessage] = useState<string | undefined>(undefined);
   const [learningPath, setLearningPath] = useState<LearningPathStep[]>([]);
-  const [recentAttempts, setRecentAttempts] = useState<Attempt[]>([]);
+  const [skillGaps, setSkillGaps] = useState<SkillGap[]>([]);
+  const [allAttempts, setAllAttempts] = useState<Attempt[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [dashboardError, setDashboardError] = useState<string | null>(null);
   const [recalculating, setRecalculating] = useState<boolean>(false);
   const [activeGapSkillId, setActiveGapSkillId] = useState<string | null>(null);
 
+  const goalName = currentGoal?.goal?.name || 'Machine Learning Engineer';
+
   const loadDashboardData = useCallback(async () => {
     try {
       setLoading(true);
       setDashboardError(null);
-      const [masteryData, recData, pathData, attemptsData] = await Promise.all([
+
+      const [masteryData, recData, pathData, attemptsData, gapsData] = await Promise.all([
         api.getMastery(),
         api.getRecommendation(currentGoal?.goalId),
         api.getLearningPath(currentGoal?.goalId),
         api.getAttempts(),
+        api.getSkillGaps(currentGoal?.goalId).catch(() => ({ skillGaps: [] as SkillGap[] })),
       ]);
 
       setMasteries(masteryData);
       setRecommendation(recData.recommendation);
-      setRecMessage(recData.message);
       setLearningPath(pathData);
-      setRecentAttempts(attemptsData.slice(0, 6));
+      setAllAttempts(attemptsData);
+
+      // If backend returned skill gaps, use them; otherwise derive from masteries
+      if (gapsData && gapsData.skillGaps && gapsData.skillGaps.length > 0) {
+        setSkillGaps(gapsData.skillGaps);
+      } else {
+        const derivedGaps: SkillGap[] = masteryData
+          .filter((m) => m.masteryScore < 0.6)
+          .map((m) => ({
+            skillId: m.skillId,
+            skillName: m.skillName || m.skillId,
+            domain: m.domain || 'Data Science',
+            masteryScore: m.masteryScore,
+            interpretation: m.interpretation,
+            isReady: true,
+            prerequisiteCount: 0,
+            downstreamCount: 0,
+          }));
+        setSkillGaps(derivedGaps);
+      }
     } catch (err: any) {
       console.error('Failed to load dashboard data:', err);
       setDashboardError(err?.message || 'Unable to load diagnostic data. Please check connection and retry.');
@@ -69,16 +110,47 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
     }
   };
 
-  const masteredCount = masteries.filter((m) => m.masteryScore >= 0.6).length;
+  // Map prerequisite relationships to find downstream dependent skills
+  const downstreamMap = useMemo(() => {
+    const map: Record<string, string> = {};
+    learningPath.forEach((step) => {
+      if (step.prerequisites && step.prerequisites.length > 0) {
+        step.prerequisites.forEach((prereqId) => {
+          if (!map[prereqId]) {
+            map[prereqId] = step.skillName;
+          }
+        });
+      }
+    });
+    return map;
+  }, [learningPath]);
+
+  // Aggregate Metrics
   const totalSkills = masteries.length || 6;
-  const avgMastery = masteries.length 
-    ? Math.round((masteries.reduce((acc, m) => acc + m.masteryScore, 0) / masteries.length) * 100) 
+  const masteredSkills = masteries.filter((m) => m.masteryScore >= 0.6);
+  const masteredCount = masteredSkills.length;
+  const skillsNeedingAttentionCount = skillGaps.length > 0 ? skillGaps.length : masteries.filter((m) => m.masteryScore < 0.6).length;
+
+  const overallMastery = masteries.length
+    ? masteries.reduce((acc, m) => acc + m.masteryScore, 0) / masteries.length
     : 0;
 
+  const goalProgress = totalSkills > 0 ? masteredCount / totalSkills : 0;
+
+  // Identify special learner states
+  const isNewUser = allAttempts.length === 0 && masteredCount === 0;
+  const isStrongMastery = masteredCount === totalSkills && totalSkills > 0;
+
+  const recommendedDownstream = recommendation ? downstreamMap[recommendation.skillId] : undefined;
+
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-7">
+      {/* 1. Network / Error Notice */}
       {dashboardError && (
-        <div className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+        <div 
+          role="alert" 
+          className="p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs"
+        >
           <div className="flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
             <span>{dashboardError}</span>
@@ -92,185 +164,110 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
           </button>
         </div>
       )}
-      
-      {/* 1. Quick Stats Overview Strip */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        
-        <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-2xs flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between text-slate-400 mb-1">
-              <span className="text-xs font-semibold text-slate-500">Target Curriculum</span>
-              <Target className="w-4 h-4 text-[#1877F2]" />
-            </div>
-            <div className="text-sm sm:text-base font-bold text-slate-900 truncate" title={currentGoal?.goal?.name || 'Machine Learning'}>
-              {currentGoal?.goal?.name || 'Machine Learning'}
-            </div>
-          </div>
-          <div className="text-[11px] text-[#1877F2] font-medium mt-2 flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#1877F2]" />
-            <span>Active Goal Target</span>
-          </div>
-        </div>
 
-        <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-2xs flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between text-slate-400 mb-1">
-              <span className="text-xs font-semibold text-slate-500">Skills Mastered</span>
-              <Award className="w-4 h-4 text-emerald-500" />
-            </div>
-            <div className="text-xl sm:text-2xl font-bold text-slate-900">
-              {masteredCount} <span className="text-xs font-normal text-slate-400">/ {totalSkills} topics</span>
-            </div>
-          </div>
-          <div className="text-[11px] text-emerald-600 font-medium mt-2 flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            <span>{Math.round((masteredCount / (totalSkills || 1)) * 100)}% Milestone Progress</span>
-          </div>
-        </div>
+      {/* 2. Personalized Header */}
+      <DashboardHeader
+        user={user}
+        goalName={goalName}
+        isNewUser={isNewUser}
+        isStrongMastery={isStrongMastery}
+        isRecalculating={recalculating}
+        onRefresh={handleRecalculate}
+        onChangeGoal={onNavigateToGoals}
+      />
 
-        <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-2xs flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between text-slate-400 mb-1">
-              <span className="text-xs font-semibold text-slate-500">Average Mastery</span>
-              <BookOpen className="w-4 h-4 text-[#1877F2]" />
-            </div>
-            <div className="text-xl sm:text-2xl font-bold text-slate-900">
-              {avgMastery}%
-            </div>
-          </div>
-          <div className="text-[11px] text-slate-400 mt-2">
-            Across prerequisite DAG
-          </div>
-        </div>
+      {/* 3. Guided Onboarding Banner (if new user or collecting initial data) */}
+      <OnboardingCard
+        attemptsCount={allAttempts.length}
+        goalName={goalName}
+        onStartDiagnostic={() => onStartQuizForSkill('')}
+      />
 
-        <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-2xs flex flex-col justify-between">
-          <div>
-            <div className="flex items-center justify-between text-slate-400 mb-1">
-              <span className="text-xs font-semibold text-slate-500">Diagnostic Items</span>
-              <Activity className="w-4 h-4 text-cyan-500" />
-            </div>
-            <div className="text-xl sm:text-2xl font-bold text-slate-900">
-              {recentAttempts.length} <span className="text-xs font-normal text-slate-400">logged</span>
-            </div>
-          </div>
-          <div className="text-[11px] text-slate-400 mt-2">
-            Trace interaction evidence
-          </div>
-        </div>
+      {/* 4. Centerpiece: Primary "Next Best Action" */}
+      <NextBestActionCard
+        recommendation={recommendation}
+        loading={loading}
+        goalName={goalName}
+        downstreamSkillName={recommendedDownstream}
+        attempts={allAttempts}
+        onStartQuiz={onStartQuizForSkill}
+        onOpenGapModal={(skillId) => setActiveGapSkillId(skillId)}
+        onNavigateToGraph={onNavigateToGraph}
+      />
 
+      {/* 5. Professional Progress Overview */}
+      <ProgressOverview
+        overallMastery={overallMastery}
+        goalProgress={goalProgress}
+        skillsMasteredCount={masteredCount}
+        totalSkillsCount={totalSkills}
+        skillsNeedingAttentionCount={skillsNeedingAttentionCount}
+        masteries={masteries}
+        onSelectSkill={onStartQuizForSkill}
+      />
+
+      {/* 6. Balanced 2-Column Section: Skills Needing Attention & Learning Path Preview */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+        {/* Left: Top 3 Skills Needing Attention */}
+        <SkillsNeedingAttentionCard
+          skillGaps={skillGaps}
+          downstreamSkillMap={downstreamMap}
+          onStartQuiz={onStartQuizForSkill}
+          onOpenGapModal={(skillId) => setActiveGapSkillId(skillId)}
+          onNavigateToGraph={onNavigateToGraph}
+        />
+
+        {/* Right: Learning Path Preview */}
+        <LearningPathPreviewCard
+          pathSteps={learningPath}
+          goalName={goalName}
+          onStartQuiz={onStartQuizForSkill}
+          onOpenGapModal={(skillId) => setActiveGapSkillId(skillId)}
+          onNavigateToGraph={onNavigateToGraph}
+        />
       </div>
 
-      {/* 2. Centerpiece: Top Prioritized Recommendation */}
-      <section>
-        <RecommendationCard
-          recommendation={recommendation}
-          loading={loading}
-          message={recMessage}
-          onStartQuizForSkill={onStartQuizForSkill}
-          onStartLearningGap={(skillId) => setActiveGapSkillId(skillId)}
-          onRecalculateMastery={handleRecalculate}
-          recalculating={recalculating}
-        />
-      </section>
+      {/* 7. Recent Learning Activity Feed */}
+      <RecentActivityFeed
+        attempts={allAttempts}
+        onStartDiagnostic={() => onStartQuizForSkill('')}
+        onStartQuizForSkill={onStartQuizForSkill}
+      />
 
-      {/* 3. Side-by-Side: Mastery Distribution & Topological Learning Path */}
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 items-stretch">
-        <MasteryChart
-          masteries={masteries}
-          onSelectSkill={onStartQuizForSkill}
-        />
-
-        <LearningPathView
-          pathSteps={learningPath}
-          goalName={currentGoal?.goal?.name || 'Machine Learning Engineer'}
-          onSelectSkill={onStartQuizForSkill}
-          activeGapSkillId={activeGapSkillId}
-          onCloseGapModal={() => setActiveGapSkillId(null)}
-        />
-      </section>
-
-      {/* 4. Diagnostic Evidence & Attempt Log */}
-      <section className="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-2xs space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="font-bold text-sm text-slate-900">Recent Diagnostic Evidence</h3>
-            <p className="text-xs text-slate-400">Assessment attempts evaluated by the cognitive mastery tracing engine</p>
-          </div>
-
-          <div className="text-[11px] font-medium text-slate-500 bg-slate-50 border border-slate-200/80 px-2.5 py-1 rounded-md flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            <span>Auto-synced</span>
-          </div>
-        </div>
-
-        {recentAttempts.length === 0 ? (
-          <div className="text-center py-8 text-slate-400 text-xs">
-            No quiz attempts recorded yet. Start practicing to generate diagnostic evidence.
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {recentAttempts.map((attempt) => (
-              <div
-                key={attempt.id}
-                className="p-3.5 rounded-lg bg-slate-50/70 border border-slate-200/80 text-xs space-y-2 flex flex-col justify-between"
-              >
-                <div className="space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold text-slate-900">{attempt.skillName || 'Skill'}</span>
-                    <span
-                      className={`inline-flex items-center gap-1 font-semibold text-[10px] px-2 py-0.5 rounded-md ${
-                        attempt.correct
-                          ? 'bg-emerald-50 text-emerald-700 border border-emerald-100'
-                          : 'bg-rose-50 text-rose-700 border border-rose-100'
-                      }`}
-                    >
-                      {attempt.correct ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
-                      {attempt.correct ? 'Correct' : 'Incorrect'}
-                    </span>
-                  </div>
-
-                  <p className="text-slate-600 line-clamp-2 text-[11px] leading-relaxed">
-                    {attempt.questionText || 'Diagnostic question item'}
-                  </p>
-                </div>
-
-                <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-[10px] text-slate-400">
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3 h-3 text-slate-400" />
-                    {attempt.timeTakenSeconds}s
-                  </span>
-                  <span className="flex items-center gap-1 text-slate-500 font-medium">
-                    <ShieldCheck className="w-3 h-3 text-[#1877F2]" />
-                    Conf: {attempt.confidence}/5
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
-
-      {/* 5. Algorithmic Foundation & Model Verification Note (Quiet, Non-duplicate) */}
-      <section className="bg-slate-50/70 rounded-xl p-4 sm:p-5 text-slate-700 border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 border border-indigo-200/60 flex items-center justify-center shrink-0">
+      {/* 8. Algorithmic Foundation & Benchmark Note (Quiet, academic, non-intrusive) */}
+      <section className="bg-slate-50/80 rounded-2xl p-5 text-slate-700 border border-slate-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs">
+        <div className="flex items-center gap-3.5">
+          <div className="w-9 h-9 rounded-xl bg-blue-50 text-[#1877F2] border border-blue-100 flex items-center justify-center shrink-0">
             <FlaskConical className="w-4 h-4" />
           </div>
           <div>
-            <div className="font-bold text-slate-900">Empirical Knowledge Tracing Engine</div>
-            <p className="text-[11px] text-slate-500 mt-0.5">
-              LearnTrace correlates student interactions using Bayesian Knowledge Tracing priors and Ebbinghaus memory retention decay.
+            <div className="font-bold text-slate-900">
+              Evidence-Based Knowledge Tracing & Memory Modeling
+            </div>
+            <p className="text-slate-500 mt-0.5 text-[11px] leading-relaxed">
+              Learner mastery is continuously estimated through response latencies, multi-skill dependencies, and Ebbinghaus retention decay, benchmarked against Bayesian Knowledge Tracing (BKT).
             </p>
           </div>
         </div>
 
-        <div className="text-[11px] text-slate-500 flex items-center gap-2 shrink-0">
-          <span className="px-2 py-0.5 rounded bg-white border border-slate-200 font-mono text-[10px] text-slate-600">
-            AUC: 0.84 • BKT / DKT Evaluated
-          </span>
-        </div>
+        {onNavigateToResearch && (
+          <button
+            onClick={onNavigateToResearch}
+            className="text-xs font-semibold text-[#1877F2] hover:text-[#166fe5] inline-flex items-center gap-1 shrink-0 transition-colors cursor-pointer"
+          >
+            <span>Inspect BKT Benchmarks</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
+        )}
       </section>
 
+      {/* 9. Interactive Concept Guide / Gap Modal */}
+      <LearningGapModal
+        skillId={activeGapSkillId}
+        onClose={() => setActiveGapSkillId(null)}
+        onStartQuiz={onStartQuizForSkill}
+        pathSteps={learningPath}
+      />
     </div>
   );
 };

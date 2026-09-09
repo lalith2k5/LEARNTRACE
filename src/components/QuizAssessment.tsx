@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { api } from '../api/client';
 import { Question, Skill, AiExplainResponse, CognitiveState, OpenEndedEvaluationResponse } from '../types';
+import { formatCognitiveState } from '../utils/cognitiveStates';
 
 interface QuizAssessmentProps {
   initialSkillId?: string;
@@ -50,6 +51,7 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
     correct: boolean;
     correctAnswerText?: string;
     explanation?: string;
+    priorMastery?: number;
     updatedMastery?: number;
     cognitiveState?: CognitiveState;
   } | null>(null);
@@ -218,6 +220,7 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
         correct: response.correct,
         correctAnswerText: response.correctAnswerText,
         explanation: response.explanation || currentQuestion.explanation,
+        priorMastery: response.priorMastery,
         updatedMastery: response.updatedMastery?.masteryScore,
         cognitiveState: response.attempt?.cognitiveState,
       });
@@ -468,27 +471,45 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
 
               {/* Confidence Rating (1 to 5) */}
               {gradingResult === null && (
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-semibold text-slate-700 flex items-center gap-1.5">
+                    <span className="font-semibold text-slate-800 flex items-center gap-1.5">
                       <ShieldCheck className="w-4 h-4 text-[#1877F2]" />
-                      Self-Reported Confidence (1 = Guessing, 5 = Absolute Certainty)
+                      How confident are you in this answer?
                     </span>
-                    <span className="font-mono text-[#1877F2] font-bold">{confidence} / 5</span>
+                    <span className="font-mono text-[#1877F2] font-bold">
+                      {confidence === 1 && 'Not sure / Guessing (1/5)'}
+                      {confidence === 2 && 'Low Confidence (2/5)'}
+                      {confidence === 3 && 'Somewhat Confident (3/5)'}
+                      {confidence === 4 && 'Fairly Confident (4/5)'}
+                      {confidence === 5 && 'Very Confident (5/5)'}
+                    </span>
                   </div>
 
-                  <div className="flex items-center justify-between gap-2 pt-1">
-                    {[1, 2, 3, 4, 5].map((lvl) => (
+                  <div className="flex items-center justify-between text-[11px] text-slate-500 px-1 font-medium">
+                    <span>Not sure</span>
+                    <span className="h-px flex-1 bg-slate-200 mx-3" />
+                    <span>Very confident</span>
+                  </div>
+
+                  <div className="grid grid-cols-5 gap-2 pt-1">
+                    {[
+                      { lvl: 1, label: '1 - Guess' },
+                      { lvl: 2, label: '2 - Low' },
+                      { lvl: 3, label: '3 - Medium' },
+                      { lvl: 4, label: '4 - High' },
+                      { lvl: 5, label: '5 - Certain' },
+                    ].map(({ lvl, label }) => (
                       <button
                         key={lvl}
                         onClick={() => setConfidence(lvl)}
-                        className={`flex-1 py-1.5 rounded-lg text-xs font-bold transition-all border cursor-pointer ${
+                        className={`py-2 px-1 rounded-lg text-xs font-semibold transition-all border cursor-pointer text-center ${
                           confidence === lvl
                             ? 'bg-[#1877F2] text-white border-[#1877F2] shadow-2xs'
                             : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200'
                         }`}
                       >
-                        {lvl}
+                        {label}
                       </button>
                     ))}
                   </div>
@@ -553,21 +574,22 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
                             {gradingResult.correct ? 'Correct! Excellent work.' : 'Incorrect Answer'}
                           </h4>
 
-                          {gradingResult.cognitiveState && (
-                            <span
-                              className={`text-xs px-2.5 py-0.5 rounded-full font-bold border ${
-                                gradingResult.cognitiveState === 'CONFIDENT_MISCONCEPTION'
-                                   ? 'bg-amber-100 text-amber-900 border-amber-300'
-                                   : gradingResult.cognitiveState === 'SOLID_MASTERY'
-                                   ? 'bg-emerald-100 text-emerald-900 border-emerald-300'
-                                   : gradingResult.cognitiveState === 'FRAGILE_KNOWLEDGE'
-                                   ? 'bg-yellow-100 text-yellow-900 border-yellow-300'
-                                   : 'bg-slate-100 text-slate-800 border-slate-200'
-                              }`}
-                            >
-                              State: {gradingResult.cognitiveState.replace('_', ' ')}
-                            </span>
-                          )}
+                          {gradingResult.cognitiveState && (() => {
+                            const stateInfo = formatCognitiveState(gradingResult.cognitiveState);
+                            return (
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                <span
+                                  className={`text-xs px-2.5 py-0.5 rounded-full font-bold border ${stateInfo.badgeClass}`}
+                                  title={stateInfo.description}
+                                >
+                                  {stateInfo.label}
+                                </span>
+                                <span className="text-[10px] text-slate-500 font-mono">
+                                  ({stateInfo.technical})
+                                </span>
+                              </div>
+                            );
+                          })()}
                         </div>
 
                         {!gradingResult.correct && gradingResult.correctAnswerText && (
@@ -583,9 +605,34 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
                         )}
 
                         {gradingResult.updatedMastery !== undefined && (
-                          <div className="text-xs text-[#1877F2] font-mono pt-1">
-                            Recalculated Mastery in {currentQuestion.skillName}:{' '}
-                            <strong>{Math.round(gradingResult.updatedMastery * 100)}%</strong>
+                          <div className="mt-3 p-3 rounded-lg bg-white/95 border border-slate-200/80 flex items-center justify-between flex-wrap gap-2 text-xs">
+                            <span className="font-semibold text-slate-700">
+                              Mastery updated in {currentQuestion.skillName}:
+                            </span>
+                            {gradingResult.priorMastery !== undefined ? (
+                              <div className="flex items-center gap-1.5 font-mono font-bold">
+                                <span className="text-slate-600">
+                                  {Math.round(gradingResult.priorMastery * 100)}%
+                                </span>
+                                <span className="text-slate-400">→</span>
+                                <span
+                                  className={
+                                    gradingResult.updatedMastery >= gradingResult.priorMastery
+                                      ? 'text-emerald-600'
+                                      : 'text-amber-600'
+                                  }
+                                >
+                                  {Math.round(gradingResult.updatedMastery * 100)}%
+                                </span>
+                                <span className="text-[10px] text-slate-500 font-sans font-normal ml-1">
+                                  (Evidence-Based Tracing)
+                                </span>
+                              </div>
+                            ) : (
+                              <span className="font-mono font-bold text-[#1877F2]">
+                                {Math.round(gradingResult.updatedMastery * 100)}%
+                              </span>
+                            )}
                           </div>
                         )}
                       </div>
@@ -744,7 +791,7 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    <span>Submit for Cognitive Grading</span>
+                    <span>Submit Answer</span>
                   </>
                 )}
               </button>
@@ -753,30 +800,42 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
             {/* Open-Ended Grading Result */}
             {openEndedResult !== null && (
               <div className="space-y-4 pt-2">
-                <div className="p-5 rounded-xl bg-white border border-slate-200 space-y-4 shadow-2xs">
+                <div className="p-5 sm:p-6 rounded-xl bg-white border border-slate-200 space-y-4 shadow-2xs">
                   <div className="flex items-center justify-between flex-wrap gap-2">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2.5">
                       <span className="text-2xl font-black font-mono text-[#1877F2]">
                         {Math.round(openEndedResult.score * 100)}%
                       </span>
-                      <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 text-[#1877F2] border border-blue-200">
-                        Grade: {openEndedResult.grade}
+                      <span
+                        className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${
+                          openEndedResult.score >= 0.8
+                            ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                            : openEndedResult.score >= 0.6
+                            ? 'bg-blue-50 text-blue-800 border-blue-200'
+                            : 'bg-amber-50 text-amber-800 border-amber-200'
+                        }`}
+                      >
+                        {openEndedResult.score >= 0.8
+                          ? 'Correct'
+                          : openEndedResult.score >= 0.6
+                          ? 'Partially Correct'
+                          : 'Needs Review'}
                       </span>
                     </div>
 
-                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                    <span className="px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
                       Cognitive State: {openEndedResult.cognitiveState.replace('_', ' ')}
                     </span>
                   </div>
 
-                  <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-sans">
+                  <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-sans bg-slate-50 p-3.5 rounded-lg border border-slate-200">
                     {openEndedResult.feedback}
                   </p>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
                     <div className="p-3 rounded-lg bg-emerald-50 border border-emerald-200 space-y-1">
                       <div className="text-[11px] font-bold text-emerald-800 flex items-center gap-1">
-                        <Check className="w-3.5 h-3.5 text-emerald-600" /> Concepts Identified
+                        <Check className="w-3.5 h-3.5 text-emerald-600" /> Key Concepts Identified
                       </div>
                       <div className="text-xs text-slate-700">
                         {openEndedResult.conceptsIdentified.length > 0
@@ -787,7 +846,7 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
 
                     <div className="p-3 rounded-lg bg-amber-50 border border-amber-200 space-y-1">
                       <div className="text-[11px] font-bold text-amber-800 flex items-center gap-1">
-                        <AlertTriangle className="w-3.5 h-3.5 text-amber-600" /> Missing / Refinements Needed
+                        <AlertTriangle className="w-3.5 h-3.5 text-amber-600" /> Areas for Review
                       </div>
                       <div className="text-xs text-slate-700">
                         {openEndedResult.conceptsMissed.length > 0
@@ -798,25 +857,35 @@ export const QuizAssessment: React.FC<QuizAssessmentProps> = ({
                   </div>
 
                   {openEndedResult.updatedMastery && (
-                    <div className="text-xs font-mono text-[#1877F2] pt-2 border-t border-slate-100">
-                      Updated Mastery in {activeSkillObj?.name}:{' '}
+                    <div className="text-xs font-mono text-[#1877F2] pt-2 border-t border-slate-100 flex items-center justify-between">
+                      <span className="text-slate-600 font-sans">Updated Mastery in {activeSkillObj?.name}:</span>
                       <strong>{Math.round(openEndedResult.updatedMastery.masteryScore * 100)}%</strong>
                     </div>
                   )}
                 </div>
 
-                <button
-                  onClick={() => {
-                    setStudentTextResponse('');
-                    setOpenEndedResult(null);
-                    const prompts = openEndedPromptsBySkill[selectedSkillId] || [];
-                    const nextPrompt = prompts[1] || prompts[0];
-                    setOpenEndedPrompt(nextPrompt);
-                  }}
-                  className="w-full py-2.5 px-5 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] text-white text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
-                >
-                  Try Another Challenge
-                </button>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={() => {
+                      setStudentTextResponse('');
+                      setOpenEndedResult(null);
+                      const prompts = openEndedPromptsBySkill[selectedSkillId] || [];
+                      const nextPrompt = prompts[1] || prompts[0];
+                      setOpenEndedPrompt(nextPrompt);
+                    }}
+                    className="flex-1 py-2.5 px-5 rounded-lg bg-[#1877F2] hover:bg-[#166fe5] text-white text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+                  >
+                    Next Challenge
+                  </button>
+                  {onAssessmentCompleted && (
+                    <button
+                      onClick={onAssessmentCompleted}
+                      className="py-2.5 px-4 rounded-lg bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold transition-colors cursor-pointer shadow-2xs"
+                    >
+                      Return to Dashboard
+                    </button>
+                  )}
+                </div>
               </div>
             )}
           </div>
